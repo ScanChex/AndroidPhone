@@ -1,0 +1,109 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tickets_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#00ff00" >
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:text="Client 1"
+        android:textColor="@android:color/black"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text1"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="5dp"
+        android:text="(305) 123.4567"
+        android:textColor="@android:color/black"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/text3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text2"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:text="2500 NW 79 Ave"
+        android:textColor="@android:color/black"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/text4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text3"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="5dp"
+        android:text="Miami, Florida 33122"
+        android:textColor="@android:color/black" />
+    
+    <!-- ************** -->
+    
+    <TextView
+        android:id="@+id/text5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentRight="true"
+        android:text="13-100-000217"
+        android:textColor="@android:color/black"
+        android:layout_marginRight="5dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/text6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text5"
+        android:layout_marginTop="2dp"
+        android:layout_alignParentRight="true"
+        android:text="US-6425790-0001-0000-0001"
+        android:layout_marginRight="5dp"
+        android:textColor="@android:color/black"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/text7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text6"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentRight="true"
+        android:text="Standby Generator"
+        android:layout_marginRight="5dp"
+        android:textColor="@android:color/black"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/text8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text7"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentRight="true"
+        android:text="June 09, 2013"
+        android:textColor="@android:color/black" />
+   
+    <TextView
+        android:id="@+id/text9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text8"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="5dp"
+        android:layout_alignParentRight="true"
+        android:text="02:00 AM"
+        android:textColor="@android:color/black" />
+
+</RelativeLayout>

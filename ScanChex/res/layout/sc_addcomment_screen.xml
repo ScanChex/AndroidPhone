@@ -1,0 +1,45 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SCLoginScreen" >
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:onClick="onDoneClick"
+        android:text="Done" />
+
+    <EditText
+        android:id="@+id/addcomment_edittext"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:inputType="textCapSentences"
+        android:layout_weight="1"
+        android:layout_margin="10dp" 
+        android:gravity="top"/>
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:onClick="onSubmitClick"
+        android:text="Submit"
+        android:textSize="18sp" />
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"
+        android:onClick="onBackClick"
+        android:text="Back"
+        android:textSize="18sp" />
+
+</LinearLayout>
