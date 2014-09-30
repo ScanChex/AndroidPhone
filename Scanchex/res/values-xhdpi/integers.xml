@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="width">80</integer>
+    <integer name="height">80</integer>
+    <integer name="textAssetSize">11</integer>
+</resources>

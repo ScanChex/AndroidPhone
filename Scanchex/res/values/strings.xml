@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ScanChex</string>
+    <string name="action_settings">Settings</string>
+    <string name="pref_user_name">uname</string>
+    <string name="pref_master_key">mkey</string>
+    <string name="pref_userfull_name">fname</string>
+    <string name="pref_company_id">cid</string>
+    <string name="user_type">utype</string>
+    <string name="company_user">utype</string>
+    <string name="gcm_deleted">From GCM: server deleted %1$d pending messages!</string>
+    <string name="topTextMessage">Please enter a new message for \n Admin</string>
+    <string name="topTextRegisterDevice">Register</string>
+    <string name="topTextRegisterDeviceDescription">Please enter employee user id</string>
+    <string name="notesView">Notes</string>
+    <string name="paynowScreenTop">THIS IS CONFIRM THAT I AM SATISFIED WITH THE WORK COMPLETED ON THIS TICKET #</string>
+    <string name="register">REGISTER EMPLOYEE DEVICE</string>
+    <string name="today"><u>TODAY</u></string>
+    <string name="day7"><u>LAST 7 DAYS</u></string>
+    <string name="day30"><u>LAST 30 DAYS</u></string>
+    <string name="day60"><u>LAST 60 DAYS</u></string>
+     <string name="empdevice"><u>REGISTER EMPLOYEE DEVICE</u></string>
+   
+    
+        <string name="pdf_show_online_dialog_title">Show PDF</string>
+    <string name="pdf_show_online_dialog_question">You are trying to open a PDF file, but you don\'t have a PDF reader installed. Do you want to read the PDF file online with Google Drive (Requires Google account)?</string>
+    <string name="pdf_show_online_dialog_button_yes">Yes, read online</string>
+    <string name="pdf_show_online_dialog_button_no">No</string>
+    <string name="pdf_show_local_progress_title">Please wait</string>
+    <string name="pdf_show_local_progress_content">Downloading PDF&#8230;</string>
+    
+    <string name="adobe">Download PDF Reader from \n <![CDATA[https://play.google.com/store/apps/details?id=com.adobe.reader"]]></string>
+
+    <string name="checkboxDescription">RECEIVED IN GOOD WORKING CONDITION EXCEPT AS NOTED ABOVE (IF APPLICABLE)</string>
+</resources>

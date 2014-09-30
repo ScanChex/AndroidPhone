@@ -1,0 +1,56 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:background="@color/messageRowColor" >
+
+    <RelativeLayout
+        android:id="@+id/tickets_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/messageRowColor" >
+
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/app_icon" />
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/image_view"
+            android:text="Client 1"
+            android:textColor="@android:color/black"
+            android:textStyle="italic|bold" />
+
+        <Button
+            android:id="@+id/text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/text1"
+            android:background="@android:color/transparent"
+            android:onClick="onReplyClick"
+            android:text="Reply"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/text1"
+            android:layout_alignParentBottom="true"
+            android:textSize="12sp"
+            android:textColor="@android:color/black"
+            android:text="4" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

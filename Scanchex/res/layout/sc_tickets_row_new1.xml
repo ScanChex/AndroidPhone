@@ -1,0 +1,118 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tickets_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#00ff00"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="120dp"
+        android:layout_height="100dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/relativeImage1"
+            android:layout_width="110dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center" >
+
+            <ImageView
+                android:id="@+id/image_view"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="3dp"
+                android:src="@drawable/photo_not_available" />
+
+            <ImageView
+                android:id="@+id/ticket_status_icon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/excalamation_icon" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/text5"
+            style="@style/ticketIdText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="13-100-000217"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp" >
+
+            <TextView
+                android:id="@+id/text3"
+                style="@style/defaultText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="10dp"
+                android:maxLines="1"
+                android:text="2500 NW 79 Ave"
+                android:textColor="@color/black" />
+
+            <ScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/text3"
+                android:layout_marginTop="2dp"
+                android:layout_toLeftOf="@+id/text9" >
+
+                <TextView
+                    android:id="@+id/text4"
+                    style="@style/defaultText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="3"
+                    android:text="Miami, Florida jnjkhjkhjkhjklhjklhkjlhkl"
+                    android:textColor="@color/black" />
+            </ScrollView>
+
+            <TextView
+                android:id="@+id/text9"
+                style="@style/timeSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/text8"
+                android:paddingLeft="5dp"
+                android:paddingRight="0dp"
+                android:singleLine="true"
+                android:text="12:00 AM"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/text3"
+                android:paddingLeft="5dp"
+                android:paddingRight="0dp"
+                android:text="June 09, 2013"
+                android:textColor="@color/black"
+                android:textSize="10sp" />
+        </RelativeLayout> 
+
+</RelativeLayout>

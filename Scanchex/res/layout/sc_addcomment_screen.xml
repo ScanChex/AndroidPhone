@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/commentContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SCLoginScreen" >
+ 
+
+    <EditText
+        android:id="@+id/addcomment_edittext"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:inputType="textCapSentences"
+        android:layout_weight="1"
+        android:layout_margin="10dp" 
+        android:textColor="#000000"
+        android:gravity="left|top"
+        android:textCursorDrawable="@drawable/cursor"
+        android:background="@drawable/edittext_border"/>
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:onClick="onSubmitClick"
+        android:text="Submit"
+        android:textSize="18sp" />
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"
+        android:onClick="onBackClick"
+        android:text="Back"
+        android:textSize="18sp" />
+
+</LinearLayout>

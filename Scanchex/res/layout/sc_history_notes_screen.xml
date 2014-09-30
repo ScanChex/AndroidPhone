@@ -1,0 +1,55 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:id="@+id/noteScreen">
+
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="History Notes:"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+    
+    <EditText
+        android:id="@+id/notext_text_edit"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:inputType="textMultiLine"
+        android:layout_centerVertical="true"/>
+
+    <Button
+        android:id="@+id/next_button"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:onClick="onNextClick"
+        android:text="Next" />
+    
+    <Button
+        android:id="@+id/prev_button"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/next_button"
+        android:onClick="onPrevClick"
+        android:text="Previous" />
+
+    <TextView
+        android:id="@+id/textViewCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/prev_button"
+        android:layout_alignBottom="@+id/prev_button"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="15dp"
+        android:textSize="20sp"
+        android:textColor="#FFFFFF" />
+
+</RelativeLayout>
