@@ -6,7 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -33,6 +35,10 @@ public class SCAdminImageTakenScreen extends Activity{
 	private final int SELECT_PICTURE = 200;
 	private static final int CAMERA_PIC_REQUEST = 1337;
 	private String contentType = "";
+	Uri fileUri;
+	public static final int MEDIA_TYPE_IMAGE = 1;
+	private static final String IMAGE_DIRECTORY_NAME = "ScanChex";
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,10 @@ public class SCAdminImageTakenScreen extends Activity{
 	public void onCameraClick(View view) {
 			
 		Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+		fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+
+		cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+	
 		startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
 	
 	}
@@ -66,8 +76,38 @@ public class SCAdminImageTakenScreen extends Activity{
 		this.finish();
 	}
 	
-	
-	
+	public Uri getOutputMediaFileUri(int type) {
+		return Uri.fromFile(getOutputMediaFile(type));
+	}
+
+	private static File getOutputMediaFile(int type) {
+
+		// External sdcard location
+		File mediaStorageDir = new File(
+				Environment
+						.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+				IMAGE_DIRECTORY_NAME);
+
+		// Create the storage directory if it does not exist
+		if (!mediaStorageDir.exists()) {
+			if (!mediaStorageDir.mkdirs()) {
+				return null;
+			}
+		}
+
+		// Create a media file name
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+				Locale.getDefault()).format(new Date());
+		File mediaFile;
+		if (type == MEDIA_TYPE_IMAGE) {
+			mediaFile = new File(mediaStorageDir.getPath() + File.separator
+					+ "IMG_" + timeStamp + ".jpg");
+		}  else {
+			return null;
+		}
+
+		return mediaFile;
+	}
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == RESULT_OK) {
 			if (requestCode == SELECT_PICTURE) {
@@ -80,8 +120,16 @@ public class SCAdminImageTakenScreen extends Activity{
 				Bitmap bm = decodeFile(imageFile, getCameraPhotoOrientation(this, selectedImageUri, selectedImagePath));
 			} else if (requestCode == CAMERA_PIC_REQUEST) {
 
-				Uri selectedImageUri = data.getData();
-				contentType = getContentType(selectedImageUri);
+//				Uri selectedImageUri = data.getData();
+//				//contentType = "image/jpeg";
+//				contentType = getContentType(selectedImageUri);
+//				selectedImagePath = getPath(selectedImageUri);
+//				Log.i("IMAGE URL", "<>CAMERA<> "+ selectedImagePath);
+//				File imageFile = new File(selectedImagePath);
+//				Bitmap bm = decodeFile(imageFile, getCameraPhotoOrientation(this, selectedImageUri, selectedImagePath));
+//				
+			Uri selectedImageUri = fileUri;
+				contentType = "image/jpeg";//getContentType(selectedImageUri);
 				selectedImagePath = getPath(selectedImageUri);
 				Log.i("IMAGE URL", "<>CAMERA<> "+ selectedImagePath);
 				File imageFile = new File(selectedImagePath);
@@ -166,11 +214,23 @@ public class SCAdminImageTakenScreen extends Activity{
 		
 		public String getPath(Uri uri) {
 
-			String[] projection = { MediaStore.Images.Media.DATA };
-			Cursor cursor = managedQuery(uri, projection, null, null, null);
-			int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-			cursor.moveToFirst();
-			return cursor.getString(column_index);
+//			String[] projection = { MediaStore.Images.Media.DATA };
+//			Cursor cursor = managedQuery(uri, projection, null, null, null);
+//			int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//			cursor.moveToFirst();
+//			return cursor.getString(column_index);
+			
+			 String result;
+			    Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+			    if (cursor == null) { // Source is Dropbox or other similar local file path
+			        result = uri.getPath();
+			    } else { 
+			        cursor.moveToFirst(); 
+			        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA); 
+			        result = cursor.getString(idx);
+			        cursor.close();
+			    }
+			    return result;
 		}
 
 

@@ -98,6 +98,8 @@ public class SCTicketsAdapter extends BaseAdapter {
 					.findViewById(R.id.map_icon);
 			holder.detailIcon = (ImageView) convertView
 					.findViewById(R.id.ticket_detail_icon);
+			holder.empIdIcon = (ImageView) convertView
+					.findViewById(R.id.empid_icon);
 
 			// holder.relativeImage1.getLayoutParams().width = a;
 			// holder.linearCompany.getLayoutParams().width = b;
@@ -153,7 +155,7 @@ public class SCTicketsAdapter extends BaseAdapter {
 		holder.phoneNumber.setText(tInfo.assetPhone);
 		holder.phoneNumber.setTag(position);
 		holder.address1.setText(tInfo.addressStreet);
-		holder.address2.setText(tInfo.addressCity + ", " + tInfo.addressState);
+		holder.address2.setText(tInfo.addressCity + ", " + tInfo.addressState + " " + tInfo.getAddressPostalCode());
 		holder.ticketId.setText(tInfo.ticketId);
 		holder.assetId.setText(tInfo.assetUNAssetId);
 		holder.assetName.setText(tInfo.assetDescription);
@@ -166,6 +168,11 @@ public class SCTicketsAdapter extends BaseAdapter {
 			holder.linearPreview.setVisibility(View.GONE);
 		}
 
+		if (tInfo.allowIdCardScan.equals("Yes")) {
+			holder.empIdIcon.setVisibility(View.VISIBLE);
+		}
+
+		
 		Picasso.with(this.context) //
 				.load(tInfo.thumbPhotoUrl) //
 				.placeholder(R.drawable.photo_not_available) //
@@ -195,6 +202,7 @@ public class SCTicketsAdapter extends BaseAdapter {
 		TextView ticketStartTime;
 		ImageView mapIcon;
 		ImageView detailIcon;
+		ImageView empIdIcon;
 		// ImageView callIcon;
 
 		// Layouts

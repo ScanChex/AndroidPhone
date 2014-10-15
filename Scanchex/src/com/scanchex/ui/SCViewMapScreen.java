@@ -1,6 +1,9 @@
 package com.scanchex.ui;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -47,11 +50,12 @@ public class SCViewMapScreen extends FragmentActivity{
 	private ListView listView;
 	private SCTicketsAdapter adapter;
 	private GoogleMap map;
-	
-	 private LocationManager locManager;
-	 private double longitude;
-	 private double latitude;
-	  
+
+	private LocationManager locManager;
+	private double longitude;
+	private double latitude;
+	String dated = "";
+	Date pdates,pdate;
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
@@ -352,7 +356,7 @@ public class SCViewMapScreen extends FragmentActivity{
 	}
 	
 	private void setupMaps(){
-		map.getUiSettings().setZoomControlsEnabled(false); 
+		map.getUiSettings().setZoomControlsEnabled(true); 
 	    addMarkersToMap();
 	    final View mapView = getSupportFragmentManager().findFragmentById(R.id.map).getView();
 	        mapView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
@@ -369,10 +373,10 @@ public class SCViewMapScreen extends FragmentActivity{
 	        			latLng = new LatLng(Double.parseDouble(atInfo.assetlatitude), Double.parseDouble(atInfo.assetLongitude));
 	            		bld.include(latLng);            
 	            	}
-//	            	CameraPosition cameraPosition = new CameraPosition.Builder()
-//					.target(latLng).zoom(10).build();
+	 //           	CameraPosition cameraPosition = new CameraPosition.Builder()
+	//				.target(latLng).zoom(10).build();
 	            	  LatLngBounds bounds = bld.build();
-	                  int padding = 0; // offset from edges of the map in pixels
+	                  int padding = 3; // offset from edges of the map in pixels
 	                  CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
 	                  map.moveCamera(cu);
 	                  map.animateCamera(cu);
@@ -388,15 +392,82 @@ public class SCViewMapScreen extends FragmentActivity{
 	private void addMarkersToMap() {
 		
 		map.clear();
-		
-		Vector<AssetsTicketsInfo> v = Resources.getResources().getAssetsTicketData();
-    	for (int i = 0; i < v.size(); i++) {      
-    		AssetsTicketsInfo atInfo = v.get(i);
-			Log.i("Latitude: "+atInfo.assetlatitude, "Longitude: "+atInfo.assetLongitude);			
-			LatLng latLng = new LatLng(Double.parseDouble(atInfo.assetlatitude), Double.parseDouble(atInfo.assetLongitude));
-//			BitmapDescriptor bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED); 
-			map.addMarker(new MarkerOptions().position(latLng).title(atInfo.assetUNAssetId).icon(BitmapDescriptorFactory.fromResource(R.drawable.other_locations)));
-    	}
-	}
 
+		Vector<AssetsTicketsInfo> v = Resources.getResources()
+				.getAssetsTicketData();
+		for (int i = 0; i < v.size(); i++) {
+			AssetsTicketsInfo atInfo = v.get(i);
+			String status = v.get(i).getTicketStatus();
+			dated = v.get(i).getTicketTimeStamp();
+			String overdue = v.get(i).getTicketOverDue();
+			SimpleDateFormat dateFormat = new SimpleDateFormat(
+					"dd-MM-yyyy hh:mm:ss");
+			Date date = new Date();
+			System.out.println("Datestamp" + dateFormat.format(date));
+			try {
+
+				SimpleDateFormat sdf = new SimpleDateFormat(
+						"dd-MM-yyyy hh:mm:ss");
+				pdate = sdf.parse(dated);
+				Log.v("date from api", "date from api" + pdate);
+				SimpleDateFormat sdfs = new SimpleDateFormat(
+						"dd-MM-yyyy hh:mm:ss");
+				 pdates = sdfs.parse(dateFormat.format(date));
+				Log.v("date from system", "date from system" + pdate);
+
+				if (pdate.after(pdates)) {
+
+				}
+
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Log.i("Latitude: " + atInfo.assetlatitude, "Longitude: "
+					+ atInfo.assetLongitude);
+			LatLng latLng = new LatLng(
+					Double.parseDouble(atInfo.assetlatitude),
+					Double.parseDouble(atInfo.assetLongitude));
+
+			if (status.equals("Completed")) {
+
+				map.addMarker(new MarkerOptions()
+						.position(latLng)
+						.title(atInfo.ticketId+"\n"+atInfo.addressCity+", "+atInfo.addressState+", \n"+atInfo.assetDescription)
+						.icon(BitmapDescriptorFactory
+								.fromResource(R.drawable.checkered32)));
+			} else if (overdue.equals("1")) {
+
+				map.addMarker(new MarkerOptions()
+						.position(latLng)
+						.title(atInfo.ticketId+"\n"+atInfo.addressCity+", "+atInfo.addressState+",\n"+atInfo.assetDescription)
+			
+						.icon(BitmapDescriptorFactory
+								.fromResource(R.drawable.fred_flag_32)));
+			} else if (status.equals("assigned")) {
+
+				map.addMarker(new MarkerOptions()
+						.position(latLng)
+						.title(atInfo.ticketId+"\n"+atInfo.addressCity+", "+atInfo.addressState+",\n"+atInfo.assetDescription)
+						.icon(BitmapDescriptorFactory
+								.fromResource(R.drawable.fblue_flag_32)));
+			} else if (status.equals("pending")) {
+
+				map.addMarker(new MarkerOptions()
+						.position(latLng)
+						.title(atInfo.ticketId+"\n"+atInfo.addressCity+", "+atInfo.addressState+",\n"+atInfo.assetDescription)
+						.icon(BitmapDescriptorFactory
+								.fromResource(R.drawable.fyellow_flag32)));
+			} else if (status.equals("Current") && (pdates.after(pdate))  ) {
+
+				map.addMarker(new MarkerOptions()
+						.position(latLng)
+						.title(atInfo.ticketId+"\n"+atInfo.addressCity+", "+atInfo.addressState+",\n"+atInfo.assetDescription)
+						.icon(BitmapDescriptorFactory
+								.fromResource(R.drawable.fgreen_flag_32)));
+			}
+
+		}
+
+	}
 }

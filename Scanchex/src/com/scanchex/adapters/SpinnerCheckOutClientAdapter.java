@@ -3,14 +3,18 @@ package com.scanchex.adapters;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.scanchex.bo.ScAdminManualLookModel;
 import com.scanchex.ui.R;
+import com.squareup.picasso.Picasso;
 
 public class SpinnerCheckOutClientAdapter extends ArrayAdapter<ScAdminManualLookModel> {
 
@@ -50,17 +54,28 @@ public class SpinnerCheckOutClientAdapter extends ArrayAdapter<ScAdminManualLook
 		convertView = mInflater.inflate(R.layout.spinner_checkout_view, null);
 		TextView label = (TextView) convertView
 				.findViewById(R.id.textViewSpinner);
-	 
+		ImageView imageView = (ImageView) convertView
+				.findViewById(R.id.imageSpinner);
+
 		label.setTextColor(0XFF000000);
 		label.setBackgroundColor(0xffFFFFFF);
 		if(position == 0){
 			
 			label.setText(name);
-			
-		}else{
-			
+
+			imageView.setVisibility(View.GONE);
+		} else {
 			label.setText(values.get(position).getFull_name());
-		
+
+			try {
+				Picasso.with(context)
+						.load(values.get(position).getEmployee_url())
+						.placeholder(R.drawable.photo_not_available)
+						.error(R.drawable.app_icon).into(imageView);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 		}
 		return convertView;
 	}

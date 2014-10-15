@@ -58,9 +58,9 @@ public class AndroidSyncService extends Service {
 			locationservice = this;
 		}
 //		locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+		
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		captureUserLocation();
-		
 		/*Criteria criteria = new Criteria();
         String provider = locManager.getBestProvider(criteria, false);
         Location location = locManager.getLastKnownLocation(provider); 
@@ -142,7 +142,9 @@ public class AndroidSyncService extends Service {
 		
 		locationManager.removeUpdates(LocationListener);
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10, LocationListener);
-		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 10, LocationListener);
+		if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+           locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 10, LocationListener);
+		}
 	}
 	
 	private final LocationListener LocationListener = new LocationListener(){

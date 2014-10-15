@@ -10,9 +10,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,14 +23,11 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,15 +40,20 @@ import com.scanchex.utils.Resources;
 import com.scanchex.utils.SCPreferences;
 import com.squareup.picasso.Picasso;
 
-public class SCAdminMainMenuScreen extends Activity {
+public class SCAdminMainMenuScreen extends Activity implements OnClickListener {
 
 	private TextView employeeName;
 	String getUsername = "";
 	String IMEI;
 	String resgisteredEmp;
 	ArrayList<AdminUserNameModel> userNameAray;
-	Spinner userName;
+	Button userName;
 	ImageView logo;
+	ListView list;
+	boolean[] itemsChecked;
+
+	String selectetdVal = "";
+	SpinnerSearchAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +69,8 @@ public class SCAdminMainMenuScreen extends Activity {
 		IMEI = telephonyManager.getDeviceId();
 		employeeName = (TextView) findViewById(R.id.mainmenu_employeename_text);
 		employeeName.setText(getIntent().getExtras().getString("NAME"));
-		userName = (Spinner) findViewById(R.id.spinner1);
-
+		userName = (Button) findViewById(R.id.registerbutton);
+		userName.setOnClickListener(this);
 		String url = SCPreferences.getPreferences().getClientLogo(
 				SCAdminMainMenuScreen.this);
 
@@ -77,44 +82,6 @@ public class SCAdminMainMenuScreen extends Activity {
 			e.printStackTrace();
 		}
 		new UserNameTask().execute(CONSTANTS.BASE_URL);
-		
-
-	}
-
-	private void spinnerSearchPlantGroup() {
-
-		SpinnerSearchAdapter adapter = new SpinnerSearchAdapter(
-				SCAdminMainMenuScreen.this, R.layout.spinner_search_view,
-				userNameAray);
-		userName.setAdapter(adapter);
-		userName.setSelection(0);
-
-		userName.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-
-				if (arg2 > 0) {
-
-					getUsername = userNameAray.get(arg2).getUser_id()
-							.toString();
-					if (getUsername.equalsIgnoreCase("")) {
-						Toast.makeText(SCAdminMainMenuScreen.this,
-								"Please enter username", Toast.LENGTH_LONG)
-								.show();
-					} else {
-						new registerDeviceIdTask().execute(CONSTANTS.BASE_URL);
-					}
-				}
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-
-			}
-		});
 
 	}
 
@@ -133,7 +100,7 @@ public class SCAdminMainMenuScreen extends Activity {
 	}
 
 	public void onRegisterEmployeeDevice(View view) {
-		// showMessgaeDialog();
+		showMessgaeDialog();
 
 	}
 
@@ -251,10 +218,9 @@ public class SCAdminMainMenuScreen extends Activity {
 				getUsername = "";
 				Toast.makeText(getApplicationContext(), messgae,
 						Toast.LENGTH_LONG).show();
-				userName.setSelection(0);
 
 			} else {
-				userName.setSelection(0);
+
 			}
 			new UserNameTask().execute(CONSTANTS.BASE_URL);
 		}
@@ -262,32 +228,6 @@ public class SCAdminMainMenuScreen extends Activity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-
-			resgisteredEmp = "";
-
-			for (int i = 1; i < userNameAray.size(); i++) {
-
-				//
-				AdminUserNameModel model3 = new AdminUserNameModel();
-
-				model3 = userNameAray.get(i);
-
-				Log.e("array list", "array list \t" + model3);
-				int resu = userNameAray.get(i).getisregistered();
-				Log.e("array list", "array list \t" + resu);
-				if (resu == 1) {
-
-					resgisteredEmp += userNameAray.get(i).getUser_id() + ",";
-					Log.e("resgisteredEmp", "resgisteredEmp \t"
-							+ resgisteredEmp);
-				} else {
-					Log.e("resgisteredEmp", "resgisteredEmp \t"
-							+ resgisteredEmp);
-				}
-
-			}
-
-			resgisteredEmp += getUsername;
 
 			pdialog = new ProgressDialog(SCAdminMainMenuScreen.this);
 			pdialog.setIcon(R.drawable.info_icon);
@@ -353,7 +293,8 @@ public class SCAdminMainMenuScreen extends Activity {
 			super.onPostExecute(result);
 			pdialog.dismiss();
 			if (result) {
-				spinnerSearchPlantGroup();
+				// AlertUsingAdapter();
+				// spinnerSearchPlantGroup();
 			} else {
 				Toast.makeText(getBaseContext(), "No Result", Toast.LENGTH_LONG)
 						.show();
@@ -372,4 +313,57 @@ public class SCAdminMainMenuScreen extends Activity {
 		}
 	}
 
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		AlertUsingAdapter();
+	}
+
+	private void AlertUsingAdapter() {
+		// TODO Auto-generated method stub
+
+		Builder builder = new AlertDialog.Builder(this);
+
+		adapter = new SpinnerSearchAdapter(SCAdminMainMenuScreen.this,
+				R.layout.userselectlayout, userNameAray);
+
+		// list.setAdapter(adapter);
+		itemsChecked = new boolean[userNameAray.size()];
+		builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+			}
+		});
+
+		builder.setPositiveButton("Register",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+						ArrayList<Integer> checkedposiotns = adapter
+								.getcheckeditemcount();
+						resgisteredEmp = "";
+						for (int i = 0; i < checkedposiotns.size(); i++) {
+							int pos = checkedposiotns.get(i);
+							resgisteredEmp += userNameAray.get(pos)
+									.getUser_id() + ",";
+							Log.v("checked employes", "checked employes"
+									+ resgisteredEmp);
+						}
+
+						new registerDeviceIdTask().execute(CONSTANTS.BASE_URL);
+					}
+
+				});
+		builder.setNegativeButton("Cancel",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+		AlertDialog alert = builder.create();
+		alert.show();
+	}
 }

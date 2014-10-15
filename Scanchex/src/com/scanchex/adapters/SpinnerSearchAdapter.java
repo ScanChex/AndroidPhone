@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,15 +29,17 @@ public class SpinnerSearchAdapter extends ArrayAdapter<AdminUserNameModel> {
 	ArrayList<AdminUserNameModel> values;
 	private LayoutInflater mInflater;
 	AQuery aQuery;
+	private ArrayList<Integer> checkedpositions;
 
 	public SpinnerSearchAdapter(Context context, int textViewResourceId,
 			ArrayList<AdminUserNameModel> values) {
-		super(context, textViewResourceId, values);
+		super(context, R.layout.userselectlayout, values);
 		this.context = context;
 		this.values = values;
 		mInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		aQuery = new AQuery(context);
+		this.checkedpositions = new ArrayList<Integer>();
 	}
 
 	public int getCount() {
@@ -55,6 +59,7 @@ public class SpinnerSearchAdapter extends ArrayAdapter<AdminUserNameModel> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
+		final CheckBox check;
 		convertView = mInflater.inflate(R.layout.spinner_search_view, parent,
 				false);
 		// I created a dynamic TextView here, but you can reference your own
@@ -63,7 +68,9 @@ public class SpinnerSearchAdapter extends ArrayAdapter<AdminUserNameModel> {
 				.findViewById(R.id.textViewSpinner);
 		ImageView imageView = (ImageView) convertView
 				.findViewById(R.id.imageView1);
-		CheckBox check = (CheckBox) convertView.findViewById(R.id.check);
+
+		check = (CheckBox) convertView.findViewById(R.id.check);
+		check.setTag(position);
 		if (position == 0) {
 
 			label.setGravity(Gravity.CENTER);
@@ -78,16 +85,33 @@ public class SpinnerSearchAdapter extends ArrayAdapter<AdminUserNameModel> {
 			imageView.setVisibility(View.VISIBLE);
 			check.setVisibility(View.VISIBLE);
 			label.setText(values.get(position).getFull_name());
-			// check.setChecked(values.get(position).getisregistered());
+			// check.setOnCheckedChangeListener(this);
+			check.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView,
+						boolean isChecked) {
+					// TODO Auto-generated method stub
+					Object tag = check.getTag();
+
+					if (isChecked) {
+						// perform logic
+						if (!(checkedpositions.contains(tag))) {
+							checkedpositions.add((Integer) tag);
+							Log.d("Checkbox", "added " + tag);
+						}
+
+					} else {
+
+						checkedpositions.remove(tag);
+						Log.d("Checkbox", "removed " + (Integer) tag);
+					}
+				}
+			});
 			if (values.get(position).getisregistered() == 1) {
 				check.setChecked(true);
-				Log.v("registered", "registered");
+				// checkedpositions.add((Integer) position);
 			}
-			// aQuery.id(imageView)
-			// .image(values.get(position).getPhoto(), true, true, 0, 0, null,
-			// 0,
-			// 0.8f / 1.0f);
 
 			try {
 				Picasso.with(context).load(values.get(position).getPhoto())
@@ -106,5 +130,15 @@ public class SpinnerSearchAdapter extends ArrayAdapter<AdminUserNameModel> {
 	public View getDropDownView(int position, View convertView, ViewGroup parent) {
 
 		return getView(position, convertView, parent);
+	}
+
+	// @Override
+	// public void onCheckedChanged(CompoundButton buttonView, boolean
+	// isChecked) {
+	// // TODO Auto-generated method stub
+	// AdminUserNameModel user = getPosition(item);
+	// }
+	public ArrayList<Integer> getcheckeditemcount() {
+		return this.checkedpositions;
 	}
 }

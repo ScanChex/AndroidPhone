@@ -11,13 +11,16 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.scanchex.bo.AssetsTicketsInfo;
 import com.scanchex.network.HttpWorker;
 import com.scanchex.utils.CONSTANTS;
 import com.scanchex.utils.Resources;
@@ -27,14 +30,27 @@ public class SCAddCommentScreen extends Activity{
 	
 	
 	private EditText commentText;
-	
+	public String msg = "";
+	private TextView tickectId;
+	private AssetsTicketsInfo tInfo;
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sc_addcomment_screen);
-		LinearLayout layout = (LinearLayout)findViewById(R.id.commentContainer);
-		layout.setBackgroundColor((SCPreferences.getColor(SCAddCommentScreen.this)));
-		commentText = (EditText)findViewById(R.id.addcomment_edittext);
+		tickectId = (TextView) findViewById(R.id.tickect_id);
+		
+		tInfo = Resources.getResources().getAssetTicketInfo();
+		
+		tickectId.setText(tInfo.ticketId);
+		Log.v("tickect val using resources in notes",
+				"tickect val using resources in notes"
+						+ Resources.getResources().getTicketHistoryId());
+		LinearLayout layout = (LinearLayout) findViewById(R.id.commentContainer);
+		layout.setBackgroundColor((SCPreferences
+				.getColor(SCAddCommentScreen.this)));
+		commentText = (EditText) findViewById(R.id.addcomment_edittext);
 	}
  
 
@@ -60,9 +76,16 @@ public class SCAddCommentScreen extends Activity{
 				
 				Log.i("LOGIN URL", "<><>" + params[0]);
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-				nameValuePairs.add(new BasicNameValuePair("master_key", ""+SCPreferences.getPreferences().getUserMasterKey(SCAddCommentScreen.this)));
-				nameValuePairs.add(new BasicNameValuePair("history_id", Resources.getResources().getTicketHistoryId()));
-//				nameValuePairs.add(new BasicNameValuePair("history_id", "97"));
+				nameValuePairs.add(new BasicNameValuePair("master_key", ""
+						+ SCPreferences.getPreferences().getUserMasterKey(
+								SCAddCommentScreen.this)));
+				nameValuePairs.add(new BasicNameValuePair("history_id",
+						Resources.getResources().getTicketHistoryId()));
+				Log.v("tickect id using resources ",
+						"tickect id using resources"
+								+ Resources.getResources().getTicketHistoryId());
+				// nameValuePairs.add(new BasicNameValuePair("history_id",
+				// "97"));
 				nameValuePairs.add(new BasicNameValuePair("action", "upload"));
 				nameValuePairs.add(new BasicNameValuePair("type", "notes"));
 				nameValuePairs.add(new BasicNameValuePair("notes",  commentText.getText().toString()));;
@@ -109,17 +132,27 @@ public class SCAddCommentScreen extends Activity{
 	}
 	
 	private void showAlertDialog(String title, String message) {
-		new AlertDialog.Builder(this)
-		.setIcon(R.drawable.info_icon)
-		.setTitle(title)
-		.setMessage(message)
-		.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-					
-			public void onClick(DialogInterface dialog, int which) {
-				SCAddCommentScreen.this.finish();
-						
-			}
-		}).show();
+		msg = message;
+		new AlertDialog.Builder(this).setIcon(R.drawable.info_icon)
+				.setTitle(title).setMessage(message)
+				.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+
+					public void onClick(DialogInterface dialog, int which) {
+
+						if (msg.equals("Your note has been inserted successfully.")) {
+							Intent returnIntent = new Intent(
+									SCAddCommentScreen.this,
+									SCQuestionsFragment.class);
+							returnIntent.putExtra("result", "newvalue");
+							setResult(RESULT_OK, returnIntent);
+							SCAddCommentScreen.this.finish();
+							Log.v("if part", "if part");
+						} else {
+							SCAddCommentScreen.this.finish();
+							Log.v("else part", "else part");
+						}
+					}
+				}).show();
 	}
 	
 	

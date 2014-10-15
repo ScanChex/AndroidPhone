@@ -32,6 +32,7 @@
                 android:layout_centerVertical="true"
                 android:layout_margin="5dp"
                 android:scaleType="fitXY"
+                android:background="@drawable/rounded_corner"
                 android:src="@drawable/app_icon" />
 
             <ImageView
@@ -73,6 +74,8 @@
             android:layout_height="wrap_content"
             android:text="Miami Properties and Health Inc"
             android:textColor="@color/black"
+              android:ellipsize="end"
+          android:maxLines="1"
             android:textStyle="bold" />
 
         <TextView
@@ -80,7 +83,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:maxLines="2"
+               android:ellipsize="end"
+          android:maxLines="1"
             android:text="Standby Generator"
             android:textColor="@color/black"
             android:textSize="12sp" />
@@ -208,6 +212,18 @@
             android:layout_marginTop="5dp"
             android:onClick="onTicketMapClick"
             android:src="@drawable/map_magnify" />
+        
+         <ImageView
+            android:id="@+id/empid_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/map_icon"
+             android:gravity="center"
+             android:layout_marginLeft="7dp"
+          android:layout_marginTop="5dp"
+        
+            android:src="@drawable/empid" 
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/ticket_detail_icon"

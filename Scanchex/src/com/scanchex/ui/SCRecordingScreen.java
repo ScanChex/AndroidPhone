@@ -29,6 +29,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.MediaRecorder;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -40,6 +41,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.scanchex.bo.AssetsTicketsInfo;
 import com.scanchex.utils.CONSTANTS;
 import com.scanchex.utils.Resources;
 import com.scanchex.utils.SCPreferences;
@@ -48,10 +50,11 @@ public class SCRecordingScreen extends Activity {
 
 	private TextView audioStatus;
 	private String contentType;
+	private AssetsTicketsInfo tInfo;
 
 	private static final String LOG_TAG = "AudioRecordTest";
 	private static String mFileName = null;
-
+	private TextView tickectId;
 	private MediaRecorder mRecorder = null;
 
 	@Override
@@ -59,6 +62,10 @@ public class SCRecordingScreen extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sc_recording_screen);
 		audioStatus = (TextView) findViewById(R.id.audio_status);
+		tickectId = (TextView) findViewById(R.id.tickect_id);
+		tInfo = Resources.getResources().getAssetTicketInfo();
+		tickectId.setText(tInfo.ticketId);
+	
 		LinearLayout layout = (LinearLayout) findViewById(R.id.recordingScreen);
 		layout.setBackgroundColor((SCPreferences
 				.getColor(SCRecordingScreen.this)));
@@ -275,6 +282,12 @@ public class SCRecordingScreen extends Activity {
 
 								public void onClick(DialogInterface dialog,
 										int which) {
+									Intent returnIntent = new Intent(
+											SCRecordingScreen.this,
+											SCQuestionsFragment.class);
+									returnIntent.putExtra("result", "newvalue");
+									setResult(RESULT_OK, returnIntent);
+
 									SCRecordingScreen.this.finish();
 
 								}

@@ -52,6 +52,7 @@ public class SCHistoryFragment extends Fragment implements OnClickListener {
 	ImageView imageView1;
 	private Button ScanTicketButton;
 	ListView history;
+	String tickectid;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -225,8 +226,8 @@ public class SCHistoryFragment extends Fragment implements OnClickListener {
 				holder.statusImage
 						.setButtonDrawable(R.drawable.ticket_status_select);
 			} else {
-				holder.statusImage
-						.setButtonDrawable(R.drawable.ticket_status_unselect);
+				//holder.statusImage
+				//		.setButtonDrawable(R.drawable.ticket_status_unselect);
 			}
 
 			if (hisInfo.historyNotesCount != null
@@ -327,6 +328,15 @@ public class SCHistoryFragment extends Fragment implements OnClickListener {
 				i.putExtra(
 						"PATH",
 						vector.get(Integer.parseInt("" + view.getTag())).historyNotesCount);
+
+				i.putExtra(
+						"tickectid",
+						vector.get(Integer.parseInt("" + view.getTag())).historyTicket);
+				Log.v("tickect val in notes ",
+						"tickect val in notes"
+								+ vector.get(Integer.parseInt(""
+										+ view.getTag())).historyTicket);
+
 				startActivity(i);
 
 			} else if (id == R.id.photo_image) {
@@ -336,16 +346,20 @@ public class SCHistoryFragment extends Fragment implements OnClickListener {
 				i.putExtra(
 						"PATH",
 						vector.get(Integer.parseInt("" + view.getTag())).historyImagesCount);
+				i.putExtra(
+						"tickectid",
+						vector.get(Integer.parseInt("" + view.getTag())).historyTicket);
 				startActivity(i);
 			} else if (id == R.id.audio_image) {
 
+				tickectid = vector.get(Integer.parseInt("" + view.getTag())).historyTicket;
 				String[] arr = vector.get(Integer.parseInt("" + view.getTag())).historyVoiceCount;
 				String[] audiNames = new String[arr.length];
 				for (int i = 0; i < arr.length; i++) {
 					audiNames[i] = "Audio " + (i + 1);
 				}
 
-				showListAlert("History Audios", true, audiNames, arr);
+				showListAlert("History Audios", true, audiNames, arr, tickectid);
 			} else if (id == R.id.video_image) {
 
 				// Intent i = new Intent(getActivity(),
@@ -359,7 +373,7 @@ public class SCHistoryFragment extends Fragment implements OnClickListener {
 					vidNames[i] = "Video " + (i + 1);
 				}
 
-				showListAlert("History Videos", false, vidNames, arr);
+				showListAlert("History Videos", false, vidNames, arr, tickectid);
 
 			}
 
@@ -514,8 +528,11 @@ public class SCHistoryFragment extends Fragment implements OnClickListener {
 	}
 
 	public void showListAlert(String title, final boolean isAudio,
-			final String[] nameArr, final String[] pathArr) {
-
+			final String[] nameArr, final String[] pathArr,
+			final String ticketid) {
+		Log.v("tickect val in function", "tickect val in function" + ticketid);
+		final String tickect = ticketid;
+		Log.v("tickect val in variable", "tickect val in variable" + tickect);
 		new AlertDialog.Builder(getActivity()).setIcon(R.drawable.info_icon)
 				.setTitle(title)
 				.setItems(nameArr, new DialogInterface.OnClickListener() {
@@ -528,11 +545,14 @@ public class SCHistoryFragment extends Fragment implements OnClickListener {
 							Intent i = new Intent(getActivity(),
 									SCAudioPlayer.class);
 							i.putExtra("PATH", pathArr[which]);
+							i.putExtra("ticketid", tickect);
 							startActivity(i);
 						} else {
 							Intent i = new Intent(getActivity(),
 									SCVideoPlayScreen.class);
 							i.putExtra("PATH", pathArr[which]);
+
+							i.putExtra("tickectid", tickect);
 							startActivity(i);
 						}
 

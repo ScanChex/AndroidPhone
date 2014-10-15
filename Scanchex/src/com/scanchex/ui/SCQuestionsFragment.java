@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,10 +30,8 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -45,9 +42,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -55,12 +50,10 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.scanchex.bo.AssetsTicketsInfo;
 import com.scanchex.bo.SCQuestionsInfo;
@@ -69,15 +62,28 @@ import com.scanchex.utils.CONSTANTS;
 import com.scanchex.utils.Resources;
 import com.scanchex.utils.SCPreferences;
 
-public class SCQuestionsFragment extends Fragment implements OnClickListener {
+public class SCQuestionsFragment extends Fragment implements OnClickListener,
+		OnCheckedChangeListener {
 
 	private static final int SELECT_VIDEO = 3;
+	private static final int SELECT_NOTES = 2;
+	private static final int SELECT_PICTURE = 4;
+	private static final int SELECT_AUDIO = 5;
 
+	private Integer countnotes = 0;
+	private Integer countimage = 0;
+	private Integer countaudio = 0;
+	private Integer countvideo = 0;
 	private ImageView notes;
 	private ImageView image;
 	private ImageView audio;
 	private ImageView video;
 	private Button submitBtn;
+
+	private static TextView textviewnotes;
+	private TextView textviewimage;
+	private TextView textviewaudio;
+	private TextView textviewvideo;
 
 	private String selectedVideoPath;
 	private String contentType;
@@ -88,6 +94,9 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener {
 	private JSONArray ansArray = null;
 
 	private Button ScanTicketButton;
+	
+	private LinearLayout layout;
+	private RelativeLayout notescounterlayout, imagescounterlayout, audiocounterlayout, videocounterlayout;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -104,8 +113,10 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener {
 		layout1.setBackgroundColor(SCPreferences.getColor(getActivity()));
 
 		ScanTicketButton = (Button) view.findViewById(R.id.scan_button);
+		
+		
 
-		LinearLayout layout = (LinearLayout) view
+		 layout = (LinearLayout) view
 				.findViewById(R.id.questions_layout_id);
 
 		if (Resources.getResources().getQuestionsData() != null) {
@@ -128,15 +139,39 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener {
 					Log.i("ANS LENGTH", "<><> " + answers.length);
 					for (int j = 0; j < answers.length; j++) {
 						RadioButton rb = new RadioButton(getActivity());
+						rb.setOnClickListener(
+						 new OnClickListener (){
+							 public void onClick(View v) {
+							   //Your Implementaions...
+								 if (Resources.getResources().isFirstScanDone()) {
+								    v.setClickable(true);
+								 } else {
+									 Toast.makeText(getActivity(),
+												"Please Scan Ticket First!",
+												Toast.LENGTH_SHORT).show();
+									 v.setClickable(false);
+								 }
+							 }
+							});
 						rb.setText(answers[j]);
 						rb.setTextColor(getResources().getColor(R.color.white));
 
 						radioGroup.addView(rb);
 
-						if (answers[j].trim().equals(qInfo.questionAnswer.trim())) {
+						if (answers[j].trim().equals(
+								qInfo.questionAnswer.trim())) {
 							rb.toggle();
 						}
 					}
+
+					//disable radio group
+					for (int k = 0; k < radioGroup.getChildCount(); k++) {
+						radioGroup.getChildAt(k).setClickable(false);
+						}
+					
+					radioGroup.setOnCheckedChangeListener(this);
+					
+
 					rbGroup[i] = radioGroup;
 
 					layout.addView(view1);
@@ -153,13 +188,53 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener {
 
 					RadioButton rbYes = new RadioButton(getActivity());
 					rbYes.setText("Yes");
+					rbYes.setOnClickListener(
+							 new OnClickListener (){
+								 public void onClick(View v) {
+								   //Your Implementaions...
+									 if (Resources.getResources().isFirstScanDone()) {
+										 v.setClickable(true);
+									 } else {
+										 Toast.makeText(getActivity(),
+													"Please Scan Ticket First!",
+													Toast.LENGTH_SHORT).show();
+										 v.setClickable(false);
+									 }
+								 }
+								});
 					rbYes.setTextColor(getResources().getColor(R.color.white));
 					radioGroup.addView(rbYes);
 
 					RadioButton rbNo = new RadioButton(getActivity());
 					rbNo.setText("No");
+					rbNo.setOnClickListener(
+							 new OnClickListener (){
+								 public void onClick(View v) {
+								   //Your Implementaions...
+									 if (Resources.getResources().isFirstScanDone()) {
+									 
+									 } else {
+										 Toast.makeText(getActivity(),
+													"Please Scan Ticket First!",
+													Toast.LENGTH_SHORT).show();
+									 }
+								 }
+								});
 					rbNo.setTextColor(getResources().getColor(R.color.white));
 					radioGroup.addView(rbNo);
+
+					//disable radio group
+					for (int k = 0; k < radioGroup.getChildCount(); k++) {
+						radioGroup.getChildAt(k).setClickable(false);
+						}
+			     
+					radioGroup.setOnCheckedChangeListener(this);
+					
+					if ( qInfo.questionAnswer.equals("true")) {
+						rbYes.setChecked(true);
+					} else {
+						rbNo.setChecked(true);
+					}
 
 					layout.addView(view1);
 					fillAnswer[i] = null;
@@ -202,57 +277,67 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener {
 						public void onClick(View v) {
 							// TODO Auto-generated method stub
 
-							LayoutInflater layoutInflater = LayoutInflater
-									.from(getActivity());
-							View promptView = layoutInflater.inflate(
-									R.layout.sc_question_popup, null);
-							AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-									getActivity());
-							alertDialogBuilder.setView(promptView);
-							alertDialogBuilder.setCancelable(false);
-							final AlertDialog alert = alertDialogBuilder
-									.create();
+							if (Resources.getResources().isFirstScanDone()) {
 
-							final EditText changedAnswerView = (EditText) promptView
-									.findViewById(R.id.questionAnswerId);
+								LayoutInflater layoutInflater = LayoutInflater
+										.from(getActivity());
+								View promptView = layoutInflater.inflate(
+										R.layout.sc_question_popup, null);
+								AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+										getActivity());
+								alertDialogBuilder.setView(promptView);
+								alertDialogBuilder.setCancelable(false);
+								final AlertDialog alert = alertDialogBuilder
+										.create();
 
-							final Button okbutton = (Button) promptView
-									.findViewById(R.id.okButton);
-							final Button cancelbutton = (Button) promptView
-									.findViewById(R.id.cancelButton);
+								final EditText changedAnswerView = (EditText) promptView
+										.findViewById(R.id.questionAnswerId);
 
-							changedAnswerView.setText(answerView.getText());
+								final Button okbutton = (Button) promptView
+										.findViewById(R.id.okButton);
+								final Button cancelbutton = (Button) promptView
+										.findViewById(R.id.cancelButton);
 
-							okbutton.setOnClickListener(new OnClickListener() {
+								changedAnswerView.setText(answerView.getText());
 
-								@Override
-								public void onClick(View v) {
-									// TODO Auto-generated method stub
+								okbutton.setOnClickListener(new OnClickListener() {
 
-									String answer = changedAnswerView.getText()
-											.toString();
-									answerView.setText(answer);
-									alert.dismiss();
+									@Override
+									public void onClick(View v) {
+										// TODO Auto-generated method stub
 
-								}
-							});
+										String answer = changedAnswerView
+												.getText().toString();
+										answerView.setText(answer);
+										alert.dismiss();
 
-							cancelbutton
-									.setOnClickListener(new OnClickListener() {
+									}
+								});
 
-										@Override
-										public void onClick(View v) {
-											// TODO Auto-generated method stub
+								cancelbutton
+										.setOnClickListener(new OnClickListener() {
 
-											alert.dismiss();
-										}
-									});
+											@Override
+											public void onClick(View v) {
+												// TODO Auto-generated method
+												// stub
 
-							// create an alert dialog
+												alert.dismiss();
+											}
+										});
 
-							alert.show();
+								// create an alert dialog
+
+								alert.show();
+
+							} else {
+								Toast.makeText(getActivity(),
+										"Please Scan Ticket First!",
+										Toast.LENGTH_SHORT).show();
+							}
 
 						}
+
 					});
 
 					/*
@@ -274,6 +359,18 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener {
 		audio = (ImageView) view.findViewById(R.id.question_audio);
 		video = (ImageView) view.findViewById(R.id.question_video);
 
+		textviewnotes = (TextView) view.findViewById(R.id.textnotes);
+		textviewimage = (TextView) view.findViewById(R.id.textViewImage);
+		textviewaudio = (TextView) view.findViewById(R.id.audiotextViewNotes);
+		textviewvideo = (TextView) view.findViewById(R.id.textViewvideoNotes);
+		
+		textviewnotes.setVisibility(View.GONE);
+		textviewimage.setVisibility(View.GONE);
+		textviewaudio.setVisibility(View.GONE);
+		textviewvideo.setVisibility(View.GONE);
+		
+
+		// Log.v("count in oncreateview", "count in oncreateview" + count);
 		notes.setOnClickListener(this);
 		image.setOnClickListener(this);
 		audio.setOnClickListener(this);
@@ -282,12 +379,49 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener {
 		submitBtn.setOnClickListener(this);
 		return view;
 	}
+	
+	
+	
+	
+	public boolean onInterceptTouchEvent(MotionEvent ev) {
+		if (!Resources.getResources().isFirstScanDone()) {
+
+	    return true;
+		} 
+		
+		return false;
+	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 		// Log.e("On Resume Called", "ASSETS!!");
+		if (Resources.getResources().isFirstScanDone()) {
 
+			disableEnableControls(true,layout);
+			
+//		 for (int j = 0; j < layout.getChildCount(); j++) {
+//		        View v1 = layout.getChildAt(j);
+//		      if (v1 instanceof RadioGroup) {
+//		    	  
+//		    	  for (int k = 0; k < ((RadioGroup)v1).getChildCount(); k++) {
+//		    		  ((RadioGroup)v1).getChildAt(k).setClickable(true);
+//						}
+//		    	  //v1.setClickable(true);
+//		        } //etc. If it fails anywhere, just return false.
+//		    }
+		}
+
+	}
+	
+	private void disableEnableControls(boolean enable, ViewGroup vg){
+	    for (int i = 0; i < vg.getChildCount(); i++){
+	       View child = vg.getChildAt(i);
+	       child.setClickable(enable);
+	       if (child instanceof ViewGroup){ 
+	          disableEnableControls(enable, (ViewGroup)child);
+	       }
+	    }
 	}
 
 	@Override
@@ -299,7 +433,8 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener {
 
 				Intent intent = new Intent(getActivity(),
 						SCAddCommentScreen.class);
-				startActivity(intent);
+
+				startActivityForResult(intent, SELECT_NOTES);
 
 			} else {
 				Toast.makeText(getActivity(), "Please Scan Ticket First!",
@@ -312,8 +447,8 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener {
 
 				Intent intent = new Intent(getActivity(),
 						SCImageTakenScreen.class);
-				startActivity(intent);
-
+				// startActivity(intent);
+				startActivityForResult(intent, SELECT_PICTURE);
 			} else {
 				Toast.makeText(getActivity(), "Please Scan Ticket First!",
 						Toast.LENGTH_SHORT).show();
@@ -325,7 +460,8 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener {
 
 				Intent intent = new Intent(getActivity(),
 						SCRecordingScreen.class);
-				startActivity(intent);
+				//startActivity(intent);
+                                startActivityForResult(intent,SELECT_AUDIO);
 
 			} else {
 				Toast.makeText(getActivity(), "Please Scan Ticket First!",
@@ -347,40 +483,48 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener {
 
 		} else if (v == submitBtn) {
 
-			Vector<SCQuestionsInfo> vector = Resources.getResources()
-					.getQuestionsData();
-			idsArray = new JSONArray();
-			ansArray = new JSONArray();
-			for (int i = 0; i < vector.size(); i++) {
-				SCQuestionsInfo qInfo = vector.get(i);
-				if (qInfo.questionTypeId.equals("3") && fillAnswer[i] != null) {
-					String myAns = fillAnswer[i].getText().toString();
-					Log.i("Question ID " + qInfo.questionId, "ANSWER " + myAns);
-					idsArray.put(qInfo.questionId);
-					if (myAns != null && myAns.length() > 0) {
-						ansArray.put(myAns);
-					}
-				} else if ((qInfo.questionTypeId.equals("1") || qInfo.questionTypeId
-						.equals("2")) && rbGroup[i] != null) {
+			if (Resources.getResources().isFirstScanDone()) {
 
-						RadioButton btn = (RadioButton) getActivity()
-								.findViewById(
-										rbGroup[i].getCheckedRadioButtonId());
-						if (btn == null) {
-							continue;
+				Vector<SCQuestionsInfo> vector = Resources.getResources()
+						.getQuestionsData();
+				idsArray = new JSONArray();
+				ansArray = new JSONArray();
+				if (vector != null) {
+					for (int i = 0; i < vector.size(); i++) {
+						SCQuestionsInfo qInfo = vector.get(i);
+						if (qInfo.questionTypeId.equals("3")
+								&& fillAnswer[i] != null) {
+							String myAns = fillAnswer[i].getText().toString();
+							Log.i("Question ID " + qInfo.questionId, "ANSWER "
+									+ myAns);
+							idsArray.put(qInfo.questionId);
+							if (myAns != null && myAns.length() > 0) {
+								ansArray.put(myAns);
+							}
+						} else if ((qInfo.questionTypeId.equals("1") || qInfo.questionTypeId
+								.equals("2")) && rbGroup[i] != null) {
+
+							RadioButton btn = (RadioButton) getActivity()
+									.findViewById(
+											rbGroup[i]
+													.getCheckedRadioButtonId());
+							if (btn == null) {
+								continue;
+							}
+							String text = btn.getText().toString();
+							Log.i("Question ID " + qInfo.questionId,
+									" CHECKED ANSWER " + text);
+							if (text.equalsIgnoreCase("Yes")) {
+								text = "true";
+							} else if (text.equalsIgnoreCase("No")) {
+								text = "false";
+							}
+							idsArray.put(qInfo.questionId);
+							ansArray.put(text);
 						}
-						String text = btn.getText().toString();
-						Log.i("Question ID " + qInfo.questionId,
-								" CHECKED ANSWER " + text);
-						if (text.equalsIgnoreCase("Yes")) {
-							text = "true";
-						} else if (text.equalsIgnoreCase("No")) {
-							text = "false";
-						}
-						idsArray.put(qInfo.questionId);
-						ansArray.put(text);
 					}
-				}
+				
+
 				Log.i("IDS", "IDS> " + idsArray.toString());
 				Log.i("ANS", "ANS> " + ansArray.toString());
 				if (vector.size() == ansArray.length()) {
@@ -388,7 +532,15 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener {
 				} else {
 					showAlertDialog("Info", "Please answer all questions");
 				}
+				
+				} else {
+					showAlertDialog("Info", "There are no answers to submit");
+				}
 
+			} else {
+				Toast.makeText(getActivity(), "Please Scan Ticket First!",
+						Toast.LENGTH_SHORT).show();
+			}
 		} else if (v == ScanTicketButton) {
 
 			if (v == ScanTicketButton) {
@@ -399,6 +551,8 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener {
 					Intent i = new Intent(getActivity(),
 							SCCameraPeviewScreen.class);
 					startActivity(i);
+					
+		
 				} else {
 					Toast.makeText(getActivity(), "Ticket time is not started",
 							Toast.LENGTH_LONG).show();
@@ -409,12 +563,64 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener {
 
 	}
 
+	
+	
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-		if (resultCode == Activity.RESULT_OK) {
+		if (requestCode == SELECT_NOTES && data != null) {
+			if (resultCode == Activity.RESULT_OK) {
+				String notescount = data.getStringExtra("result");
+				if (notescount.equals("newvalue")) {
 
-			if (requestCode == SELECT_VIDEO) {
-				System.out.println("SELECT_VIDEO");
+					countnotes += 1;
+					String countno = "";
+					countno = countnotes.toString();
+					textviewnotes.setText(countno);
+					Log.v("count value", "count value" + countnotes);
+					textviewnotes.setVisibility(View.VISIBLE);
+					
+					//
+				}
+
+			}
+
+		} else if (requestCode == SELECT_PICTURE && data != null) {
+			if (resultCode == Activity.RESULT_OK) {
+				String notescount = data.getStringExtra("result");
+				if (notescount.equals("newvalue")) {
+
+					countimage += 1;
+					String countno = "";
+					countno = countimage.toString();
+					textviewimage.setText(countno);
+					Log.v("count value", "count value" + countimage);
+					textviewimage.setVisibility(View.VISIBLE);
+
+					
+
+					//
+				}
+
+			}
+		} else if (requestCode == SELECT_AUDIO && data != null) {
+			if (resultCode == Activity.RESULT_OK) {
+				String notescount = data.getStringExtra("result");
+				if (notescount.equals("newvalue")) {
+					// Integer count = 0;
+					countaudio += 1;
+					String countno = "";
+					countno = countaudio.toString();
+					textviewaudio.setText(countno);
+					Log.v("count value", "count value" + countaudio);
+					textviewaudio.setVisibility(View.VISIBLE);
+
+					
+					//
+				}
+			}
+		} else if (requestCode == SELECT_VIDEO && data != null) {
+			if (resultCode == Activity.RESULT_OK) {
+
 				// Uri selectedImageUri = data.getData();
 				selectedVideoPath = data.getStringExtra("result");
 				// Uri selectedImageUri = Uri.parse(uriResult);
@@ -422,6 +628,16 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener {
 				// selectedVideoPath = getRealPathFromURI(selectedImageUri);
 				Log.i("VID Path", "SELECT_VIDEO Path : " + selectedVideoPath);
 				new UploadVideoTask().execute(CONSTANTS.BASE_URL);
+				if (selectedVideoPath.equals(selectedVideoPath)) {
+					// Integer count = 0;
+					countvideo += 1;
+					String countno = "";
+					countno = countvideo.toString();
+					textviewvideo.setText(countno);
+					Log.v("count value", "count value" + countvideo);
+					textviewvideo.setVisibility(View.VISIBLE);
+
+				}
 			}
 		}
 	}
@@ -463,6 +679,9 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener {
 							getActivity())));
 			nameValuePairs.add(new BasicNameValuePair("history_id", Resources
 					.getResources().getTicketHistoryId()));
+			Log.v("tickect val using resources in notes",
+					"tickect val using resources in notes"
+							+ Resources.getResources().getTicketHistoryId());
 			// nameValuePairs.add(new BasicNameValuePair("history_id", "97"));
 			nameValuePairs.add(new BasicNameValuePair("action", "upload"));
 			nameValuePairs.add(new BasicNameValuePair("type", "video"));
@@ -586,7 +805,7 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener {
 				listParams
 						.add(new BasicNameValuePair("action", "update_answer"));
 				response = new HttpWorker().getData(params[0], listParams);
-				//response = response.substring(3);
+				// response = response.substring(3);
 				Log.i("RESPONSE", "Question Resp>> " + response);
 				JSONObject obj = new JSONObject(response);
 				String status = obj.getString("response");
@@ -628,6 +847,26 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener {
 			pdialog.setMessage("Working...");
 			pdialog.show();
 		}
+	}
+
+	@Override
+	public void onCheckedChanged(RadioGroup group, int checkedId) {
+		// TODO Auto-generated method stub
+
+		if (Resources.getResources().isFirstScanDone()) {
+			for (int k = 0; k < group.getChildCount(); k++) {
+				group.getChildAt(k).setClickable(true);
+				}
+
+		} else {
+			Toast.makeText(getActivity(), "Please Scan Ticket First!",
+					Toast.LENGTH_SHORT).show();
+			for (int k = 0; k < group.getChildCount(); k++) {
+				group.getChildAt(k).setClickable(false);
+				}
+
+		}
+
 	}
 
 }

@@ -74,7 +74,7 @@ public class SCDetailsFragmentScreen extends SherlockFragmentActivity {
 		layoutBg.setBackgroundColor(SCPreferences
 				.getColor(SCDetailsFragmentScreen.this));
 		gps = new GPSTracker(this);
-		closeTocketButton = (Button) findViewById(R.id.closeTocketButton);
+		//closeTocketButton = (Button) findViewById(R.id.closeTocketButton);
 		layout = (LinearLayout) findViewById(R.id.tickets_layout);
 		image = (ImageView) findViewById(R.id.image_view);
 		notesstatusicon = (ImageView) findViewById(R.id.notes_status_icon);
@@ -171,13 +171,15 @@ public class SCDetailsFragmentScreen extends SherlockFragmentActivity {
 				|| tInfo.notes.equalsIgnoreCase(null))) {
 			noteTab.setTextColor(this.getResources().getColor(R.color.red));
 			
+		} else {
+			notesstatusicon.setVisibility(View.GONE);
 		}
 		
 		//for debugging - remove for production
 		//Resources.getResources().setFirstScanDone(true);
 		
 		//Update close ticket button name based on ticket status preview/update
-		updateName();
+		//updateName();
 		
 		clientName.setText(tInfo.assetClientName);
 		phoneNumber.setText(tInfo.assetPhone);
@@ -221,7 +223,18 @@ public class SCDetailsFragmentScreen extends SherlockFragmentActivity {
 		startActivity(intent);
 	}
 
-	public void onCloseTicketClick(View view) {
+//	public void onCloseTicketClick(View view) {
+//		if (Resources.getResources().isFirstScanDone()) {
+//			showAlert();
+//			
+//		} else {
+//			finish();
+//		}
+//	}
+	
+	@Override
+	public void onBackPressed() {
+	    // your code.
 		if (Resources.getResources().isFirstScanDone()) {
 			showAlert();
 			
@@ -536,7 +549,7 @@ public class SCDetailsFragmentScreen extends SherlockFragmentActivity {
 		} else {
 			messageText.setText(tInfo.notes);
 			noteTab.setTextColor(this.getResources().getColor(R.color.white));
-			notesstatusicon.setVisibility(View.GONE);
+			notesstatusicon.setBackgroundResource(R.drawable.accept_ticket);
 		
 		}
 		Button cancel = (Button) dialog.findViewById(R.id.buttonCancel);

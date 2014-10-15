@@ -242,7 +242,7 @@
                     android:paddingRight="0dp"
                     android:textColor="@color/black"
                     android:textCursorDrawable="@drawable/cursor"
-                    android:textSize="10sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/textView12"
@@ -250,7 +250,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="CHECKOUT REFERENCE:"
-                    android:textSize="10sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -264,7 +264,7 @@
                     android:paddingRight="0dp"
                     android:textColor="@color/black"
                     android:textCursorDrawable="@drawable/cursor"
-                    android:textSize="10sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/textView13"
@@ -272,7 +272,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="CHECKOUT NOTES:"
-                    android:textSize="10sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -286,14 +286,14 @@
                     android:paddingRight="0dp"
                     android:textColor="@color/black"
                     android:textCursorDrawable="@drawable/cursor"
-                    android:textSize="10sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/textView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="REFERENCE:"
+                    android:text="CHECK-IN REFERENCE:"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -314,7 +314,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="NOTES / GENERAL CONDITION COMMENTS:"
+                    android:text="NOTES / CHECK-IN COMMENTS:"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 

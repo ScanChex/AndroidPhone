@@ -13,7 +13,11 @@ import com.scanchex.utils.Resources;
 public class GCMIntentService extends GCMBaseIntentService {
 
 	private static final String TAG = "GCMIntentService";
-	public static final String senderId = "676840218679";// ScanChexTest
+
+	
+	//public static final String senderId = "676840218679";// ScanChexTest //AIzaSyDNWMnfN21eGoD31ZaL7YyVAMrTRYA0zN8
+	public static final String senderId = "610122780676";
+	
 
 	private String deviceToken;
 

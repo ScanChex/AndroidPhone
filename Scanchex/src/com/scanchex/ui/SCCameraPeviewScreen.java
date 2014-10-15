@@ -187,7 +187,7 @@ public class SCCameraPeviewScreen extends Activity {
 					if (Resources.getResources().isCheckPointScan()) {
 						if (qr_code.equals(sym.getData().trim())) {
 							scanTicket = true;
-							new ScanTicketTask().execute(CONSTANTS.BASE_URL);
+							new ScanCheckPointTask().execute(CONSTANTS.BASE_URL);
 							break;
 						} else {
 
@@ -360,4 +360,78 @@ public class SCCameraPeviewScreen extends Activity {
 		}
 	}
 
+	
+	private class ScanCheckPointTask extends AsyncTask<String, Integer, Boolean> {
+
+		private ProgressDialog pdialog;
+		String response;
+		String historyId = "";
+		AssetsTicketsInfo tInfo = Resources.getResources().getAssetTicketInfo();
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+			try {
+
+				Log.i("RESET PASS URL", "<><>" + params[0]);
+				List<NameValuePair> listParams = new ArrayList<NameValuePair>();
+				listParams.add(new BasicNameValuePair("ticket_id",
+						tInfo.ticketTableId));
+				listParams
+						.add(new BasicNameValuePair("asset_id", tInfo.assetId));
+				listParams
+				.add(new BasicNameValuePair("checkpoint_id", checkpoint_id));
+
+				listParams.add(new BasicNameValuePair("latitude",
+						tInfo.assetlatitude));
+				listParams.add(new BasicNameValuePair("longitude",
+						tInfo.assetLongitude));
+
+		
+				listParams.add(new BasicNameValuePair("master_key",
+						SCPreferences.getPreferences().getUserMasterKey(
+								SCCameraPeviewScreen.this)));
+				listParams.add(new BasicNameValuePair("username", SCPreferences
+						.getPreferences()
+						.getUserName(SCCameraPeviewScreen.this)));
+				listParams.add(new BasicNameValuePair("action", "scan_checkpoint"));
+				response = new HttpWorker().getData(params[0], listParams);
+				//response = response.substring(3);
+				Log.i("RESPONSE", "Login Resp>> " + response);
+				JSONObject obj = new JSONObject(response);
+				//historyId = obj.getString("history_id");
+				//Resources.getResources().setTicketHistoryId(historyId);
+
+				
+
+				return true;
+			} catch (Exception e) {
+				Log.e("Exception", e.getMessage(), e);
+			}
+			return Boolean.FALSE;
+		}
+
+		@Override
+		protected void onCancelled() {
+			super.onCancelled();
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
+			pdialog.dismiss();
+			SCCameraPeviewScreen.this.finish();
+			 Resources.getResources().setCheckPointDone(true);
+		
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			pdialog = new ProgressDialog(SCCameraPeviewScreen.this);
+			pdialog.setIcon(R.drawable.info_icon);
+			pdialog.setTitle("Check Point  Scan");
+			pdialog.setMessage("Working...");
+			pdialog.show();
+		}
+	}
 }

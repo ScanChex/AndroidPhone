@@ -23,9 +23,13 @@ public class SCHistoryImageViewScreen extends Activity{
 	private CharSequence imageUrl[];
 	int count = 0;
 	ViewPager pager;
+	String ticketid;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ticketid = getIntent().getExtras().getString("tickectid");
+		
 		setContentView(R.layout.sc_slider_screen);
 	//setContentView(R.layout.sc_history_image_screen);
 		LinearLayout layout = (LinearLayout)findViewById(R.id.sliderScreen);
@@ -86,10 +90,14 @@ public class SCHistoryImageViewScreen extends Activity{
 					view, false);
 			//assert imageLayout != null;
 			ImageView image = (ImageView)imageLayout.findViewById(R.id.image);
+			TextView text = (TextView) imageLayout
+					.findViewById(R.id.tickect_id);
 			
 			TextView countShow = (TextView)imageLayout.findViewById(R.id.textViewCount);
 			String countshowString = (position+1) + "/" + images.length; 
 			countShow.setText(countshowString);
+			text.setText(ticketid);
+			
 			Log.i("Image URL"+imageUrl.length, "<> "+imageUrl[count]);
 			
 			try{

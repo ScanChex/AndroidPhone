@@ -42,6 +42,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.format.DateFormat;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -89,6 +90,7 @@ public class ScAdminCheckOutScreen extends Activity {
 	Context mContext;
 	private DrawingView drawView;
 	private float smallBrush;
+	static final long ONE_MINUTE_IN_MILLIS=60000;//millisecs
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	private static final String IMAGE_DIRECTORY_NAME = "ScanChex";
 	String signaturePath = "";
@@ -270,38 +272,87 @@ public class ScAdminCheckOutScreen extends Activity {
 							SimpleDateFormat sdf = new SimpleDateFormat(
 									"MM/dd/yyyy");
 							Date pdate = sdf.parse(dateTime);
-
+							Log.e("time check", "time check" + dateTime);
 							sdf = new SimpleDateFormat("dd/MM/yy");
 							String date = sdf.format(pdate);
-
+							
+					        //Date with 15 mins from now
 							String dateTimeStamp = new SimpleDateFormat(
 									"dd/MM/yy", Locale.getDefault())
-									.format(new Date());
+									.format( new Date(System.currentTimeMillis()+15*60*1000));
 							Date chedate = sdf.parse(dateTimeStamp);
-							if (!(chedate.after(pdate))
-									|| (chedate.equals(pdate))) {
+							if (!(chedate.after(pdate))) {
+								
+								String time = (mDateTimePicker
+										.get(Calendar.HOUR_OF_DAY)
+										+ ":"
+										+ mDateTimePicker.get(Calendar.MINUTE));
+										
 
-								if (mDateTimePicker.is24HourView()) {
-									dateTime = dateTime
-											+ " "
-											+ (mDateTimePicker
-													.get(Calendar.HOUR_OF_DAY)
-													+ ":" + mDateTimePicker
-														.get(Calendar.MINUTE));
+//								String time = (mDateTimePicker
+//										.get(Calendar.HOUR_OF_DAY)
+//										+ ":"
+//										+ mDateTimePicker.get(Calendar.MINUTE)
+//										+ " " + (mDateTimePicker
+//										.get(Calendar.AM_PM) == Calendar.AM ? "AM"
+//										: "PM"));
+								Log.v("time in else", "time in else" + time);
+
+								String TimeStamp = new SimpleDateFormat(
+										"hh:mm a", Locale.getDefault())
+										.format(new Date());
+								Log.v("present time", "present time"
+										+ TimeStamp);
+								if (TimeStamp.equals(time)
+										&& (chedate.equals(pdate))) {
+									Toast.makeText(
+											getApplicationContext(),
+											"please select the time at least 15 mintues before current time",
+											Toast.LENGTH_LONG).show();
 								} else {
-									dateTime = dateTime
-											+ " "
-											+ (mDateTimePicker
-													.get(Calendar.HOUR)
-													+ ":"
-													+ mDateTimePicker
-															.get(Calendar.MINUTE)
-													+ " " + (mDateTimePicker
-													.get(Calendar.AM_PM) == Calendar.AM ? "AM"
-														: "PM"));
-								}
+									if (mDateTimePicker.is24HourView()) {
+										dateTime = dateTime
+												+ " "
+												+ (mDateTimePicker
+														.get(Calendar.HOUR_OF_DAY)
+														+ ":" + mDateTimePicker
+															.get(Calendar.MINUTE));
+										Log.v("date and time in if",
+												"date and time in if"
+														+ dateTime);
+									}
 
-								textViewDueIn.setText(dateTime);
+									dateTime = dateTime + "  " + time;
+									Log.v("last time", "last time \t "
+											+ dateTime + "current time " + dateTimeStamp);
+									
+									
+
+								}
+								
+								SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+								
+								
+								sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+								
+								 dateTimeStamp = new SimpleDateFormat(
+										"MM/dd/yyyy hh:mm a", Locale.getDefault())
+										.format( new Date(System.currentTimeMillis()+15*60*1000));
+							
+								
+								Date dueDate = sdf1.parse(dateTime);
+								Date currentTime = sdf.parse(dateTimeStamp);
+								String dueInDate = sdf.format(dueDate);
+								if(dueDate.before(currentTime)){
+					        		System.out.println("Duein is before currentTime+15 mins");
+					        		textViewDueIn.setText("");
+									Toast.makeText(getApplicationContext(),
+											"Please select date greater than current time + 15 mins",
+											Toast.LENGTH_LONG).show();
+									textViewDueIn.setText("");
+					        	} else {
+								textViewDueIn.setText(dueInDate);
+					        	}
 							} else {
 								textViewDueIn.setText("");
 								Toast.makeText(getApplicationContext(),
@@ -498,9 +549,8 @@ public class ScAdminCheckOutScreen extends Activity {
 					manual.setFull_name(employeeObject.getString("full_name"));
 					manual.setUser_id(employeeObject.getString("user_id"));
 					manual.setDepartment(employeeObject.getString("department"));
-					// employeeName = employeeObject.getString("user_id");
-					Log.i("username", "username in employeearray"
-							+ employeeName);
+					manual.setEmployee_url(employeeObject.getString("photo"));
+
 					employeeArrayList.add(manual);
 				}
 			}

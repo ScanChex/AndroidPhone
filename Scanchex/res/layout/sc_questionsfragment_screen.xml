@@ -46,13 +46,14 @@
                         android:id="@+id/question_notes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
                         android:background="@android:color/black"
                         android:src="@drawable/notes_btn" />
 
                     <TextView
-                        android:id="@+id/textViewNotes"
-                        android:text="1"
-                        style="@style/textViewCounter" />
+                        android:id="@+id/textnotes"
+                        android:text="0"
+                        style="@style/textViewCounterQuestions" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -66,12 +67,14 @@
                         android:id="@+id/question_image"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                          android:layout_margin="5dp"
+                      
                         android:background="@drawable/image_btn" />
 
                     <TextView
-                        android:id="@+id/imagetextViewNotes"
-                        android:text="1"
-                        style="@style/textViewCounter" />
+                        android:id="@+id/textViewImage"
+                        android:text="0"
+                        style="@style/textViewCounterQuestions" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -85,13 +88,15 @@
                         android:id="@+id/question_audio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                          android:layout_margin="5dp"
+                      
                         android:background="@android:color/transparent"
                         android:src="@drawable/audio_btn" />
 
                     <TextView
                         android:id="@+id/audiotextViewNotes"
-                        android:text="1"
-                        style="@style/textViewCounter" />
+                        android:text="0"
+                        style="@style/textViewCounterQuestions" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -105,13 +110,15 @@
                         android:id="@+id/question_video"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                          android:layout_margin="5dp"
+                      
                         android:background="@android:color/transparent"
                         android:src="@drawable/video_btn" />
 
                     <TextView
                         android:id="@+id/textViewvideoNotes"
-                        android:text="1"
-                        style="@style/textViewCounter" />
+                        android:text="0"
+                        style="@style/textViewCounterQuestions" />
                 </RelativeLayout>
             </LinearLayout>
 

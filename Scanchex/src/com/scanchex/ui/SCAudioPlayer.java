@@ -10,6 +10,7 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -28,10 +29,11 @@ public class SCAudioPlayer extends Activity implements OnCompletionListener,
 	private ImageButton btnBackward;
 	private ImageButton btnNext;
 	private ImageButton btnPrevious;
+	TextView text;
 	private SeekBar songProgressBar;
 	private TextView songCurrentDurationLabel;
 	private TextView songTotalDurationLabel;
-
+	String ticketid;
 	private MediaPlayer mediaPlayer;
 	private int mediaFileLengthInMilliseconds;
 	private final Handler handler = new Handler();
@@ -42,9 +44,12 @@ public class SCAudioPlayer extends Activity implements OnCompletionListener,
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sc_audio_player);
+
+		Log.v("tickect val in audio", "tickect val in audio" + ticketid);
 		context = this;
 		utils = new Utilities();
 		link = this.getIntent().getExtras().getString("PATH");
+		ticketid = this.getIntent().getExtras().getString("ticketid");
 		initControls();
 
 	}
@@ -52,6 +57,7 @@ public class SCAudioPlayer extends Activity implements OnCompletionListener,
 	private void initControls() {
 
 		btnPlay = (ImageButton) findViewById(R.id.btnPlay);
+		text = (TextView) findViewById(R.id.tickect_id);
 		btnForward = (ImageButton) findViewById(R.id.btnForward);
 		btnBackward = (ImageButton) findViewById(R.id.btnBackward);
 		btnNext = (ImageButton) findViewById(R.id.btnNext);
@@ -63,7 +69,7 @@ public class SCAudioPlayer extends Activity implements OnCompletionListener,
 		songProgressBar.setOnSeekBarChangeListener(this);
 		// songProgressBar.setMax(99); // It means 100% .0-99
 		// songProgressBar.setOnTouchListener(this);
-
+		text.setText(ticketid);
 		mediaPlayer = new MediaPlayer();
 		mediaPlayer.setOnBufferingUpdateListener(this);
 		mediaPlayer.setOnCompletionListener(this);

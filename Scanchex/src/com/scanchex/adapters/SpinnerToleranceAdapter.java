@@ -4,10 +4,13 @@ import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.scanchex.bo.ScToleranceInfo;
@@ -53,15 +56,17 @@ public class SpinnerToleranceAdapter extends ArrayAdapter<ScToleranceInfo> {
 		convertView = mInflater.inflate(R.layout.spinner_manual_look, null);
 		TextView label = (TextView) convertView
 				.findViewById(R.id.textViewSpinner);
+		ImageView im = (ImageView) convertView.findViewById(R.id.imageSpinner);
 		label.setTextColor(0xff000000);
 		label.setBackgroundColor(0xffFFD6E2);
 		if (position == 0) {
-
+			im.setVisibility(View.GONE);
 			label.setText(name);
-
+			label.setGravity(Gravity.LEFT);
 		} else {
-
-			label.setText(values.get(position).getName()); 
+			label.setGravity(Gravity.LEFT);
+			im.setVisibility(View.GONE);
+			label.setText(values.get(position).getName());
 		}
 		return convertView;
 	}

@@ -39,7 +39,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -81,7 +83,7 @@ public class ScAdminCheckInScreen extends Activity {
 	JSONObject jsonObject;
 	String checkOutId = "", checkToOut = "", department = "", dateTime = "",
 			dueIn = "", tolerance = "", forClient = "", address = "",
-			refrence = "", notes = "", link = "", asset_id_string = "";
+			refrence = "", notes = "", link = "", asset_id_string = "", employeeFullName="";
 	GPSTracker gps;
 	String latitude, longitude;
 	CustomScrollView scrolViewLayout;
@@ -142,6 +144,16 @@ public class ScAdminCheckInScreen extends Activity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		drawView.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				scrolViewLayout.setEnableScrolling(false);
+				return false;
+			}
+		});
+		
 		checkBox1.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
@@ -152,7 +164,7 @@ public class ScAdminCheckInScreen extends Activity {
 
 					drawView.startNew();
 					drawView.setVisibility(View.VISIBLE);
-					// scrolViewLayout.setEnableScrolling(false);
+				    scrolViewLayout.setEnableScrolling(false);
 
 				} else {
 					drawView.setVisibility(View.INVISIBLE);
@@ -204,13 +216,14 @@ public class ScAdminCheckInScreen extends Activity {
 		String lastName;
 		if (name.contains("-")) {
 			int start = name.indexOf("-");
-			lastName = name.substring(start + 1);
+			employeeFullName = name.substring(start + 1);
 			checkToOut = name.substring(0, (start));
+			
 		} else {
-			lastName = tInfo.assetTechnician;
+			employeeFullName = tInfo.assetTechnician;
 			checkToOut = tInfo.assetTechnician;
 		}
-		textviewEmployee.setText(lastName);
+		textviewEmployee.setText(employeeFullName);
 		textViewDepartment.setText(tInfo.assetDepartment);
 	
 		textViewDateAndTime.setText(tInfo.ticketTimeStamp);
@@ -530,7 +543,7 @@ public class ScAdminCheckInScreen extends Activity {
 							ScAdminCheckOutConfirmationScreen.class);
 					checkoutView.putExtra("manualResponce", data.toString());
 					checkoutView.putExtra("imageUrl", imageUrl);
-					checkoutView.putExtra("employeename", checkToOut);
+					checkoutView.putExtra("employeename", employeeFullName);
 					checkoutView.putExtra("duein", dueIn);
 					checkoutView.putExtra("ticketId", ticket_id);
 					checkoutView.putExtra("ticket_number", ticket_number);

@@ -35,8 +35,10 @@
         android:layout_marginBottom="7dp"
         android:layout_marginTop="7dp"
         android:layout_weight=".70"
+        android:clickable="false"
         android:layout_marginLeft="4dp"
-        android:button="@drawable/ticket_status_unselect" />
+        android:background="@android:color/transparent"
+        />
 
     <!-- ************************************* -->
 

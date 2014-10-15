@@ -138,6 +138,7 @@ String ticketId = "";
 			selectedPdfPath = getPath(pathName);
 			contentType = "PDF";
 			new UploadTask().execute(CONSTANTS.BASE_URL);
+			pathName=null;
 		}
 	}
 
@@ -418,7 +419,7 @@ String ticketId = "";
 			if (result) {
 				File file = new File(SCImageTakenScreen.selectedImagePath);
 				boolean deleted = file.delete();
-				showAlertDialog("Info", status);
+				showAlertDialog("Info", "Uploaded successfully");
 			} else {
 				showAlertDialog("Info", status);
 			}
@@ -500,6 +501,7 @@ String ticketId = "";
 
 			Log.i("SCDocuments", "file exists.");
 			openPDF(context, Uri.fromFile(tempFile));
+			pathName=Uri.fromFile(tempFile);
 			return;
 		}
 
@@ -535,6 +537,7 @@ String ticketId = "";
 							.getColumnIndex(DownloadManager.COLUMN_STATUS));
 					if (status == DownloadManager.STATUS_SUCCESSFUL) {
 						openPDF(context, Uri.fromFile(tempFile));
+						pathName=Uri.fromFile(tempFile);
 					}
 				}
 				c.close();

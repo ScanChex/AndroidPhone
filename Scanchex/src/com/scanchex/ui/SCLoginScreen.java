@@ -130,6 +130,9 @@ public class SCLoginScreen extends Activity{
 		protected Boolean doInBackground(String... params) {
 			try {
 				
+				String   phoneModel = android.os.Build.MODEL;
+				String phoneNumber = getMy10DigitPhoneNumber();
+				
 				Log.i("LOGIN URL","<><>" + params[0]);
 				List<NameValuePair> listParams = new ArrayList<NameValuePair>();
 				listParams.add(new BasicNameValuePair("company_id", cId.getText().toString()));
@@ -139,6 +142,11 @@ public class SCLoginScreen extends Activity{
 				listParams.add(new BasicNameValuePair("device_token", Resources.getResources().getPushNotificationId()));
 				listParams.add(new BasicNameValuePair("uuid", IMEI));
 				listParams.add(new BasicNameValuePair("action", "login"));
+				     
+				//new params model,phone
+				//listParams.add(new BasicNameValuePair("model", phoneModel));
+				//listParams.add(new BasicNameValuePair("phone", phoneNumber));
+			
 				response = new HttpWorker().getData(params[0], listParams);
 				//response = response.substring(3);
 				Log.i("RESPONSE", "Login Resp>> " + response);
@@ -281,5 +289,17 @@ public class SCLoginScreen extends Activity{
 			}
 		}).show();
 	}
+	
+	 private String getMyPhoneNumber(){
+		    TelephonyManager mTelephonyMgr;
+		    mTelephonyMgr = (TelephonyManager)
+		        getSystemService(Context.TELEPHONY_SERVICE); 
+		    return mTelephonyMgr.getLine1Number();
+		}
+
+		private String getMy10DigitPhoneNumber(){
+		    String s = getMyPhoneNumber();
+		    return s.substring(2);
+		}
 
 }

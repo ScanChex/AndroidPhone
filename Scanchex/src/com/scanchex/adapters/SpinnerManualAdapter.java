@@ -3,14 +3,17 @@ package com.scanchex.adapters;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.scanchex.bo.ScAdminManualLookModel;
 import com.scanchex.ui.R;
+import com.squareup.picasso.Picasso;
 
 public class SpinnerManualAdapter extends ArrayAdapter<ScAdminManualLookModel> {
 
@@ -48,6 +51,8 @@ public class SpinnerManualAdapter extends ArrayAdapter<ScAdminManualLookModel> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		convertView = mInflater.inflate(R.layout.spinner_manual_look, null);
+		ImageView image = (ImageView) convertView
+				.findViewById(R.id.imageSpinner);
 		TextView label = (TextView) convertView
 				.findViewById(R.id.textViewSpinner);
 		if(name.equalsIgnoreCase("Address")){
@@ -56,11 +61,22 @@ public class SpinnerManualAdapter extends ArrayAdapter<ScAdminManualLookModel> {
 		if(position == 0){
 			
 			label.setText(name);
-			
-		}else{
-			
+			image.setVisibility(View.GONE);
+
+		} else {
+
 			label.setText(values.get(position).getDisplaySpinnerName());
-		
+
+			try {
+				Picasso.with(context)
+
+				.load(values.get(position).getAsset_photo())
+						.placeholder(R.drawable.photo_not_available)
+						.error(R.drawable.app_icon).into(image);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 		}
 		return convertView;
 	}

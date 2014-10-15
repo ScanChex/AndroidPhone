@@ -169,6 +169,7 @@ public class VideoCaptureActivity extends Activity {
 		this.mediaRecorder.setOutputFile(this.getOutputMediaFile().getAbsolutePath());
 		this.mediaRecorder.setPreviewDisplay(this.cameraPreview.getHolder()
 				.getSurface());
+		//((Camera) this.mediaRecorder).startPreview();
 
 		this.mediaRecorder.setMaxDuration(180000);
 		try {

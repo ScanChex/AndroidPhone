@@ -3,10 +3,13 @@ package com.scanchex.adapters;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.scanchex.bo.ScAdminManualLookModel;
@@ -50,15 +53,20 @@ public class SpinnerClientAddressAdapter extends ArrayAdapter<ScAdminManualLookM
 		convertView = mInflater.inflate(R.layout.spinner_checkout_view, parent,false);
 		TextView label = (TextView) convertView
 				.findViewById(R.id.textViewSpinner);
-	 
-		if(position == 0){
-			
+		ImageView imageView = (ImageView) convertView
+				.findViewById(R.id.imageSpinner);
+		if (position == 0) {
+
 			label.setText(name);
-			
-		}else{
-			
+			label.setTextColor(Color.BLACK);
+			imageView.setVisibility(View.GONE);
+			label.setGravity(Gravity.LEFT);
+		} else {
+			label.setGravity(Gravity.LEFT);
+			label.setTextColor(Color.BLACK);
 			label.setText(values.get(position).getAddress());
-		
+			imageView.setVisibility(View.GONE);
+
 		}
 		return convertView;
 	}

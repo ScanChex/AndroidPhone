@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dp"
-                android:text="Title"
+                android:text=""
                 android:textColor="#34019a"
                 android:textSize="18sp" />
 
@@ -52,7 +52,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="MODEL:"
+                            android:text="MODEL"
                             android:textColor="#00009a"
                             android:textSize="8sp"
                             android:textStyle="bold" />
@@ -75,7 +75,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="SERIAL:"
+                            android:text="SERIAL"
                             android:textColor="#00009a"
                             android:textSize="8sp"
                             android:textStyle="bold" />
@@ -98,7 +98,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="INSTALLED:"
+                            android:text="INSTALLED"
                             android:textColor="#00009a"
                             android:textSize="8sp"
                             android:textStyle="bold" />
@@ -121,7 +121,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="LAST SERVICED:"
+                            android:text="LAST SERVICED"
                             android:textColor="#00009a"
                             android:textSize="8sp"
                             android:textStyle="bold" />
@@ -144,7 +144,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="TECHNICIAN:"
+                            android:text="TECHNICIAN"
                             android:textColor="#00009a"
                             android:textSize="8sp"
                             android:textStyle="bold" />
@@ -183,7 +183,7 @@
                     android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.7"
-                    android:text="TECHNICIAN"
+                    android:text="\nTECHNICIAN"
                     android:textColor="#00009a"
                     android:textSize="8sp"
                     android:textStyle="bold" />
@@ -211,7 +211,7 @@
                     android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TECHNICIAN NOTES"
+                    android:text="\nTECHNICIAN NOTES"
                     android:textColor="#00009a"
                     android:textSize="8sp"
                     android:textStyle="bold" />
@@ -242,6 +242,11 @@
             android:textSize="22sp"
             android:visibility="gone" />
 
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#000000" />
+
         <ListView
             android:id="@+id/history"
             android:layout_width="match_parent"
@@ -249,6 +254,7 @@
             android:layout_above="@+id/scan_button"
             android:layout_below="@+id/topLayout"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="2dp"
             android:cacheColorHint="@android:color/transparent"
             android:divider="@android:color/darker_gray"
             android:dividerHeight="1dp" />

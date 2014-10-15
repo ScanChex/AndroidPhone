@@ -38,6 +38,8 @@
                 android:layout_centerVertical="true"
                 android:layout_margin="5dp"
                 android:scaleType="fitXY"
+                   android:background="@drawable/rounded_corner"
+       
                 android:src="@drawable/app_icon" />
 
             <ImageView
@@ -79,6 +81,9 @@
             android:layout_height="wrap_content"
             android:text="Miami Properties and Health Inc"
             android:textColor="@color/black"
+              android:maxLines="1"
+              android:ellipsize="end"
+          
             android:textStyle="bold" />
 
         <TextView
@@ -86,9 +91,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:maxLines="2"
+        
             android:text="Standby Generator"
             android:textColor="@color/black"
+              android:maxLines="1"
+              android:ellipsize="end"
+          
             android:textSize="12sp" />
 
         <TextView
@@ -140,6 +148,9 @@
                     android:layout_below="@+id/text3"
                     android:layout_marginTop="2dp"
                     android:maxLines="2"
+                     
+              android:ellipsize="end"
+          
                     android:text="Miami, Florida"
                     android:textColor="@color/black" />
             </RelativeLayout>

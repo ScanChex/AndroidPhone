@@ -19,16 +19,19 @@
             android:background="@drawable/round_corner_button"
             android:onClick="onCloseTicketClick"
             android:text="Close Ticket"
-            android:textSize="10sp" />
+            android:textSize="10sp" 
+            android:visibility="gone"/>
 
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_width="160dp"
-            android:layout_height="35dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="40dp"
-            android:layout_toRightOf="@+id/closeTocketButton"
-            android:src="@drawable/scan_chexs_logo" />
+         <ImageView
+        android:id="@+id/logo"
+         android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:paddingLeft="70dp"
+        android:paddingRight="0dp"
+        android:paddingTop="5dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/scan_chexs_logo" />
     </RelativeLayout>
 
     <ScrollView
@@ -72,6 +75,8 @@
                 android:layout_centerVertical="true"
                 android:layout_margin="5dp"
                 android:scaleType="fitXY"
+                   android:background="@drawable/rounded_corner"
+       
                 android:src="@drawable/app_icon" />
 
             <ImageView
@@ -114,6 +119,9 @@
             android:layout_height="wrap_content"
             android:text="Miami Properties and Health Inc"
             android:textColor="@color/black"
+              android:maxLines="1"
+              android:ellipsize="end"
+          
             android:textStyle="bold" />
 
         <TextView
@@ -121,8 +129,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:maxLines="2"
             android:text="Standby Generator"
+              android:maxLines="1"
+              android:ellipsize="end"
+          
             android:textColor="@color/black"
             android:textSize="12sp" />
 
@@ -175,6 +185,9 @@
                     android:layout_below="@+id/text3"
                     android:layout_marginTop="2dp"
                     android:maxLines="2"
+                     
+              android:ellipsize="end"
+          
                     android:text="Miami, Florida"
                     android:textColor="@color/black" />
             </RelativeLayout>
@@ -256,6 +269,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="5dp"
                     android:layout_marginRight="5dp"
+                    android:visibility="gone"
                     android:background="@drawable/detail_icon"
                     android:onClick="onTicketDetailsClick" />
             </RelativeLayout>
@@ -277,6 +291,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="2dp"
             android:onClick="onAssetsClick"
+            android:textStyle="bold"
             android:text="Assets" />
 
         <RelativeLayout
@@ -290,6 +305,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:onClick="onQuestionsClick"
+                 android:textStyle="bold"
                 android:text="Questions" />
 
             <ImageView
@@ -307,6 +323,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:onClick="onDocumentsClick"
+             android:textStyle="bold"
             android:text="Documents" />
 
         <Button
@@ -315,6 +332,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:onClick="onHistoryClick"
+             android:textStyle="bold"
             android:text="History" />
 
         <RelativeLayout
@@ -328,6 +346,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onNotesClick"
+                 android:textStyle="bold"
                 android:text="Notes" />
 
             <ImageView

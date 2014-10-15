@@ -49,7 +49,9 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.scanchex.bo.AssetsTicketsInfo;
 import com.scanchex.utils.CONSTANTS;
 import com.scanchex.utils.Resources;
 import com.scanchex.utils.SCPreferences;
@@ -63,15 +65,23 @@ public class SCImageTakenScreen extends Activity{
 	Uri fileUri;
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	private static final String IMAGE_DIRECTORY_NAME = "ScanChex";
+	private TextView tickectId;
+	private AssetsTicketsInfo tInfo;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sc_imagetaken_screen);
-
-		LinearLayout layout = (LinearLayout)findViewById(R.id.imageTokeContainer);
-			layout.setBackgroundColor((SCPreferences.getColor(SCImageTakenScreen.this)));
+		tickectId = (TextView) findViewById(R.id.tickect_id);
 		
+		tInfo = Resources.getResources().getAssetTicketInfo();
+		tickectId.setText(tInfo.ticketId);
+		
+		LinearLayout layout = (LinearLayout) findViewById(R.id.imageTokeContainer);
+		layout.setBackgroundColor((SCPreferences
+				.getColor(SCImageTakenScreen.this)));
+
 		selectedImagePath = "";
 	}
 	
@@ -361,24 +371,31 @@ public class SCImageTakenScreen extends Activity{
 
 			}
 
-			private void showAlertDialog(String title, String message) {
-				new AlertDialog.Builder(SCImageTakenScreen.this)
-				.setIcon(R.drawable.info_icon)
-				.setTitle(title)
-				.setMessage(message)
-				.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-							
-					public void onClick(DialogInterface dialog, int which) {
-						SCImageTakenScreen.this.finish();
-								
-					}
-				}).show();
-			}
+		private void showAlertDialog(String title, String message) {
+			new AlertDialog.Builder(SCImageTakenScreen.this)
+					.setIcon(R.drawable.info_icon)
+					.setTitle(title)
+					.setMessage(message)
+					.setNeutralButton("OK",
+							new DialogInterface.OnClickListener() {
+
+								public void onClick(DialogInterface dialog,
+										int which) {
+									Intent returnIntent = new Intent(
+											SCImageTakenScreen.this,
+											SCQuestionsFragment.class);
+									returnIntent.putExtra("result", "newvalue");
+									setResult(RESULT_OK, returnIntent);
+									SCImageTakenScreen.this.finish();
+
+								}
+							}).show();
 		}
-		
-		public Uri getOutputMediaFileUri(int type) {
-			return Uri.fromFile(getOutputMediaFile(type));
-		}
+	}
+
+	public Uri getOutputMediaFileUri(int type) {
+		return Uri.fromFile(getOutputMediaFile(type));
+	}
 
 		private static File getOutputMediaFile(int type) {
 

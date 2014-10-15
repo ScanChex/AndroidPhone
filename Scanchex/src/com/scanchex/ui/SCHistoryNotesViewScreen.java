@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,16 +25,23 @@ public class SCHistoryNotesViewScreen extends Activity{
 	private CharSequence messageArray[];
 	int count = 0;
 	ViewPager pager;
+	String ticketid;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sc_slider_screen);
-	//	setContentView(R.layout.sc_history_notes_screen);
-		LinearLayout layout = (LinearLayout)findViewById(R.id.sliderScreen);
-		layout.setBackgroundColor(SCPreferences.getColor(SCHistoryNotesViewScreen.this));
-		
+		ticketid = getIntent().getExtras().getString("tickectid");
+		// setContentView(R.layout.sc_history_notes_screen);
+		LinearLayout layout = (LinearLayout) findViewById(R.id.sliderScreen);
+		layout.setBackgroundColor(SCPreferences
+				.getColor(SCHistoryNotesViewScreen.this));
+
 		messageArray = getIntent().getExtras().getCharSequenceArray("PATH");
- 
+		ticketid = getIntent().getExtras().getString("tickectid");
+		Log.v("tickect val in notesactivity ", "tickect val in notesactivity"
+				+ ticketid);
+
 		int pagerPosition = 0;
 
 		pager = (ViewPager) findViewById(R.id.pager);
@@ -83,13 +91,19 @@ public class SCHistoryNotesViewScreen extends Activity{
 
 		@Override
 		public Object instantiateItem(ViewGroup view, int position) {
-			View imageLayout = inflater.inflate(R.layout.sc_history_notes_screen,
-					view, false);
-			//assert imageLayout != null;
-			EditText notText = (EditText)imageLayout.findViewById(R.id.notext_text_edit);
-			TextView countShow = (TextView)imageLayout.findViewById(R.id.textViewCount);
+			View imageLayout = inflater.inflate(
+					R.layout.sc_history_notes_screen, view, false);
+			// assert imageLayout != null;
+			EditText notText = (EditText) imageLayout
+					.findViewById(R.id.notext_text_edit);
+			TextView text = (TextView) imageLayout
+					.findViewById(R.id.tickect_id);
+			TextView countShow = (TextView) imageLayout
+					.findViewById(R.id.textViewCount);
 			notText.setText(images[position]);
-			String countshowString = (position+1) + "/" + images.length; 
+
+			text.setText(ticketid);
+			String countshowString = (position + 1) + "/" + images.length;
 			countShow.setText(countshowString);
 			
 		 

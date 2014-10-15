@@ -83,18 +83,16 @@
             android:layout_marginTop="10dp"
             android:background="@android:color/white" />
 
-      
-        <Spinner
-            android:id="@+id/spinner1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <Button
+            android:id="@+id/registerbutton"
+            android:layout_width="fill_parent"
+            android:layout_height="35dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:background="@android:color/transparent"
-            android:drawSelectorOnTop="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:spinnerMode="dialog" />
+            android:text="REGISTER EMPLOYEE DEVICE"
+            android:textColor="@color/text_menus"
+            android:textSize="16sp" />
 
         <View
             android:layout_width="fill_parent"

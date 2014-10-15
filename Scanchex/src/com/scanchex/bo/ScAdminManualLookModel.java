@@ -24,6 +24,7 @@ public class ScAdminManualLookModel {
 	private String user_id;
 	private String full_name;
 	private String client_id;
+	private String employee_url;
 	private ArrayList<ScAdminManualLookModel> clientAddress = new ArrayList<ScAdminManualLookModel>();
 
 	public ArrayList<ScAdminManualLookModel> getClientAddress() {
@@ -40,6 +41,14 @@ public class ScAdminManualLookModel {
 
 	public void setSerial_number(String serial_number) {
 		this.serial_number = serial_number;
+	}
+
+	public String getEmployee_url() {
+		return employee_url;
+	}
+
+	public void setEmployee_url(String employee_url) {
+		this.employee_url = employee_url;
 	}
 
 	public String getClient_id() {

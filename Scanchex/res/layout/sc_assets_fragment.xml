@@ -12,9 +12,10 @@
         <ImageView
             android:id="@+id/asset_image_id"
             android:layout_width="250dp"
-            android:layout_height="150dp"
+            android:layout_height="192dp"
             android:layout_centerHorizontal="true"
             android:layout_margin="10dp"
+            android:background="@drawable/rounded_corner"
             android:scaleType="fitXY"
             android:src="@drawable/scan_chexs_logo" />
 
@@ -48,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.8"
                     android:gravity="right"
-                    android:text="ASSET ID          : "
+                    android:text="ASSET ID: "
                     android:textColor="@color/text_menus"
                     android:textStyle="bold" />
 
@@ -57,7 +58,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                         android:gravity="left"
+                    android:gravity="left"
                     android:paddingLeft="5dp"
                     android:text="US-6425790-0001-0000-0001"
                     android:textColor="@color/text_menus" />
@@ -77,7 +78,7 @@
                     android:layout_marginTop="2dp"
                     android:layout_weight="0.8"
                     android:gravity="right"
-                    android:text="DESCRIPTION : "
+                    android:text="DESCRIPTION: "
                     android:textColor="@color/text_menus"
                     android:textStyle="bold" />
 
@@ -87,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:layout_weight="1"
-                         android:gravity="left"
+                    android:gravity="left"
                     android:paddingLeft="5dp"
                     android:text="Standby Generator"
                     android:textColor="@color/text_menus" />
@@ -107,7 +108,7 @@
                     android:layout_marginTop="2dp"
                     android:layout_weight="0.8"
                     android:gravity="right"
-                    android:text="ADDRESS         : "
+                    android:text="ADDRESS: "
                     android:textColor="@color/text_menus"
                     android:textStyle="bold" />
 
@@ -116,9 +117,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
+                    android:layout_weight="1"
                     android:gravity="left"
                     android:paddingLeft="5dp"
-                    android:layout_weight="1"
                     android:text="2500 NW Ave\nMiami, Florida 33122"
                     android:textColor="@color/text_menus" />
             </LinearLayout>
@@ -133,75 +134,102 @@
             android:background="#888888"
             android:padding="5dp" >
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Time Started"
-                android:textColor="#ffff00"
-                android:textSize="10sp" />
+                android:layout_gravity="left"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="0.30"
+                android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/timeStart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="12"
-                android:textColor="#ffff00"
-                android:textSize="10sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Time Started"
+                    android:textColor="#ffff00"
+                    android:textSize="10sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Time Completed"
-                android:textColor="#ffff00"
-                android:textSize="10sp" />
+                <TextView
+                    android:id="@+id/timeStart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="12"
+                    android:textColor="#ffff00"
+                    android:textSize="10sp" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/timeCompleted"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="1:00 AM"
-                android:textColor="#ffff00"
-                android:textSize="10sp" />
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="0.40"
+                android:orientation="vertical" >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Total Time"
-                android:textColor="#ffff00"
-                android:textSize="10sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Time Completed"
+                    android:textColor="#ffff00"
+                    android:textSize="10sp" />
 
-            <TextView
-                android:id="@+id/totalTime"
+                <TextView
+                    android:id="@+id/timeCompleted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="1:00 AM"
+                    android:textColor="#ffff00"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="1 hr"
-                android:textColor="#ffff00"
-                android:textSize="10sp" />
+                android:layout_gravity="right"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="0.30"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Total Time"
+                    android:textColor="#ffff00"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/totalTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="1 hr"
+                    android:textColor="#ffff00"
+                    android:textSize="10sp" />
+            </LinearLayout>
         </LinearLayout>
 
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="20dp"
             android:layout_below="@+id/timeLayout"
             android:layout_centerHorizontal="true"
             android:background="@drawable/listview_header"
             android:gravity="center"
             android:text="TASKS TO BE PERFORMED"
             android:textColor="#0404fe"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/listLayout"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="500dp"
             android:layout_below="@+id/title"
             android:orientation="vertical" >
 

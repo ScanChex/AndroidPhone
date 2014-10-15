@@ -2,6 +2,7 @@ package com.scanchex.utils;
 
 import java.util.Calendar;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TimePicker;
+import android.widget.Toast;
 import android.widget.TimePicker.OnTimeChangedListener;
 import android.widget.ViewSwitcher;
 
@@ -38,6 +40,7 @@ public class DateTimePicker extends RelativeLayout implements
 		this(context, attrs, 0);
 	}
 
+	@SuppressLint("NewApi")
 	public DateTimePicker(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 
@@ -63,7 +66,7 @@ public class DateTimePicker extends RelativeLayout implements
 		datePicker.init(mCalendar.get(Calendar.YEAR),
 				mCalendar.get(Calendar.MONTH),
 				mCalendar.get(Calendar.DAY_OF_MONTH), this);
-
+		datePicker.setMinDate(System.currentTimeMillis() - 1000);
 		// Init time picker
 		timePicker = (TimePicker) timePickerView.findViewById(R.id.TimePicker);
 		timePicker.setOnTimeChangedListener(this);

@@ -42,6 +42,8 @@
                         android:layout_centerVertical="true"
                         android:layout_margin="5dp"
                         android:scaleType="fitXY"
+                           android:background="@drawable/rounded_corner"
+       
                         android:src="@drawable/app_icon" />
 
                     <ImageView
@@ -128,6 +130,9 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/image_view"
                     android:text="Client 1"
+                      android:maxLines="1"
+              android:ellipsize="end"
+          
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 
@@ -137,7 +142,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:maxLines="2"
+                      android:maxLines="1"
+              android:ellipsize="end"
+          
                     android:text="Standby Generator"
                     android:textColor="@color/black"
                     android:visibility="visible" />
@@ -182,7 +189,9 @@
                             style="@style/defaultText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:maxLines="3"
+                             android:maxLines="2"
+                             android:ellipsize="end"
+          
                             android:text="Miami, Florida jnjkhjkhjkhjklhjklhkjlhkl"
                             android:textColor="@color/black" />
                     </ScrollView>
@@ -357,12 +366,13 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="223dp"
-        android:layout_height="35dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="10dp"
-        android:paddingLeft="20dp"
+        android:paddingLeft="70dp"
+        android:paddingRight="0dp"
+        android:paddingTop="5dp"
+        android:scaleType="fitXY"
         android:src="@drawable/scan_chexs_logo" />
 
 </RelativeLayout>

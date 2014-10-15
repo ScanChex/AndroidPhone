@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 public class SCVideoPlayScreen extends Activity {
@@ -17,19 +18,22 @@ public class SCVideoPlayScreen extends Activity {
 	private String path;
 	private VideoView videoview;
 	ProgressBar progressBar1;
+	String ticketid;
+	TextView text;
 
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.sc_video_screen);
-
+		text = (TextView) findViewById(R.id.tickect_id);
 		videoview = (VideoView) findViewById(R.id.video);
 		progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
 		path = getIntent().getExtras().getString("PATH");
 		Log.i("VID PATH", "<><>" + path);
-
-		//videoview.setVideoPath(path);
-
+		ticketid = getIntent().getExtras().getString("tickectid");
+		Log.v("tickect val in video", "tickect val in video" + ticketid);
+		// videoview.setVideoPath(path);
+		text.setText(ticketid);
 		// Start the MediaController
 		MediaController mediacontroller = new MediaController(this);
 		mediacontroller.setAnchorView(videoview);
