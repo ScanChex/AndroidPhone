@@ -43,6 +43,7 @@ public class AssetsTicketsInfo {
 	public String reference;
 	public String allowIdCardScan;
 	public String ticket_type;
+	public String employee;
 	public ArrayList<ScCheckPoints> checkPoints;
 	
 	public String ticket_start_time;
@@ -69,6 +70,14 @@ public class AssetsTicketsInfo {
 
 	public void setAssetference(String reference) {
 		this.reference = reference;
+	}
+
+	public String getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(String employee) {
+		this.employee = employee;
 	}
 
 	public String getAssetAddressTwo() {

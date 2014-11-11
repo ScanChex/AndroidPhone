@@ -406,8 +406,8 @@ public class ScAdminCheckOutScreen extends Activity {
 	private void setToleranceSpinner() {
 
 		// Set values of tolerance
-		ScToleranceInfo toleranceInfo = new ScToleranceInfo();
-		toleranceArray.add(toleranceInfo);
+		// ScToleranceInfo toleranceInfo = new ScToleranceInfo();
+		// toleranceArray.add(toleranceInfo);
 
 		ScToleranceInfo toleranceInfo1 = new ScToleranceInfo();
 		toleranceInfo1.setValue("300");
@@ -460,10 +460,10 @@ public class ScAdminCheckOutScreen extends Activity {
 		toleranceArray.add(toleranceInfo10);
 
 		SpinnerToleranceAdapter adapter = new SpinnerToleranceAdapter(mContext,
-				R.layout.spinner_search_view, toleranceArray, "Tolerance");
+				R.layout.spinner_search_view, toleranceArray);
 
 		spinnerTolerance.setAdapter(adapter);
-		spinnerTolerance.setSelection(1);
+		spinnerTolerance.setSelection(0);
 
 		// }
 		spinnerTolerance

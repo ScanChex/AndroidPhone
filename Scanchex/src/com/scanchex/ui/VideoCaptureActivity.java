@@ -166,6 +166,7 @@ public class VideoCaptureActivity extends Activity {
 
 		this.mediaRecorder.setProfile(CamcorderProfile
 				.get(CamcorderProfile.QUALITY_LOW));
+	//	this.mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
 		this.mediaRecorder.setOutputFile(this.getOutputMediaFile().getAbsolutePath());
 		this.mediaRecorder.setPreviewDisplay(this.cameraPreview.getHolder()
 				.getSurface());

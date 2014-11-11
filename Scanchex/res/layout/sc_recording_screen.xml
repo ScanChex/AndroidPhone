@@ -22,10 +22,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:text="ticket_id"
-        android:textSize="25sp"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
     <TextView
@@ -33,9 +32,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="5dp"
         android:text="Stopped"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:textStyle="bold" />
 
     
@@ -44,44 +43,129 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
         android:onClick="onStartClick"
         android:text="Start Recording"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
         android:onClick="onStopClick"
         android:text="Stop Recording"
-        android:textSize="18sp" />
-    
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:onClick="onSubmit"
-        android:text="Submit"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 
-    <Button
-        android:layout_width="fill_parent"
+    <ImageButton
+        android:id="@+id/record_Imagebutton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/microphone" />
+
+    <TextView
+        android:id="@+id/textViewTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="00:00:00"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp" />
+
+    <LinearLayout
+        android:id="@+id/playbutton_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/white"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/play_Imagebutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/transparent"
+            android:src="@drawable/play" />
+
+        <ImageButton
+            android:id="@+id/pause_Imagebutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/transparent"
+            android:src="@drawable/pause" />
+
+        <ImageButton
+            android:id="@+id/stop_Imagebutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/transparent"
+            android:src="@drawable/buttonstop" />
+
+        <ImageButton
+            android:id="@+id/rewind_Imagebutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/transparent"
+            android:src="@drawable/rewind" />
+
+        <ImageButton
+            android:id="@+id/fastforward_Imagebutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/transparent"
+            android:src="@drawable/fast_forward" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:onClick="onBackClick"
-        android:text="Back"
-        android:textSize="18sp" />
+        android:background="#E30022" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="5dp"
+            android:background="#C0C0C0"
+            android:onClick="onBackClick"
+            android:text="CANCEL"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:background="#C0C0C0"
+            android:onClick="onSubmit"
+            android:text="SUBMIT"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+    </RelativeLayout>
 
 </LinearLayout>

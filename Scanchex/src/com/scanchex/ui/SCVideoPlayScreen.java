@@ -33,7 +33,7 @@ public class SCVideoPlayScreen extends Activity {
 		ticketid = getIntent().getExtras().getString("tickectid");
 		Log.v("tickect val in video", "tickect val in video" + ticketid);
 		// videoview.setVideoPath(path);
-		text.setText(ticketid);
+		//text.setText(ticketid);
 		// Start the MediaController
 		MediaController mediacontroller = new MediaController(this);
 		mediacontroller.setAnchorView(videoview);

@@ -25,12 +25,12 @@ public class SpinnerToleranceAdapter extends ArrayAdapter<ScToleranceInfo> {
 	String name;
 
 	public SpinnerToleranceAdapter(Context context, int textViewResourceId,
-			ArrayList<ScToleranceInfo> values, String name) {
+			ArrayList<ScToleranceInfo> values) {
 		super(context, textViewResourceId, values);
 
 		this.context = context;
 		this.values = values;
-		this.name = name;
+		// this.name = name;
 		mInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
@@ -59,11 +59,14 @@ public class SpinnerToleranceAdapter extends ArrayAdapter<ScToleranceInfo> {
 		ImageView im = (ImageView) convertView.findViewById(R.id.imageSpinner);
 		label.setTextColor(0xff000000);
 		label.setBackgroundColor(0xffFFD6E2);
-		if (position == 0) {
-			im.setVisibility(View.GONE);
-			label.setText(name);
-			label.setGravity(Gravity.LEFT);
-		} else {
+//		if (position == 0) {
+//			im.setVisibility(View.GONE);
+//			//label.setText(name);
+//			label.setGravity(Gravity.LEFT);
+//		}
+		
+		//else 
+		{
 			label.setGravity(Gravity.LEFT);
 			im.setVisibility(View.GONE);
 			label.setText(values.get(position).getName());

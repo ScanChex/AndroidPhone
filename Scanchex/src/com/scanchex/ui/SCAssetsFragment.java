@@ -9,6 +9,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import android.app.ActionBar.LayoutParams;
 import android.app.ProgressDialog;
@@ -190,11 +191,11 @@ public class SCAssetsFragment extends Fragment implements OnClickListener {
 				//response = response.substring(3);
 				Log.i("RESPONSE", "Login Resp>> " + response);
 				JSONObject obj = new JSONObject(response);
-
+				vector = new Vector<SCTicketExtraInfo>();
 				if (!(obj.has("error"))) {
 
 					JSONArray jArr = obj.getJSONArray("services");
-					vector = new Vector<SCTicketExtraInfo>();
+
 					if (jArr != null && jArr.length() > 0) {
 						for (int i = 0; i < jArr.length(); i++) {
 							SCTicketExtraInfo extraInfo = new SCTicketExtraInfo();
@@ -317,22 +318,32 @@ public class SCAssetsFragment extends Fragment implements OnClickListener {
 				response = new HttpWorker().getData(params[0], listParams);
 				//response = response.substring(3);
 				Log.i("RESPONSE", "Login Resp>> " + response);
-				JSONArray mainArr = new JSONArray(response);
-				if (mainArr != null && mainArr.length() > 0) {
-					vector = new Vector<SCQuestionsInfo>();
-					for (int j = 0; j < mainArr.length(); j++) {
-						SCQuestionsInfo qInfo = new SCQuestionsInfo();
-						qInfo.questionId = mainArr.getJSONObject(j).getString(
-								"quest_id");
-						qInfo.question = mainArr.getJSONObject(j).getString(
-								"question");
-						qInfo.questionTypeId = mainArr.getJSONObject(j)
-								.getString("quest_type_id");
-						qInfo.questionAnswer = mainArr.getJSONObject(j)
-								.getString("q_answer");
-						Log.i("QUESTION> " + qInfo.question, "TYPE> "
-								+ qInfo.questionTypeId);
-						if (mainArr.getJSONObject(j).has("answers")) {
+				Resources.getResources().setQuestionsSubmitted(true);
+				Resources.getResources().setQuestionsData(null);
+
+				Object json = new JSONTokener(response).nextValue();
+				if (json instanceof JSONObject) {
+					JSONObject jobj = new JSONObject(response);
+					String val = jobj.getString("error");
+					Log.v("error value", "error value" + val);
+
+				} else if (json instanceof JSONArray) {
+					JSONArray mainArr = new JSONArray(response);
+					if (mainArr != null && mainArr.length() > 0) {
+						vector = new Vector<SCQuestionsInfo>();
+						for (int j = 0; j < mainArr.length(); j++) {
+							SCQuestionsInfo qInfo = new SCQuestionsInfo();
+							qInfo.questionId = mainArr.getJSONObject(j)
+									.getString("quest_id");
+							qInfo.question = mainArr.getJSONObject(j)
+									.getString("question");
+							qInfo.questionTypeId = mainArr.getJSONObject(j)
+									.getString("quest_type_id");
+							qInfo.questionAnswer = mainArr.getJSONObject(j)
+									.getString("q_answer");
+							Log.i("QUESTION> " + qInfo.question, "TYPE> "
+									+ qInfo.questionTypeId);
+							if (mainArr.getJSONObject(j).has("answers")) {
 
 //							JSONObject answer = mainArr.getJSONObject(j)
 //									.getJSONObject("answers");
@@ -357,13 +368,17 @@ public class SCAssetsFragment extends Fragment implements OnClickListener {
 										qInfo.answers = answers;
 									}
 								}
-							//}
+								// }
+							} else {
+								Resources.getResources().setQuestionsSubmitted(
+										false);
+							}
+							vector.add(qInfo);
 						}
-						vector.add(qInfo);
+						Resources.getResources().setQuestionsData(vector);
 					}
-					Resources.getResources().setQuestionsData(vector);
+					return true;
 				}
-				return true;
 			} catch (JSONException e) {
 				Log.e("Exception", e.getMessage(), e);
 			} catch (Exception e) {

@@ -278,6 +278,7 @@ public class SCAdminScanScreen extends Activity {
 							// Log.v("client_id ", "client_id " + client_id);
 							if (assetCode.equalsIgnoreCase(getObject
 									.getString("asset_code"))) {
+								if (!(status.equals("checked_out"))) {
 
 								for (int k = 0; k < clientsArray.length(); k++) {
 									clientObject = clientsArray
@@ -296,20 +297,29 @@ public class SCAdminScanScreen extends Activity {
 								manualLook.putExtra("id", id);
 								manualLook.putExtra("name", name);
 
-								manualLook.putExtra("alldatapi", allData);
-								startActivity(manualLook);
-								// Log.v("\n assetObject", getObject.toString()
-								// + "\n" + "\n id " + id + "\n name"
-								// + name);
-								// Log.v("manualLook", "manualLook" +
-								// manualLook);
-								finish();
+									manualLook.putExtra("alldatapi", allData);
+									startActivity(manualLook);
+									// Log.v("\n assetObject",
+									// getObject.toString()
+									// + "\n" + "\n id " + id + "\n name"
+									// + name);
+									// Log.v("manualLook", "manualLook" +
+									// manualLook);
+									finish();
+								} else {
+									showOptionAlert("Info",
+											"This asset is already checkout");
+
+								}
 							}
-							// else {
-							// showOptionAlert("Scan Code is wrong Please try again");
-							// }
 						}
+
+						// else {
+						// showOptionAlert("Info",
+						// "This Ticket is already checkout");
+						// }
 					}
+
 				}
 
 			} catch (JSONException e) {
@@ -320,14 +330,15 @@ public class SCAdminScanScreen extends Activity {
 		}
 	}
 
-	private void showOptionAlert(String message) {
+	private void showOptionAlert(String title, String message) {
 
 		new AlertDialog.Builder(this).setIcon(R.drawable.info_icon)
-				.setMessage(message)
+				.setTitle(title).setMessage(message)
 				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
 						SCAdminScanScreen.this.finish();
 					}
 				}).show();

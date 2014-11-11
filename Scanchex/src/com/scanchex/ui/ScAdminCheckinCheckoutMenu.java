@@ -22,12 +22,16 @@ public class ScAdminCheckinCheckoutMenu extends Activity {
 	}
 
 	public void onClickCheckin(View v) {
-		Intent checkIn = new Intent(mActivity,SCAdminCheckinTicketViewScreen.class);
+		Intent checkIn = new Intent(mActivity,
+				SCAdminCheckinTicketViewScreen.class);
+		checkIn.putExtra("title", "CHECK-IN ASSETS");
 		startActivity(checkIn);
 		finish();
 		
 	}
+
 	
+
 	public void onClickBack(View v) {
 		finish();
 	}

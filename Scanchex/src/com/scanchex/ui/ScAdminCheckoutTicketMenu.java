@@ -28,7 +28,13 @@ public class ScAdminCheckoutTicketMenu extends Activity {
 		Intent manualLook = new Intent(mActivity,ScAdminManualLookUp.class);
 		startActivity(manualLook);
 	}
-	
+
+	public void onClickTodayCheckout(View v) {
+		Intent todaycheckout = new Intent(mActivity, ScAdminTodaycheckout.class);
+		todaycheckout.putExtra("title", "TODAY'S CHECKOUT");
+		startActivity(todaycheckout);
+	}
+
 	public void onClickBack(View v) {
 		finish();
 	}

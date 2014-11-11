@@ -39,8 +39,8 @@ public class SCHistoryNotesViewScreen extends Activity{
 
 		messageArray = getIntent().getExtras().getCharSequenceArray("PATH");
 		ticketid = getIntent().getExtras().getString("tickectid");
-		Log.v("tickect val in notesactivity ", "tickect val in notesactivity"
-				+ ticketid);
+		//Log.v("tickect val in notesactivity ", "tickect val in notesactivity"
+		//		+ ticketid);
 
 		int pagerPosition = 0;
 

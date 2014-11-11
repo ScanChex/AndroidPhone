@@ -16,7 +16,8 @@ import com.scanchex.bo.ScAdminManualLookModel;
 import com.scanchex.ui.R;
 import com.squareup.picasso.Picasso;
 
-public class SpinnerCheckOutClientAdapter extends ArrayAdapter<ScAdminManualLookModel> {
+public class SpinnerCheckOutClientAdapter extends
+		ArrayAdapter<ScAdminManualLookModel> {
 
 	// Your sent context
 	private Context context;
@@ -24,8 +25,9 @@ public class SpinnerCheckOutClientAdapter extends ArrayAdapter<ScAdminManualLook
 	private LayoutInflater mInflater;
 	String name;
 
-	public SpinnerCheckOutClientAdapter(Context context, int textViewResourceId,
-			ArrayList<ScAdminManualLookModel> values,String name) {
+	public SpinnerCheckOutClientAdapter(Context context,
+			int textViewResourceId, ArrayList<ScAdminManualLookModel> values,
+			String name) {
 		super(context, textViewResourceId, values);
 		this.context = context;
 		this.values = values;
@@ -59,13 +61,16 @@ public class SpinnerCheckOutClientAdapter extends ArrayAdapter<ScAdminManualLook
 
 		label.setTextColor(0XFF000000);
 		label.setBackgroundColor(0xffFFFFFF);
-		if(position == 0){
-			
+		if (position == 0) {
+
 			label.setText(name);
 
 			imageView.setVisibility(View.GONE);
 		} else {
 			label.setText(values.get(position).getFull_name());
+			if (name.equals("Client")) {
+				imageView.setVisibility(View.GONE);
+			}
 
 			try {
 				Picasso.with(context)

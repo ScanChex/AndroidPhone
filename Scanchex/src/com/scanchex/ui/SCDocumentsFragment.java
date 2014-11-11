@@ -131,7 +131,7 @@ String ticketId = "";
 		// Log.e("On Resume Called", "ASSETS!!");
 		if (Resources.getResources().isFirstScanDone()) {
 			ScanTicketButton.setVisibility(View.INVISIBLE);
-			((SCDetailsFragmentScreen) getActivity()).updateName();
+			//((SCDetailsFragmentScreen) getActivity()).updateName();
 		}
 
 		if (pathName != null) {

@@ -44,6 +44,8 @@ public class SCAdminCheckinTicketViewScreen extends ListActivity {
 	Vector<AssetsTicketsInfo> vector;
 	Context mContext;
 	String asset_id;
+	TextView title_view;
+	String title_string;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +54,12 @@ public class SCAdminCheckinTicketViewScreen extends ListActivity {
 		setContentView(R.layout.sc_admin_checkin_ticketsview_screen);
 
 		listView = (ListView) findViewById(android.R.id.list);
+		title_view = (TextView) findViewById(R.id.title_textview);
 		mContext = this;
 		vector = new Vector<AssetsTicketsInfo>();
 		adapter = new SCAdminCheckinTicketsAdapter(this, vector);
+		title_string = getIntent().getExtras().getString("title");
+		title_view.setText(title_string);
 		setListAdapter(adapter);
 		new AssetTicketTask().execute(CONSTANTS.BASE_URL);
 
@@ -104,6 +109,7 @@ public class SCAdminCheckinTicketViewScreen extends ListActivity {
 								SCAdminCheckinTicketViewScreen.this)));
 				listParams.add(new BasicNameValuePair("action",
 						"show_checkin_out_tickets"));
+				listParams.add(new BasicNameValuePair("today", "YES"));
 				response = new HttpWorker().getData(params[0], listParams);
 				//response = response.substring(3);
 				// Log.i("RESPONSE", "Login Resp>> " + response);
@@ -240,6 +246,8 @@ public class SCAdminCheckinTicketViewScreen extends ListActivity {
 											.getString("ticket_status");
 									assetTicketInfo.ticketOverDue = ticketObj
 											.getString("over_due");
+									assetTicketInfo.employee = ticketObj
+											.getString("employee");
 									assetTicketInfo.notes = ticketObj
 											.getString("notes");
 									assetTicketInfo.reference = ticketObj
@@ -293,7 +301,11 @@ public class SCAdminCheckinTicketViewScreen extends ListActivity {
 		protected void onPostExecute(Boolean result) {
 			super.onPostExecute(result);
 			pdialog.dismiss();
+			if ( vector.size() == 0) {
+				showAlertDialog("Check-in Tickets","No tickets found");
+			} else {
 			adapter.notifyDataSetChanged();
+			}
 		}
 
 		@Override
@@ -316,4 +328,18 @@ public class SCAdminCheckinTicketViewScreen extends ListActivity {
 		super.onRestart();
 		new AssetTicketTask().execute(CONSTANTS.BASE_URL);
 	}
+	
+	private void showAlertDialog(String title, String message) {
+		new AlertDialog.Builder(this).setIcon(R.drawable.info_icon)
+				.setTitle(title).setMessage(message)
+				.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+
+					public void onClick(DialogInterface dialog, int which) {
+
+						
+					}
+				}).show();
+	}
+	
+	
 }

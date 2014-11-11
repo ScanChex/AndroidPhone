@@ -8,8 +8,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -37,6 +39,8 @@ public class AndroidSyncService extends Service {
 	public static AndroidSyncService locationservice = null;
 	
 	private String accurateLocation = "";
+	private String speed = "";
+	private String battery_status = "";
 	private LocationManager locationManager;
 	private Location gpsLocation = null;
 	private Location networkLocation = null;	
@@ -90,12 +94,31 @@ public class AndroidSyncService extends Service {
         thread.start();
 	}
 
+	private void registerBatteryLevelReceiver() {
+		// TODO Auto-generated method stub
+		IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+
+		registerReceiver(battery_receiver, filter);
+
+	}
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
 
 	}
+
+	private BroadcastReceiver battery_receiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+
+			int rawlevel = intent.getIntExtra("level", -1);
+
+		//	Log.i("BatteryLevel", "BatteryLevel" + rawlevel);
+			battery_status = String.valueOf(rawlevel);
+
+		}
+	};
 
 	class MyThread implements Runnable{
 
@@ -105,7 +128,9 @@ public class AndroidSyncService extends Service {
 			
 			try{
 				getAccurateLocation();
-				Log.i("LATITUDE >> "+strLatitude, "LONGITUDE >> "+strLongitude );
+				registerBatteryLevelReceiver();
+				Log.i("LATITUDE >> " + strLatitude, "LONGITUDE >> "
+						+ strLongitude);
 				Log.i("LOCATION UPDATE URL", "<><>" + CONSTANTS.BASE_URL);
 				List<NameValuePair> listParams = new ArrayList<NameValuePair>();
 				listParams.add(new BasicNameValuePair("master_key", SCPreferences.getPreferences().getUserMasterKey(getApplicationContext())));
@@ -114,13 +139,29 @@ public class AndroidSyncService extends Service {
 				listParams.add(new BasicNameValuePair("latitude", strLatitude));
 				listParams.add(new BasicNameValuePair("longitude", strLongitude));
 				listParams.add(new BasicNameValuePair("device_id", deviceId));
-				listParams.add(new BasicNameValuePair("device_make", "Android"));
-				listParams.add(new BasicNameValuePair("device_model", phoneModel));
-				listParams.add(new BasicNameValuePair("device_os", androidVersion));
-				listParams.add(new BasicNameValuePair("action", "update_user_location"));
-				response = new HttpWorker().getData(CONSTANTS.BASE_URL, listParams);
-				//response = response.substring(3);
-				
+				Log.v("deviceId", "deviceId" + deviceId);
+				listParams
+						.add(new BasicNameValuePair("device_make", "Android"));
+
+				listParams.add(new BasicNameValuePair("device_model",
+						phoneModel));
+
+				listParams.add(new BasicNameValuePair("device_os",
+						androidVersion));
+				Log.v("androidVersion", "androidVersion" + androidVersion);
+
+				listParams.add(new BasicNameValuePair("action",
+						"update_user_location1"));
+				// Log.v("action", "action" + action);
+				listParams.add(new BasicNameValuePair("speed", speed));
+				Log.v("speed in run", "speed in run" + speed);
+				listParams.add(new BasicNameValuePair("battery_status",
+						battery_status));
+				Log.v("battery in run", "battery in run" + battery_status);
+				response = new HttpWorker().getData(CONSTANTS.BASE_URL,
+						listParams);
+				// response = response.substring(3);
+
 				locationManager.removeUpdates(LocationListener);
 				Log.i("RESPONSE", "LOCATION UPDATE Resp>> " + response);
 				JSONObject obj = new JSONObject(response);
@@ -146,13 +187,22 @@ public class AndroidSyncService extends Service {
            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 10, LocationListener);
 		}
 	}
-	
-	private final LocationListener LocationListener = new LocationListener(){
-		
-		public void onLocationChanged(Location location) {}
-		public void onProviderDisabled(String provider){}
-		public void onProviderEnabled(String provider){}
-		public void onStatusChanged(String provider, int status, Bundle extras){}
+
+	private final LocationListener LocationListener = new LocationListener() {
+
+		public void onLocationChanged(Location location) {
+			speed = String.valueOf(location.getSpeed());
+			//Log.v("speed in loc", "speed in loc " + speed);
+		}
+
+		public void onProviderDisabled(String provider) {
+		}
+
+		public void onProviderEnabled(String provider) {
+		}
+
+		public void onStatusChanged(String provider, int status, Bundle extras) {
+		}
 	};
 	
 	

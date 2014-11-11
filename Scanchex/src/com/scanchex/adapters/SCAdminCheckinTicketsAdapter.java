@@ -153,8 +153,8 @@ public class SCAdminCheckinTicketsAdapter extends BaseAdapter {
 		// {
 		//
 		// }
-		//
-		holder.clientName.setText(tInfo.assetClientName);
+
+		holder.clientName.setText(tInfo.employee);
 		holder.phoneNumber.setText(tInfo.assetPhone);
 		holder.phoneNumber.setTag(position);
 		holder.address1.setText(tInfo.addressStreet);

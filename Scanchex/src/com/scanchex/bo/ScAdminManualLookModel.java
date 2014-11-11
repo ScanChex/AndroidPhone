@@ -12,6 +12,8 @@ public class ScAdminManualLookModel {
 	private String asset_photo;
 	private String asset_code;
 	private String asset_url;
+	private String asset_status;
+
 	private String serial_number;
 	private String name;
 	private String address_id;
@@ -214,4 +216,11 @@ public class ScAdminManualLookModel {
 		this.zipCode = zipCode;
 	}
 
+	public String getAsset_status() {
+		return asset_status;
+	}
+
+	public void setAsset_status(String asset_status) {
+		this.asset_status = asset_status;
+	}
 }

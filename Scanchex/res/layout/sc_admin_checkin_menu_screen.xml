@@ -69,6 +69,8 @@
             android:textColor="#000000"
             android:textSize="12sp" />
 
+        
+
         <Button
             android:id="@+id/button3"
             style="?android:attr/buttonStyleSmall"

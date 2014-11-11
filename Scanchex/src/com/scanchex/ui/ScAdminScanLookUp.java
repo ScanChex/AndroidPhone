@@ -344,40 +344,39 @@ public class ScAdminScanLookUp extends Activity {
 								View arg1, int arg2, long arg3) {
 
 							if (arg2 > 0) {
-								if (!(status.equalsIgnoreCase("checked_out"))) {
-									String description = assetArrayList.get(
-											arg2).getDescription();
-									asset_id = assetArrayList.get(arg2).getId();
-									textViewAssetDescription
-											.setText(description);
-									clientid = assetArrayList.get(arg2)
-											.getClient_id();
-									imageUrl = "";
-									imageUrl = assetArrayList.get(arg2)
-											.getAsset_photo();
+
+								String description = assetArrayList.get(arg2)
+										.getDescription();
+								asset_id = assetArrayList.get(arg2).getId();
+								textViewAssetDescription.setText(description);
+								clientid = assetArrayList.get(arg2)
+										.getClient_id();
+								imageUrl = "";
+								imageUrl = assetArrayList.get(arg2)
+										.getAsset_photo();
+								// Log.v("image link", "image link \t" +
+								// imageUrl);
+								try {
+									Picasso.with(mContext)
+											.load(imageUrl)
+											.placeholder(
+													R.drawable.photo_not_available)
+											.error(R.drawable.photo_not_available)
+											.into(imageView);
 									// Log.v("image link", "image link \t" +
 									// imageUrl);
-									try {
-										Picasso.with(mContext)
-												.load(imageUrl)
-												.placeholder(
-														R.drawable.photo_not_available)
-												.error(R.drawable.photo_not_available)
-												.into(imageView);
-										// Log.v("image link", "image link \t" +
-										// imageUrl);
-									} catch (Exception e) {
-										e.printStackTrace();
-										Toast.makeText(getApplicationContext(),
-												"unable to process image" + e,
-												Toast.LENGTH_LONG).show();
-									}
-									editTextAddress.setText(assetArrayList.get(
-											arg2).getAddress());
-									editTextDepartment.setText(assetArrayList
-											.get(arg2).getDepartment());
-									editViewSerialNumber.setText(assetArrayList
-											.get(arg2).getSerial_number());
+								} catch (Exception e) {
+									e.printStackTrace();
+									Toast.makeText(getApplicationContext(),
+											"unable to process image" + e,
+											Toast.LENGTH_LONG).show();
+								}
+								editTextAddress.setText(assetArrayList
+										.get(arg2).getAddress());
+								editTextDepartment.setText(assetArrayList.get(
+										arg2).getDepartment());
+								editViewSerialNumber.setText(assetArrayList
+										.get(arg2).getSerial_number());
 
 									for (int k = 0; k < clientArrayList.size(); k++) {
 										if (assetArrayList
@@ -393,10 +392,6 @@ public class ScAdminScanLookUp extends Activity {
 										}
 									}
 
-								} else {
-									showOptionAlert("Info",
-											"This ticket is already checkout");
-								}
 							} else {
 								textViewAssetDescription.setText("");
 								imageView
@@ -484,7 +479,7 @@ public class ScAdminScanLookUp extends Activity {
 				checkoutView.putExtra("manualResponce", data.toString());
 
 				checkoutView.putExtra("imageUrl", imageUrl);
-				checkoutView.putExtra("asset_id", asset_id);
+				checkoutView.putExtra("asset_id", assetID);
 				checkoutView.putExtra("client_id", client_id);
 				checkoutView.putExtra("alldata", allData);
 				Log.v("onpost assetArray", "allData \t" + allData + "\n"

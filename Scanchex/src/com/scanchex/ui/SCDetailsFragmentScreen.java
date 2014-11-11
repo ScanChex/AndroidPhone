@@ -47,6 +47,8 @@ public class SCDetailsFragmentScreen extends SherlockFragmentActivity {
 	ImageView ticketStatusIcon;
 	ImageView image;
 	ImageView notesstatusicon;
+	ImageView questionstatusicon;
+	
 	TextView clientName;
 	TextView phoneNumber;
 	TextView address1;
@@ -79,6 +81,8 @@ public class SCDetailsFragmentScreen extends SherlockFragmentActivity {
 		image = (ImageView) findViewById(R.id.image_view);
 		notesstatusicon = (ImageView) findViewById(R.id.notes_status_icon);
 		ticketStatusIcon = (ImageView) findViewById(R.id.ticket_status_icon);
+		questionstatusicon = (ImageView) findViewById(R.id.question_status_icon);
+		
 		clientName = (TextView) findViewById(R.id.text1);
 		phoneNumber = (TextView) findViewById(R.id.text2);
 		address1 = (TextView) findViewById(R.id.text3);
@@ -305,6 +309,12 @@ public class SCDetailsFragmentScreen extends SherlockFragmentActivity {
 		historyTab.setBackgroundColor(getResources().getColor(R.color.black));
 		noteTab.setBackgroundResource(R.drawable.round_corner_right_tab);
 		
+		if (Resources.getResources().isQuestionsSubmitted()) {
+			questionstatusicon.setBackgroundResource(R.drawable.accept_ticket);
+		} else {
+			questionstatusicon.setBackgroundResource(R.drawable.excalamation_icon);
+		}
+		
 	}
 
 	public void showPushNotificationAlert(String message) {
@@ -451,6 +461,10 @@ public class SCDetailsFragmentScreen extends SherlockFragmentActivity {
 			new CloseTicketTask().execute(CONSTANTS.BASE_URL);
 
 		}
+		if (Resources.getResources().isQuestionsSubmitted()) {
+			questionstatusicon.setBackgroundResource(R.drawable.accept_ticket);
+		}
+			
 	}
 
 	public void showInfoAlert(String title, String message) {

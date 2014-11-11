@@ -30,13 +30,16 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.webkit.MimeTypeMap;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,20 +55,80 @@ public class SCRecordingScreen extends Activity {
 	private String contentType;
 	private AssetsTicketsInfo tInfo;
 
+	String audioPath;
 	private static final String LOG_TAG = "AudioRecordTest";
 	private static String mFileName = null;
 	private TextView tickectId;
 	private MediaRecorder mRecorder = null;
+	private ImageButton play_Button, stop_Button, pause_button;
+	MediaPlayer mediaPlayer = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sc_recording_screen);
+		play_Button = (ImageButton) findViewById(R.id.play_Imagebutton);
+		stop_Button = (ImageButton) findViewById(R.id.stop_Imagebutton);
+		pause_button = (ImageButton) findViewById(R.id.pause_Imagebutton);
 		audioStatus = (TextView) findViewById(R.id.audio_status);
 		tickectId = (TextView) findViewById(R.id.tickect_id);
 		tInfo = Resources.getResources().getAssetTicketInfo();
 		tickectId.setText(tInfo.ticketId);
 	
+play_Button.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+			
+				mediaPlayer = new MediaPlayer();
+				try {
+					mediaPlayer.setDataSource(mFileName);
+					mediaPlayer.prepare();
+					mediaPlayer.start();
+					Log.v("file location", "file location \t" + mFileName);
+					Toast.makeText(SCRecordingScreen.this, "play",
+							Toast.LENGTH_SHORT).show();
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SecurityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		});
+		stop_Button.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mediaPlayer.stop();
+				Toast.makeText(SCRecordingScreen.this, "stop",
+						Toast.LENGTH_SHORT).show();
+			}
+		});
+		pause_button.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				try {
+
+					mediaPlayer.pause();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 		LinearLayout layout = (LinearLayout) findViewById(R.id.recordingScreen);
 		layout.setBackgroundColor((SCPreferences
 				.getColor(SCRecordingScreen.this)));

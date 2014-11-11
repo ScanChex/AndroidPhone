@@ -129,11 +129,11 @@ public class SCLoginScreen extends Activity{
 		@Override
 		protected Boolean doInBackground(String... params) {
 			try {
-				
-				String   phoneModel = android.os.Build.MODEL;
+
+				String phoneModel = android.os.Build.MODEL;
 				String phoneNumber = getMy10DigitPhoneNumber();
-				
-				Log.i("LOGIN URL","<><>" + params[0]);
+
+				Log.i("LOGIN URL", "<><>" + params[0]);
 				List<NameValuePair> listParams = new ArrayList<NameValuePair>();
 				listParams.add(new BasicNameValuePair("company_id", cId.getText().toString()));
 				listParams.add(new BasicNameValuePair("username", username.getText().toString()));
@@ -142,11 +142,15 @@ public class SCLoginScreen extends Activity{
 				listParams.add(new BasicNameValuePair("device_token", Resources.getResources().getPushNotificationId()));
 				listParams.add(new BasicNameValuePair("uuid", IMEI));
 				listParams.add(new BasicNameValuePair("action", "login"));
-				     
-				//new params model,phone
-				//listParams.add(new BasicNameValuePair("model", phoneModel));
-				//listParams.add(new BasicNameValuePair("phone", phoneNumber));
-			
+
+				// new params model,phone
+				listParams.add(new BasicNameValuePair("model", phoneModel));
+				listParams.add(new BasicNameValuePair("phone", phoneNumber));
+				String respvalus = "device_token \t"
+						+ Resources.getResources().getPushNotificationId()
+						+ " uuid \t" + IMEI + "model \t" + phoneModel
+						+ "phone number\t" + phoneNumber;
+				Log.i("RESPONSE VALUES ", "Resp values>> " + respvalus);
 				response = new HttpWorker().getData(params[0], listParams);
 				//response = response.substring(3);
 				Log.i("RESPONSE", "Login Resp>> " + response);
@@ -297,9 +301,9 @@ public class SCLoginScreen extends Activity{
 		    return mTelephonyMgr.getLine1Number();
 		}
 
-		private String getMy10DigitPhoneNumber(){
-		    String s = getMyPhoneNumber();
-		    return s.substring(2);
-		}
+	private String getMy10DigitPhoneNumber() {
+		String s = getMyPhoneNumber();
+		return s;
+	}
 
 }

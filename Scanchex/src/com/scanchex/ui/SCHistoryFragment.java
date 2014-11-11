@@ -102,7 +102,7 @@ public class SCHistoryFragment extends Fragment implements OnClickListener {
 		// Log.e("On Resume Called", "ASSETS!!");
 		if (Resources.getResources().isFirstScanDone()) {
 			ScanTicketButton.setVisibility(View.INVISIBLE);
-			((SCDetailsFragmentScreen) getActivity()).updateName();
+			//((SCDetailsFragmentScreen) getActivity()).updateName();
 		}
 	}
 
@@ -367,13 +367,14 @@ public class SCHistoryFragment extends Fragment implements OnClickListener {
 				// i.putExtra("PATH",
 				// vector.get(Integer.parseInt(""+view.getTag())).historyVideo);
 				// startActivity(i);
+				tickectid = vector.get(Integer.parseInt("" + view.getTag())).historyTicket;
 				String[] arr = vector.get(Integer.parseInt("" + view.getTag())).historyVideoCount;
 				String[] vidNames = new String[arr.length];
 				for (int i = 0; i < vidNames.length; i++) {
 					vidNames[i] = "Video " + (i + 1);
 				}
 
-				showListAlert("History Videos", false, vidNames, arr, tickectid);
+				showListAlertvideo("History Videos", true, vidNames, arr, tickectid);
 
 			}
 
@@ -547,14 +548,48 @@ public class SCHistoryFragment extends Fragment implements OnClickListener {
 							i.putExtra("PATH", pathArr[which]);
 							i.putExtra("ticketid", tickect);
 							startActivity(i);
-						} else {
+						} 
+//						else {
+//							Intent i = new Intent(getActivity(),
+//									SCVideoPlayScreen.class);
+//							i.putExtra("PATH", pathArr[which]);
+//
+//							i.putExtra("tickectid", tickect);
+//							startActivity(i);
+//						}
+
+					}
+				}).show();
+		
+	}
+	public void showListAlertvideo(String title, final boolean isAudio,
+			final String[] nameArr, final String[] pathArr,
+			final String ticketid) {
+		Log.v("tickect val in function", "tickect val in function" + ticketid);
+		final String tickect = ticketid;
+		Log.v("tickect val in variable", "tickect val in variable" + tickect);
+		new AlertDialog.Builder(getActivity()).setIcon(R.drawable.info_icon)
+				.setTitle(title)
+				.setItems(nameArr, new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+//						if (isAudio) {
+//
+//							Intent i = new Intent(getActivity(),
+//									SCAudioPlayer.class);
+//							i.putExtra("PATH", pathArr[which]);
+//							i.putExtra("ticketid", tickect);
+//							startActivity(i);
+//						} else {
 							Intent i = new Intent(getActivity(),
 									SCVideoPlayScreen.class);
 							i.putExtra("PATH", pathArr[which]);
 
 							i.putExtra("tickectid", tickect);
 							startActivity(i);
-						}
+//						}
 
 					}
 				}).show();

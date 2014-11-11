@@ -15,13 +15,13 @@
 
     <TextView
         android:id="@+id/textViewSpinner"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="18dp"
         android:gravity="center_horizontal"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:text="@string/register"
         android:textColor="#000000"
-        android:textSize="10sp" />
+        android:textSize="14sp" />
 
 </LinearLayout>

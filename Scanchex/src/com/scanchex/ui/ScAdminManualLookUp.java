@@ -52,7 +52,7 @@ public class ScAdminManualLookUp extends Activity {
 	ArrayList<ScAdminManualLookModel> addressesArrayList;
 	String master_key = "", description = "", serial_number = "", client = "",
 			address = "", department = "", user_id = "", type = "",
-			asset_id = "";
+			asset_id = "", asset_status = "";
 	JSONObject allDataApi;
 	String imageUrl = "";
 	String status = "";
@@ -207,7 +207,8 @@ public class ScAdminManualLookUp extends Activity {
 								.getString("asset_code_url"));
 						manual.setSerial_number(getObject
 								.getString("serial_number"));
-
+						manual.setAsset_status(getObject
+								.getString("asset_status"));
 						manual.setDisplaySpinnerName(getObject
 								.getString("asset_id"));
 						assetArrayList.add(manual);
@@ -300,9 +301,11 @@ public class ScAdminManualLookUp extends Activity {
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
 					int arg2, long arg3) {
-
+				asset_status = assetArrayList.get(arg2).getAsset_status();
+				Log.v("asset_status in spinner", "asset_status in spinner"
+						+ asset_status);
 				if (arg2 > 0) {
-					if (!(status.equalsIgnoreCase("checked_out"))) {
+					if (!(asset_status.equalsIgnoreCase("checked_out"))) {
 						String description = assetArrayList.get(arg2)
 								.getDescription();
 						asset_id = assetArrayList.get(arg2).getId();
@@ -342,7 +345,7 @@ public class ScAdminManualLookUp extends Activity {
 
 					} else {
 						showOptionAlert("Info",
-								"This ticket is already checkout");
+								"This asset is already checkout");
 					}
 				} else {
 					textViewAssetDescription.setText("");
@@ -456,6 +459,13 @@ public class ScAdminManualLookUp extends Activity {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						spinnerAssetId.setSelection(0);
+
+						textViewAssetDescription.setText("");
+						editViewSerialNumber.setText("");
+						editTextAddress.setText("");
+						textViewClient.setText("");
+						editTextDepartment.setText("");
+						editViewSerialNumber.setText("");
 						dialog.dismiss();
 					}
 				}).show();
