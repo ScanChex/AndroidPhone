@@ -315,6 +315,8 @@ public class SCTicketViewScreen extends ListActivity implements
 											.getString("over_due");
 									assetTicketInfo.notes = ticketObj
 											.getString("notes");
+									assetTicketInfo.is_questions = ticketObj
+											.getString("is_questions");
 									assetTicketInfo.allowIdCardScan = ticketObj
 											.getString("allow_id_card_scan");
 									assetTicketInfo.thumbPhotoUrl = ticketObj

@@ -251,18 +251,47 @@
                 android:textSize="25sp"
                 android:visibility="gone" />
         </LinearLayout>
+        
+     
 
-        <Button
-            android:id="@+id/scan_button"
-            android:layout_width="150dp"
+    <LinearLayout
+            android:id="@+id/scansuspendlayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_below="@+id/listLayout"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="3dp"
-            android:layout_marginTop="3dp"
-            android:text="Scan"
-            android:textStyle="bold" />
+            android:layout_alignParentBottom="true" >
+
+            <Button
+                android:id="@+id/scan_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_weight="0.5"
+                android:text="Scan"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/suspend_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_weight="0.5"
+                android:text="Suspend"
+                android:textStyle="bold" />
+            
+            <Button
+                android:id="@+id/close_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_weight="0.5"
+                android:text="Close"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+          
     </RelativeLayout>
 
 </ScrollView>

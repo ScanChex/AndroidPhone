@@ -22,9 +22,11 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -48,7 +50,7 @@ public class SCDetailsFragmentScreen extends SherlockFragmentActivity {
 	ImageView image;
 	ImageView notesstatusicon;
 	ImageView questionstatusicon;
-	
+	String reasonvalue;
 	TextView clientName;
 	TextView phoneNumber;
 	TextView address1;
@@ -66,7 +68,7 @@ public class SCDetailsFragmentScreen extends SherlockFragmentActivity {
 	int scanArraySize = 0;
 	Button assetTab, questionTab, documentTab, historyTab, noteTab;
 	GPSTracker gps;
-	public static String historyid = "";
+	public static String historyid = "", curTime, curTime1;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -101,17 +103,22 @@ public class SCDetailsFragmentScreen extends SherlockFragmentActivity {
 		initColor();
 		assetTab.setBackgroundResource(R.drawable.round_corner_left_selected_tab);
 		tInfo = Resources.getResources().getAssetTicketInfo();
-		
-		
 
 		// **************************DateTime**************************//
+
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		format.setLenient(false);
+
+		Date curDate1 = new Date();
+		long curMillis1 = curDate1.getTime();
+		curTime1 = format.format(curDate1);
 
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yy HH:mm:ss");
 		formatter.setLenient(false);
 
 		Date curDate = new Date();
 		long curMillis = curDate.getTime();
-		String curTime = formatter.format(curDate);
+		curTime = formatter.format(curDate);
 		try {
 
 			String oldTime = tInfo.ticketTimeStamp;
@@ -309,12 +316,21 @@ public class SCDetailsFragmentScreen extends SherlockFragmentActivity {
 		historyTab.setBackgroundColor(getResources().getColor(R.color.black));
 		noteTab.setBackgroundResource(R.drawable.round_corner_right_tab);
 		
+		tInfo = Resources.getResources().getAssetTicketInfo();
+
+		
+		if (tInfo.is_questions.equalsIgnoreCase("YES")) {
+			questionstatusicon.setVisibility(View.VISIBLE);
+			
+		
 		if (Resources.getResources().isQuestionsSubmitted()) {
 			questionstatusicon.setBackgroundResource(R.drawable.accept_ticket);
 		} else {
 			questionstatusicon.setBackgroundResource(R.drawable.excalamation_icon);
 		}
-		
+		} else {
+			questionstatusicon.setVisibility(View.GONE);
+		}
 	}
 
 	public void showPushNotificationAlert(String message) {
@@ -405,7 +421,10 @@ public class SCDetailsFragmentScreen extends SherlockFragmentActivity {
 
 			if (Resources.getResources().isFirstScanDone()) {
 				if (Resources.getResources().isCloseTicket()) {
-					showAlert();
+
+					showSuspendAlert("Info", "Do want to suspend the ticket");
+					// Toast.makeText(getApplicationContext(),
+					// "Clicked on back button", Toast.LENGTH_LONG).show();
 				} else {
 					finish();
 				}
@@ -480,6 +499,81 @@ public class SCDetailsFragmentScreen extends SherlockFragmentActivity {
 
 	}
 
+	public void showSuspendAlert(String title, String message) {
+		new AlertDialog.Builder(this)
+				.setIcon(R.drawable.message_info_icon)
+				.setTitle("Info")
+				.setMessage("Do you want to suspend the ticket ?")
+				.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+					}
+				})
+				.setPositiveButton("Yes",
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								LayoutInflater layoutInflater = LayoutInflater
+										.from(SCDetailsFragmentScreen.this);
+								View promptView = layoutInflater.inflate(
+										R.layout.sc_question_popup, null);
+								AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+										SCDetailsFragmentScreen.this);
+								alertDialogBuilder.setView(promptView);
+								alertDialogBuilder.setCancelable(false);
+								final AlertDialog alert = alertDialogBuilder
+										.create();
+
+								final EditText changedAnswerView = (EditText) promptView
+										.findViewById(R.id.questionAnswerId);
+								final TextView Titletext = (TextView) promptView
+										.findViewById(R.id.questionId);
+								final Button okbutton = (Button) promptView
+										.findViewById(R.id.okButton);
+								final Button cancelbutton = (Button) promptView
+										.findViewById(R.id.cancelButton);
+								Titletext.setText("Please enter reason for suspending the ticket");
+								okbutton.setOnClickListener(new OnClickListener() {
+
+									@Override
+									public void onClick(View v) {
+										// TODO Auto-generated method stub
+
+										reasonvalue = changedAnswerView
+												.getText().toString();
+										new SuspendTask()
+												.execute(CONSTANTS.BASE_URL);
+										alert.dismiss();
+
+									}
+								});
+
+								cancelbutton
+										.setOnClickListener(new OnClickListener() {
+
+											@Override
+											public void onClick(View v) {
+												// TODO Auto-generated method
+												// stub
+
+												alert.dismiss();
+											}
+										});
+
+								// create an alert dialog
+
+								alert.show();
+
+							}
+
+						}).show();
+
+	}
+
 	// //////////////////Close Ticket//////////////////
 	private class CloseTicketTask extends AsyncTask<String, Integer, Boolean> {
 
@@ -548,6 +642,86 @@ public class SCDetailsFragmentScreen extends SherlockFragmentActivity {
 			pdialog.show();
 		}
 	}
+
+	private class SuspendTask extends AsyncTask<String, Integer, Boolean> {
+
+			private ProgressDialog pdialog;
+			private String response;
+			AssetsTicketsInfo tInfo = Resources.getResources().getAssetTicketInfo();
+
+			@Override
+			protected Boolean doInBackground(String... params) {
+
+				try {
+
+				Log.i("Suspend Ticket URL", "<><>" + params[0]);
+				List<NameValuePair> listParams = new ArrayList<NameValuePair>();
+				listParams.add(new BasicNameValuePair("ticket_id",
+						tInfo.ticketTableId));
+
+				listParams.add(new BasicNameValuePair("user_id", SCPreferences
+						.getPreferences().getUserName(
+								SCDetailsFragmentScreen.this)));
+
+				listParams.add(new BasicNameValuePair("master_id",
+						SCPreferences.getPreferences().getUserMasterKey(
+								SCDetailsFragmentScreen.this)));
+				listParams.add(new BasicNameValuePair("action",
+						"suspend_ticket"));
+				listParams.add(new BasicNameValuePair("stop_reason",
+						reasonvalue));
+				listParams.add(new BasicNameValuePair("stop_time", curTime));
+				response = new HttpWorker().getData(params[0], listParams);
+				// response = response.substring(3);
+				Log.i("RESPONSE", "suspend Ticket Resp>> " + response);
+				Log.v("Suspend values",
+						"suspend values"
+								+ tInfo.ticketTableId
+								+ "\t"
+								+ SCPreferences.getPreferences().getUserName(
+										SCDetailsFragmentScreen.this)
+								+ "\t"
+								+ SCPreferences.getPreferences()
+										.getUserMasterKey(
+												SCDetailsFragmentScreen.this)
+								+ "\t" + reasonvalue + "\t" + curTime1);
+				JSONObject obj = new JSONObject(response);
+				return true;
+			} catch (Exception e) {
+				Log.e("Exception", e.getMessage(), e);
+			}
+			return Boolean.FALSE;
+		}
+
+			@Override
+			protected void onCancelled() {
+				super.onCancelled();
+			}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
+			pdialog.dismiss();
+			// if (result) {
+			// Intent in = new Intent(SCDetailsFragmentScreen.this,
+			// ScPaynowScreen.class);
+			// in.putExtra("ticketId", tInfo.ticketId);
+			// startActivity(in);
+			// }
+			SCDetailsFragmentScreen.this.finish();
+		}
+
+			@Override
+			protected void onPreExecute() {
+				super.onPreExecute();
+				pdialog = new ProgressDialog(SCDetailsFragmentScreen.this);
+				pdialog.setCancelable(false);
+				pdialog.setIcon(R.drawable.info_icon);
+				pdialog.setTitle("Suspend Ticket");
+				pdialog.setMessage("Working...");
+				pdialog.show();
+			}
+		}
 
 	private void showMessgaeDialog() {
 		final Dialog dialog = new Dialog(SCDetailsFragmentScreen.this,

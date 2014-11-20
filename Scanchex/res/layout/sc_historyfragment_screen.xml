@@ -233,7 +233,7 @@
             android:id="@+id/textViewEmpty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/scan_button"
+            android:layout_above="@+id/scansuspendlayout"
             android:layout_below="@+id/topLayout"
             android:layout_centerHorizontal="true"
             android:gravity="center"
@@ -251,7 +251,7 @@
             android:id="@+id/history"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/scan_button"
+            android:layout_above="@+id/scansuspendlayout"
             android:layout_below="@+id/topLayout"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="2dp"
@@ -259,16 +259,43 @@
             android:divider="@android:color/darker_gray"
             android:dividerHeight="1dp" />
 
-        <Button
-            android:id="@+id/scan_button"
-            android:layout_width="150dp"
+     <LinearLayout
+            android:id="@+id/scansuspendlayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="3dp"
-            android:layout_marginTop="3dp"
-            android:text="Scan"
-            android:textStyle="bold" />
+            android:layout_alignParentBottom="true" >
+
+            <Button
+                android:id="@+id/scan_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_weight="0.5"
+                android:text="Scan"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/suspend_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_weight="0.5"
+                android:text="Suspend"
+                android:textStyle="bold" />
+            
+            <Button
+                android:id="@+id/close_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_weight="0.5"
+                android:text="Close"
+                android:textStyle="bold" />
+
+        </LinearLayout>
     </RelativeLayout>
 
 </RelativeLayout>

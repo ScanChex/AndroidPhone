@@ -90,6 +90,7 @@ public class SCTicketsAdapter extends BaseAdapter {
 			holder.ticketId = (TextView) convertView.findViewById(R.id.text5);
 			holder.assetId = (TextView) convertView.findViewById(R.id.text6);
 			holder.assetName = (TextView) convertView.findViewById(R.id.text7);
+			holder.onHoldLabel = (TextView) convertView.findViewById(R.id.onHold);
 			holder.ticketStartDate = (TextView) convertView
 					.findViewById(R.id.text8);
 			holder.ticketStartTime = (TextView) convertView
@@ -117,6 +118,7 @@ public class SCTicketsAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		AssetsTicketsInfo tInfo = this.vector.get(position);
+		holder.onHoldLabel.setVisibility(View.GONE);
 		if (tInfo.ticketOverDue.equals("1")) {
 
 			holder.ticketStatusIcon.setVisibility(View.VISIBLE);
@@ -143,6 +145,15 @@ public class SCTicketsAdapter extends BaseAdapter {
 			holder.ticketStatusIcon.setVisibility(View.VISIBLE);
 			holder.ticketStatusIcon
 					.setBackgroundResource(R.drawable.lightning_image);
+		} else if (tInfo.ticketStatus.equalsIgnoreCase("suspended")) {
+
+			holder.layout.setBackgroundColor(this.context.getResources()
+					.getColor(R.color.suspended));
+			holder.ticketStatusIcon.setVisibility(View.VISIBLE);
+			holder.ticketStatusIcon
+					.setBackgroundResource(R.drawable.lightning_image);
+			holder.onHoldLabel.setVisibility(View.VISIBLE);
+			
 		} else {
 			holder.ticketStatusIcon.setVisibility(View.VISIBLE);
 			holder.layout.setBackgroundColor(this.context.getResources()
@@ -200,6 +211,7 @@ public class SCTicketsAdapter extends BaseAdapter {
 		TextView assetName;
 		TextView ticketStartDate;
 		TextView ticketStartTime;
+		TextView onHoldLabel;
 		ImageView mapIcon;
 		ImageView detailIcon;
 		ImageView empIdIcon;

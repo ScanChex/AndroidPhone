@@ -46,6 +46,7 @@ public class Resources {
 	private PendingIntent pIntent;
 	private String pushNotificationId;
 	private int totalScans = 0;
+	private int totalCheckPointScans =0;
 	private boolean isForDoubleScan;
 	private boolean isQuestionsSubmitted = false;
 	private boolean isFirstScanDone = false;
@@ -247,6 +248,16 @@ public class Resources {
 
 	public void setTotalScans(int totalScans) {
 		this.totalScans = totalScans;
+	}
+
+	
+	
+	public int getTotalCheckPointScans() {
+		return totalCheckPointScans;
+	}
+
+	public void setTotalCheckPointScans(int totalCheckPointScans) {
+		this.totalCheckPointScans = totalCheckPointScans;
 	}
 
 	public String getPushNotificationId() {

@@ -55,6 +55,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -74,14 +75,17 @@ public class SCDocumentsFragment extends ListFragment implements
 	private TextView assetId;
 	private TextView assetDescription;
 	private TextView assetAddress;
-	AssetsTicketsInfo tInfo;
+
 	SCDocumentsListAdapter adapter;
-	private Button ScanTicketButton;
+	private Button ScanTicketButton, SuspendTickectButton, CloseButton;
 	Activity mActivity;
 	String selectedPdfPath;
 	String contentType;
 	Uri pathName;
-String ticketId = "";
+	String ticketId = "";
+	int scanArraySize = 0;
+	AssetsTicketsInfo tInfo;
+	String reasonvalue, curTime, ticketStatus, objvalue;
 	private static final String PDF_MIME_TYPE = "application/pdf";
 
 	@Override
@@ -92,6 +96,12 @@ String ticketId = "";
 				.getResources().getDocumentsData());
 		setListAdapter(adapter);
 		tInfo = Resources.getResources().getAssetTicketInfo();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		formatter.setLenient(false);
+
+		Date curDate = new Date();
+		long curMillis = curDate.getTime();
+		curTime = formatter.format(curDate);
 		if (Resources.getResources().getDocumentsData() == null) {
 			new DocumentsTask().execute(CONSTANTS.BASE_URL);
 		}
@@ -113,15 +123,20 @@ String ticketId = "";
 		assetDescription = (TextView) view.findViewById(R.id.des_id);
 		assetAddress = (TextView) view.findViewById(R.id.add_id);
 		ScanTicketButton = (Button) view.findViewById(R.id.scan_button);
+		SuspendTickectButton = (Button) view.findViewById(R.id.suspend_button);
 		assetId.setText(tInfo.assetUNAssetId);
 		assetDescription.setText(tInfo.assetDescription);
 		assetAddress.setText(tInfo.addressStreet + "\n" + tInfo.addressCity
 				+ "," + tInfo.addressState + " " + tInfo.addressPostalCode);
-		
+		CloseButton = (Button) view.findViewById(R.id.close_button);
 		ticketId = tInfo.ticketId;
 		
 		ScanTicketButton.setOnClickListener(this);
+		CloseButton.setOnClickListener(this);
+		SuspendTickectButton.setOnClickListener(this);
+		SuspendTickectButton.setVisibility(View.GONE);
 
+		CloseButton.setVisibility(View.GONE);
 		return view;
 	}
 
@@ -130,16 +145,28 @@ String ticketId = "";
 		super.onResume();
 		// Log.e("On Resume Called", "ASSETS!!");
 		if (Resources.getResources().isFirstScanDone()) {
-			ScanTicketButton.setVisibility(View.INVISIBLE);
-			//((SCDetailsFragmentScreen) getActivity()).updateName();
+			// SuspendTickectButton.setVisibility(View.GONE);
+			// ((SCDetailsFragmentScreen) getActivity()).updateName();
+			SuspendTickectButton.setVisibility(View.VISIBLE);
+			CloseButton.setVisibility(View.VISIBLE);
+			EnableCloseButton();
+			ticketStatus = tInfo.ticketStatus;
+			if (ticketStatus.equalsIgnoreCase("suspended")) {
+				new RestartTickectTask().execute(CONSTANTS.BASE_URL);
+
+			}
+			
+			if (pathName != null  && ( !tInfo.ticketStatus.equalsIgnoreCase("complete"))) {
+				selectedPdfPath = getPath(pathName);
+				contentType = "PDF";
+				new UploadTask().execute(CONSTANTS.BASE_URL);
+				pathName=null;
+			}
+
 		}
 
-		if (pathName != null) {
-			selectedPdfPath = getPath(pathName);
-			contentType = "PDF";
-			new UploadTask().execute(CONSTANTS.BASE_URL);
-			pathName=null;
-		}
+		
+		
 	}
 
 	@Override
@@ -160,7 +187,203 @@ String ticketId = "";
 				}
 			}
 
+		} else if (v == CloseButton) {
+			if (Resources.getResources().isFirstScanDone()) {
+				if (Resources.getResources().isCloseTicket()) {
+					new AlertDialog.Builder(getActivity())
+							.setIcon(R.drawable.message_info_icon)
+							.setTitle("Info")
+							.setMessage(
+									"Are you sure, you want to close a ticket?")
+							.setNegativeButton("No",
+									new DialogInterface.OnClickListener() {
+
+										@Override
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+											// getActivity().finish();
+										}
+									})
+							.setPositiveButton("Yes",
+									new DialogInterface.OnClickListener() {
+
+										@Override
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+											scanArraySize = Resources
+													.getResources()
+													.getCheckPointModelArray()
+													.size();
+											int count = Resources
+													.getResources()
+													.getTotalCheckPointScans();
+											AssetsTicketsInfo tInfo = Resources
+													.getResources()
+													.getAssetTicketInfo();
+											if (Resources.getResources()
+													.isQuestionsSubmitted()
+													|| Resources.getResources()
+															.getQuestionsData() == null) {
+												if (count == scanArraySize
+														&& Resources
+																.getResources()
+																.isCorrectTicket()) {
+													if (tInfo.ticketNumberOfScans == Resources
+															.getResources()
+															.getTotalScans()) {
+
+														new CloseTicketTask()
+																.execute(CONSTANTS.BASE_URL);
+													} else {
+
+														new AlertDialog.Builder(
+																getActivity())
+																.setIcon(
+																		R.drawable.message_info_icon)
+																.setTitle(
+																		"Info")
+																.setMessage(
+																		"Double scan required before close ticket. Do you want another scan?")
+																.setNegativeButton(
+																		"No",
+																		new DialogInterface.OnClickListener() {
+
+																			@Override
+																			public void onClick(
+																					DialogInterface dialog,
+																					int which) {
+
+																			}
+																		})
+																.setPositiveButton(
+																		"Yes",
+																		new DialogInterface.OnClickListener() {
+
+																			@Override
+																			public void onClick(
+																					DialogInterface dialog,
+																					int which) {
+																				Resources
+																						.getResources()
+																						.setForDoubleScan(
+																								true);
+																				Intent i = new Intent(
+																						getActivity(),
+																						SCCameraPeviewScreen.class);
+																				startActivity(i);
+																			}
+																		})
+																.show();
+
+													}
+												} else {
+													showInfoAlert("Info",
+															"Please scan all tickets first");
+												}
+											} else {
+												showInfoAlert("Info",
+														"Please submit answers of all question first");
+											}
+										}
+									}).show();
+				} else {
+					getActivity().finish();
+				}
+			} else {
+				getActivity().finish();
+			}
+
+		} else if (v == SuspendTickectButton) {
+			showSuspendAlert("Info", "Do want to suspend the ticket");
 		}
+
+	}
+
+	public void showInfoAlert(String title, String message) {
+		new AlertDialog.Builder(getActivity()).setTitle(title)
+				.setMessage(message).setIcon(R.drawable.info_icon)
+				.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+					}
+				}).show();
+
+	}
+
+	public void showSuspendAlert(String title, String message) {
+		new AlertDialog.Builder(getActivity())
+				.setIcon(R.drawable.message_info_icon)
+				.setTitle("Info")
+				.setMessage("Do you want to suspend the ticket ?")
+				.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+					}
+				})
+				.setPositiveButton("Yes",
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								LayoutInflater layoutInflater = LayoutInflater
+										.from(getActivity());
+								View promptView = layoutInflater.inflate(
+										R.layout.sc_question_popup, null);
+								AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+										getActivity());
+								alertDialogBuilder.setView(promptView);
+								alertDialogBuilder.setCancelable(false);
+								final AlertDialog alert = alertDialogBuilder
+										.create();
+								final TextView Titletext = (TextView) promptView
+										.findViewById(R.id.questionId);
+								final EditText changedAnswerView = (EditText) promptView
+										.findViewById(R.id.questionAnswerId);
+
+								final Button okbutton = (Button) promptView
+										.findViewById(R.id.okButton);
+								final Button cancelbutton = (Button) promptView
+										.findViewById(R.id.cancelButton);
+								Titletext.setText("Enter reason for suspend");
+								okbutton.setOnClickListener(new OnClickListener() {
+
+									@Override
+									public void onClick(View v) {
+										// TODO Auto-generated method stub
+										alert.dismiss();
+										reasonvalue = changedAnswerView
+												.getText().toString();
+										new SuspendTask()
+												.execute(CONSTANTS.BASE_URL);
+
+									}
+								});
+
+								cancelbutton
+										.setOnClickListener(new OnClickListener() {
+
+											@Override
+											public void onClick(View v) {
+												// TODO Auto-generated method
+												// stub
+												alert.dismiss();
+											}
+										});
+
+								// create an alert dialog
+
+								alert.show();
+
+							}
+
+						}).show();
 
 	}
 
@@ -215,6 +438,214 @@ String ticketId = "";
 				
 			}
 
+		}
+	}
+
+	private class RestartTickectTask extends
+			AsyncTask<String, Integer, Boolean> {
+
+		private ProgressDialog pdialog;
+		private String response;
+		AssetsTicketsInfo tInfo = Resources.getResources().getAssetTicketInfo();
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+
+			try {
+
+				Log.i("Close Ticket URL", "<><>" + params[0]);
+				List<NameValuePair> listParams = new ArrayList<NameValuePair>();
+				listParams.add(new BasicNameValuePair("ticket_id",
+						tInfo.ticketTableId));
+				listParams.add(new BasicNameValuePair("user_id", SCPreferences
+						.getPreferences().getUserName(getActivity())));
+				listParams.add(new BasicNameValuePair("master_id",
+						SCPreferences.getPreferences().getUserMasterKey(
+								getActivity())));
+				listParams.add(new BasicNameValuePair("action",
+						"restart_ticket"));
+				listParams.add(new BasicNameValuePair("restart_time", curTime));
+				response = new HttpWorker().getData(params[0], listParams);
+
+				Log.i("RESPONSE", "restart Ticket Resp>> " + response);
+				JSONObject obj = new JSONObject(response);
+				objvalue = obj.getString("msg");
+				Log.i("RESPONSE", "restart Ticket Resp>> " + response);
+				return true;
+			} catch (Exception e) {
+				Log.e("Exception", e.getMessage(), e);
+			}
+			return Boolean.FALSE;
+		}
+
+		@Override
+		protected void onCancelled() {
+			super.onCancelled();
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
+			pdialog.dismiss();
+			if (objvalue.equals("Ticket Started Successfully!")) {
+				Resources.getResources().getAssetTicketInfo()
+						.setTicketStatus("pending");
+			}
+
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			pdialog = new ProgressDialog(getActivity());
+			pdialog.setCancelable(false);
+			pdialog.setIcon(R.drawable.info_icon);
+			pdialog.setTitle("Restart Ticket");
+			pdialog.setMessage("Working...");
+			pdialog.show();
+		}
+	}
+
+	private class SuspendTask extends AsyncTask<String, Integer, Boolean> {
+
+		private ProgressDialog pdialog;
+		private String response;
+		AssetsTicketsInfo tInfo = Resources.getResources().getAssetTicketInfo();
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+
+			try {
+
+				Log.i("Close Ticket URL", "<><>" + params[0]);
+				List<NameValuePair> listParams = new ArrayList<NameValuePair>();
+				listParams.add(new BasicNameValuePair("ticket_id",
+						tInfo.ticketTableId));
+				listParams.add(new BasicNameValuePair("user_id", SCPreferences
+						.getPreferences().getUserName(getActivity())));
+				listParams.add(new BasicNameValuePair("master_id",
+						SCPreferences.getPreferences().getUserMasterKey(
+								getActivity())));
+				listParams.add(new BasicNameValuePair("stop_reason",
+						reasonvalue));
+				listParams.add(new BasicNameValuePair("action",
+						"suspend_ticket"));
+				listParams.add(new BasicNameValuePair("stop_time", curTime));
+				Log.v("Suspend values",
+						"suspend values"
+								+ tInfo.ticketTableId
+								+ "\t"
+								+ SCPreferences.getPreferences().getUserName(
+										getActivity())
+								+ "\t"
+								+ SCPreferences.getPreferences()
+										.getUserMasterKey(getActivity()) + "\t"
+								+ reasonvalue + "\t" + curTime);
+				response = new HttpWorker().getData(params[0], listParams);
+				// response = response.substring(3);
+				Log.i("RESPONSE", "Suspend Ticket Resp>> " + response);
+				JSONObject obj = new JSONObject(response);
+				objvalue = obj.getString("msg");
+				Log.i("objvalue RESPONSE", "objvalue Ticket Resp>> " + objvalue);
+				return true;
+			} catch (Exception e) {
+				Log.e("Exception", e.getMessage(), e);
+			}
+			return Boolean.FALSE;
+		}
+
+		@Override
+		protected void onCancelled() {
+			super.onCancelled();
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
+			pdialog.dismiss();
+			if (objvalue.equals("Ticket Stopped Successfully!")) {
+
+				Resources.getResources().getAssetTicketInfo()
+						.setTicketStatus("suspended");
+			}
+			getActivity().finish();
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			pdialog = new ProgressDialog(getActivity());
+			pdialog.setCancelable(false);
+			pdialog.setIcon(R.drawable.info_icon);
+			pdialog.setTitle("Suspend Ticket");
+			pdialog.setMessage("Working...");
+			pdialog.show();
+		}
+	}
+
+	private class CloseTicketTask extends AsyncTask<String, Integer, Boolean> {
+
+		private ProgressDialog pdialog;
+		private String response;
+		AssetsTicketsInfo tInfo = Resources.getResources().getAssetTicketInfo();
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+
+			try {
+
+				Log.i("Close Ticket URL", "<><>" + params[0]);
+				List<NameValuePair> listParams = new ArrayList<NameValuePair>();
+				listParams.add(new BasicNameValuePair("ticket_id",
+						tInfo.ticketTableId));
+				listParams.add(new BasicNameValuePair("history_id", Resources
+						.getResources().getTicketHistoryId()));
+
+				listParams.add(new BasicNameValuePair("employee", SCPreferences
+						.getPreferences().getUserName(getActivity())));
+
+				listParams.add(new BasicNameValuePair("master_id",
+						SCPreferences.getPreferences().getUserMasterKey(
+								getActivity())));
+
+				listParams.add(new BasicNameValuePair("action",
+						"close_scan_ticket"));
+				response = new HttpWorker().getData(params[0], listParams);
+				// response = response.substring(3);
+				Log.i("RESPONSE", "Close Ticket Resp>> " + response);
+				JSONObject obj = new JSONObject(response);
+				return true;
+			} catch (Exception e) {
+				Log.e("Exception", e.getMessage(), e);
+			}
+			return Boolean.FALSE;
+		}
+
+		@Override
+		protected void onCancelled() {
+			super.onCancelled();
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
+			pdialog.dismiss();
+			if (result) {
+				Intent in = new Intent(getActivity(), ScPaynowScreen.class);
+				in.putExtra("ticketId", tInfo.ticketId);
+				startActivity(in);
+			}
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			pdialog = new ProgressDialog(getActivity());
+			pdialog.setCancelable(false);
+			pdialog.setIcon(R.drawable.info_icon);
+			pdialog.setTitle("Closing Ticket");
+			pdialog.setMessage("Working...");
+			pdialog.show();
 		}
 	}
 
@@ -488,10 +919,14 @@ String ticketId = "";
 		// Get filename
 		String filename = pdfUrl.substring(pdfUrl.lastIndexOf("/") + 1);
 		
+		String filename1 = filename.split("\\.")[0];
+		String filename_extention = filename.split("\\.")[1];
+		
 		// timestamp
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
 				Locale.getDefault()).format(new Date());
-		filename =  ticketId + " " + timeStamp+filename;
+		filename = SCPreferences.getPreferences()
+				.getUserMasterKey(mActivity) + ticketId  +filename1+timeStamp+"."+filename_extention;
 		// The place where the downloaded PDF file will be put
 		final File tempFile = new File(
 				context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
@@ -616,5 +1051,42 @@ String ticketId = "";
 		return context.getPackageManager()
 				.queryIntentActivities(i, PackageManager.MATCH_DEFAULT_ONLY)
 				.size() > 0;
+	}
+	
+	@SuppressLint("NewApi") public void EnableCloseButton() {
+		CloseButton.setClickable(false);
+		CloseButton.setAlpha((float) 0.5);
+		
+		
+		scanArraySize = Resources
+				.getResources()
+				.getCheckPointModelArray()
+				.size();
+		int count = Resources
+				.getResources()
+				.getTotalCheckPointScans();
+		AssetsTicketsInfo tInfo = Resources
+				.getResources()
+				.getAssetTicketInfo();
+		if (Resources.getResources()
+				.isQuestionsSubmitted()
+				|| Resources.getResources()
+				.getQuestionsData() == null) {
+			if (count == scanArraySize
+					&& Resources
+					.getResources()
+					.isCorrectTicket()) {
+				if (tInfo.ticketNumberOfScans == Resources
+						.getResources()
+						.getTotalScans()) {
+					CloseButton.setClickable(true);
+					CloseButton.setAlpha((float) 1.0);
+					
+	
+				} 
+			}
+
+		}
+
 	}
 }

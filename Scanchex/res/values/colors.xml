@@ -8,6 +8,8 @@
     <color name="black">#ff000000</color>
     <color name="grey">#f0f0f0</color>
     <color name="white">#ffffff</color> 
+       <color name="purple">#800080</color>
+ 
     <color name="text_disabled">#ffa6b3bf</color>
     <color name="text_header">#ff7e8e9e</color>
     
@@ -25,6 +27,8 @@
     <color name="overDue">#ffced3</color>
     <color name="assign">#cffed0</color>
     <color name="pending">#cfd9fe</color>
+         <color name="suspended">#800080</color>
+ 
     <color name="messageScreen">#feff99</color>
     
     

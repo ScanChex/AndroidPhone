@@ -44,6 +44,9 @@ public class AssetsTicketsInfo {
 	public String allowIdCardScan;
 	public String ticket_type;
 	public String employee;
+	public String is_questions;
+	
+
 	public ArrayList<ScCheckPoints> checkPoints;
 	
 	public String ticket_start_time;
@@ -385,7 +388,13 @@ public class AssetsTicketsInfo {
 	}
 	
 	
-	
+	public String getIs_questions() {
+		return is_questions;
+	}
+
+	public void setIs_questions(String is_questions) {
+		this.is_questions = is_questions;
+	}
 	
 
 }

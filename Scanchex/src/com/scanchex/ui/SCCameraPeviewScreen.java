@@ -213,6 +213,9 @@ public class SCCameraPeviewScreen extends Activity {
 					} else
 
 					{
+						
+						scanTicket = true;
+						
 
 						if (isIdcard.equalsIgnoreCase("Yes")) {
 							if (assetCode.equals(sym.getData().trim())
@@ -419,8 +422,21 @@ public class SCCameraPeviewScreen extends Activity {
 		protected void onPostExecute(Boolean result) {
 			super.onPostExecute(result);
 			pdialog.dismiss();
+			
+		//	 if(!(historyId.equals(""))){
+					if(scanTicket == true){
+					int scanCount = Resources.getResources().getTotalCheckPointScans();				
+					scanCount = scanCount + 1;
+					Resources.getResources().setTotalCheckPointScans(scanCount);
+					
+					}
+					Resources.getResources().setCorrectTicket(true);
+//				}else{
+//					Resources.getResources().setCorrectTicket(false);
+//				}
 			SCCameraPeviewScreen.this.finish();
 			 Resources.getResources().setCheckPointDone(true);
+			
 		
 		}
 

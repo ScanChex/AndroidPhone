@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +25,7 @@ import org.apache.http.protocol.HttpContext;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -63,13 +65,13 @@ import com.scanchex.utils.Resources;
 import com.scanchex.utils.SCPreferences;
 
 public class SCQuestionsFragment extends Fragment implements OnClickListener,
-		OnCheckedChangeListener {
+OnCheckedChangeListener {
 
 	private static final int SELECT_VIDEO = 3;
 	private static final int SELECT_NOTES = 2;
 	private static final int SELECT_PICTURE = 4;
 	private static final int SELECT_AUDIO = 5;
-
+	private AssetsTicketsInfo tInfo;
 	private Integer countnotes = 0;
 	private Integer countimage = 0;
 	private Integer countaudio = 0;
@@ -79,7 +81,7 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 	private ImageView audio;
 	private ImageView video;
 	private Button submitBtn;
-
+	int scanArraySize = 0;
 	private static TextView textviewnotes;
 	private TextView textviewimage;
 	private TextView textviewaudio;
@@ -93,14 +95,23 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 	private JSONArray idsArray = null;
 	private JSONArray ansArray = null;
 
-	private Button ScanTicketButton;
-	
+	private Button ScanTicketButton, SuspendTickectButton, CloseButton;
+	String reasonvalue, curTime, ticketStatus, objvalue;
 	private LinearLayout layout;
 	private RelativeLayout notescounterlayout, imagescounterlayout, audiocounterlayout, videocounterlayout;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		tInfo = Resources.getResources().getAssetTicketInfo();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		formatter.setLenient(false);
+
+		Date curDate = new Date();
+		long curMillis = curDate.getTime();
+		curTime = formatter.format(curDate);
+
 	}
 
 	@Override
@@ -113,11 +124,13 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 		layout1.setBackgroundColor(SCPreferences.getColor(getActivity()));
 
 		ScanTicketButton = (Button) view.findViewById(R.id.scan_button);
-		
+		SuspendTickectButton = (Button) view.findViewById(R.id.suspend_button);
+		CloseButton = (Button) view.findViewById(R.id.close_button);
+		SuspendTickectButton.setVisibility(View.GONE);
+		CloseButton.setVisibility(View.GONE);
 		
 
-		 layout = (LinearLayout) view
-				.findViewById(R.id.questions_layout_id);
+		layout = (LinearLayout) view.findViewById(R.id.questions_layout_id);
 
 		if (Resources.getResources().getQuestionsData() != null) {
 			Vector<SCQuestionsInfo> vector = Resources.getResources()
@@ -140,19 +153,19 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 					for (int j = 0; j < answers.length; j++) {
 						RadioButton rb = new RadioButton(getActivity());
 						rb.setOnClickListener(
-						 new OnClickListener (){
-							 public void onClick(View v) {
-							   //Your Implementaions...
-								 if (Resources.getResources().isFirstScanDone()) {
-								    v.setClickable(true);
-								 } else {
-									 Toast.makeText(getActivity(),
-												"Please Scan Ticket First!",
-												Toast.LENGTH_SHORT).show();
-									 v.setClickable(false);
-								 }
-							 }
-							});
+								new OnClickListener (){
+									public void onClick(View v) {
+										//Your Implementaions...
+										if (Resources.getResources().isFirstScanDone()) {
+											v.setClickable(true);
+										} else {
+											Toast.makeText(getActivity(),
+													"Please Scan Ticket First!",
+													Toast.LENGTH_SHORT).show();
+											v.setClickable(false);
+										}
+									}
+								});
 						rb.setText(answers[j]);
 						rb.setTextColor(getResources().getColor(R.color.white));
 
@@ -167,10 +180,10 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 					//disable radio group
 					for (int k = 0; k < radioGroup.getChildCount(); k++) {
 						radioGroup.getChildAt(k).setClickable(false);
-						}
-					
+					}
+
 					radioGroup.setOnCheckedChangeListener(this);
-					
+
 
 					rbGroup[i] = radioGroup;
 
@@ -189,50 +202,50 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 					RadioButton rbYes = new RadioButton(getActivity());
 					rbYes.setText("Yes");
 					rbYes.setOnClickListener(
-							 new OnClickListener (){
-								 public void onClick(View v) {
-								   //Your Implementaions...
-									 if (Resources.getResources().isFirstScanDone()) {
-										 v.setClickable(true);
-									 } else {
-										 Toast.makeText(getActivity(),
-													"Please Scan Ticket First!",
-													Toast.LENGTH_SHORT).show();
-										 v.setClickable(false);
-									 }
-								 }
-								});
+							new OnClickListener (){
+								public void onClick(View v) {
+									//Your Implementaions...
+									if (Resources.getResources().isFirstScanDone()) {
+										v.setClickable(true);
+									} else {
+										Toast.makeText(getActivity(),
+												"Please Scan Ticket First!",
+												Toast.LENGTH_SHORT).show();
+										v.setClickable(false);
+									}
+								}
+							});
 					rbYes.setTextColor(getResources().getColor(R.color.white));
 					radioGroup.addView(rbYes);
 
 					RadioButton rbNo = new RadioButton(getActivity());
 					rbNo.setText("No");
 					rbNo.setOnClickListener(
-							 new OnClickListener (){
-								 public void onClick(View v) {
-								   //Your Implementaions...
-									 if (Resources.getResources().isFirstScanDone()) {
-									 
-									 } else {
-										 Toast.makeText(getActivity(),
-													"Please Scan Ticket First!",
-													Toast.LENGTH_SHORT).show();
-									 }
-								 }
-								});
+							new OnClickListener (){
+								public void onClick(View v) {
+									//Your Implementaions...
+									if (Resources.getResources().isFirstScanDone()) {
+
+									} else {
+										Toast.makeText(getActivity(),
+												"Please Scan Ticket First!",
+												Toast.LENGTH_SHORT).show();
+									}
+								}
+							});
 					rbNo.setTextColor(getResources().getColor(R.color.white));
 					radioGroup.addView(rbNo);
 
 					//disable radio group
 					for (int k = 0; k < radioGroup.getChildCount(); k++) {
 						radioGroup.getChildAt(k).setClickable(false);
-						}
-			     
+					}
+
 					radioGroup.setOnCheckedChangeListener(this);
-					
+
 					if ( qInfo.questionAnswer.equals("true")) {
 						rbYes.setChecked(true);
-					} else {
+					} else if ( qInfo.questionAnswer.equals("false")) {
 						rbNo.setChecked(true);
 					}
 
@@ -263,7 +276,7 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 					answerView.setText(qInfo.questionAnswer);
 					answerView.setTextColor(Color.parseColor("#000000"));
 					answerView
-							.setBackgroundResource(R.drawable.edittext_border);
+					.setBackgroundResource(R.drawable.edittext_border);
 					answerView.setPadding(5, 5, 5, 5);
 					llayout.addView(answerView);
 					fillAnswer[i] = answerView;
@@ -315,16 +328,16 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 								});
 
 								cancelbutton
-										.setOnClickListener(new OnClickListener() {
+								.setOnClickListener(new OnClickListener() {
 
-											@Override
-											public void onClick(View v) {
-												// TODO Auto-generated method
-												// stub
+									@Override
+									public void onClick(View v) {
+										// TODO Auto-generated method
+										// stub
 
-												alert.dismiss();
-											}
-										});
+										alert.dismiss();
+									}
+								});
 
 								// create an alert dialog
 
@@ -351,6 +364,8 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 
 				}
 			}
+		} else {
+			
 		}
 
 		submitBtn = (Button) view.findViewById(R.id.question_submit_btn);
@@ -363,12 +378,12 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 		textviewimage = (TextView) view.findViewById(R.id.textViewImage);
 		textviewaudio = (TextView) view.findViewById(R.id.audiotextViewNotes);
 		textviewvideo = (TextView) view.findViewById(R.id.textViewvideoNotes);
-		
+
 		textviewnotes.setVisibility(View.GONE);
 		textviewimage.setVisibility(View.GONE);
 		textviewaudio.setVisibility(View.GONE);
 		textviewvideo.setVisibility(View.GONE);
-		
+
 
 		// Log.v("count in oncreateview", "count in oncreateview" + count);
 		notes.setOnClickListener(this);
@@ -376,19 +391,21 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 		audio.setOnClickListener(this);
 		video.setOnClickListener(this);
 		ScanTicketButton.setOnClickListener(this);
+		SuspendTickectButton.setOnClickListener(this);
 		submitBtn.setOnClickListener(this);
+		CloseButton.setOnClickListener(this);
 		return view;
 	}
-	
-	
-	
-	
+
+
+
+
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		if (!Resources.getResources().isFirstScanDone()) {
 
-	    return true;
+			return true;
 		} 
-		
+
 		return false;
 	}
 
@@ -398,30 +415,38 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 		// Log.e("On Resume Called", "ASSETS!!");
 		if (Resources.getResources().isFirstScanDone()) {
 
-			disableEnableControls(true,layout);
-			
-//		 for (int j = 0; j < layout.getChildCount(); j++) {
-//		        View v1 = layout.getChildAt(j);
-//		      if (v1 instanceof RadioGroup) {
-//		    	  
-//		    	  for (int k = 0; k < ((RadioGroup)v1).getChildCount(); k++) {
-//		    		  ((RadioGroup)v1).getChildAt(k).setClickable(true);
-//						}
-//		    	  //v1.setClickable(true);
-//		        } //etc. If it fails anywhere, just return false.
-//		    }
+			disableEnableControls(true, layout);
+			SuspendTickectButton.setVisibility(View.VISIBLE);
+			CloseButton.setVisibility(View.VISIBLE);
+			EnableCloseButton();
+			// for (int j = 0; j < layout.getChildCount(); j++) {
+			// View v1 = layout.getChildAt(j);
+			// if (v1 instanceof RadioGroup) {
+			//
+			// for (int k = 0; k < ((RadioGroup)v1).getChildCount(); k++) {
+			// ((RadioGroup)v1).getChildAt(k).setClickable(true);
+			// }
+			// //v1.setClickable(true);
+			// } //etc. If it fails anywhere, just return false.
+			// }
+			ticketStatus = tInfo.ticketStatus;
+			if (ticketStatus.equals("suspended")) {
+				new RestartTickectTask().execute(CONSTANTS.BASE_URL);
+
+			}
+
 		}
 
 	}
-	
+
 	private void disableEnableControls(boolean enable, ViewGroup vg){
-	    for (int i = 0; i < vg.getChildCount(); i++){
-	       View child = vg.getChildAt(i);
-	       child.setClickable(enable);
-	       if (child instanceof ViewGroup){ 
-	          disableEnableControls(enable, (ViewGroup)child);
-	       }
-	    }
+		for (int i = 0; i < vg.getChildCount(); i++){
+			View child = vg.getChildAt(i);
+			child.setClickable(enable);
+			if (child instanceof ViewGroup){ 
+				disableEnableControls(enable, (ViewGroup)child);
+			}
+		}
 	}
 
 	@Override
@@ -461,7 +486,7 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 				Intent intent = new Intent(getActivity(),
 						SCRecordingScreen.class);
 				//startActivity(intent);
-                                startActivityForResult(intent,SELECT_AUDIO);
+				startActivityForResult(intent,SELECT_AUDIO);
 
 			} else {
 				Toast.makeText(getActivity(), "Please Scan Ticket First!",
@@ -523,16 +548,16 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 							ansArray.put(text);
 						}
 					}
-				
 
-				Log.i("IDS", "IDS> " + idsArray.toString());
-				Log.i("ANS", "ANS> " + ansArray.toString());
-				if (vector.size() == ansArray.length()) {
-					new UpdateAnswersTask().execute(CONSTANTS.BASE_URL);
-				} else {
-					showAlertDialog("Info", "Please answer all questions");
-				}
-				
+
+					Log.i("IDS", "IDS> " + idsArray.toString());
+					Log.i("ANS", "ANS> " + ansArray.toString());
+					if (vector.size() == ansArray.length()) {
+						new UpdateAnswersTask().execute(CONSTANTS.BASE_URL);
+					} else {
+						showAlertDialog("Info", "Please answer all questions");
+					}
+
 				} else {
 					showAlertDialog("Info", "There are no answers to submit");
 				}
@@ -551,20 +576,128 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 					Intent i = new Intent(getActivity(),
 							SCCameraPeviewScreen.class);
 					startActivity(i);
-					
-		
+
+
 				} else {
 					Toast.makeText(getActivity(), "Ticket time is not started",
 							Toast.LENGTH_LONG).show();
 				}
 			}
 
+		} else if (v == CloseButton) {
+			if (Resources.getResources().isFirstScanDone()) {
+				if (Resources.getResources().isCloseTicket()) {
+					new AlertDialog.Builder(getActivity())
+					.setIcon(R.drawable.message_info_icon)
+					.setTitle("Info")
+					.setMessage(
+							"Are you sure, you want to close a ticket?")
+							.setNegativeButton("No",
+									new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(
+										DialogInterface dialog,
+										int which) {
+									// getActivity().finish();
+								}
+							})
+							.setPositiveButton("Yes",
+									new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(
+										DialogInterface dialog,
+										int which) {
+									scanArraySize = Resources
+											.getResources()
+											.getCheckPointModelArray()
+											.size();
+									int count = Resources
+											.getResources()
+											.getTotalCheckPointScans();
+									AssetsTicketsInfo tInfo = Resources
+											.getResources()
+											.getAssetTicketInfo();
+									if (Resources.getResources()
+											.isQuestionsSubmitted()
+											|| Resources.getResources()
+											.getQuestionsData() == null) {
+										if (count == scanArraySize
+												&& Resources
+												.getResources()
+												.isCorrectTicket()) {
+											if (tInfo.ticketNumberOfScans == Resources
+													.getResources()
+													.getTotalScans()) {
+
+												new CloseTicketTask()
+												.execute(CONSTANTS.BASE_URL);
+											} else {
+
+												new AlertDialog.Builder(
+														getActivity())
+												.setIcon(
+														R.drawable.message_info_icon)
+														.setTitle(
+																"Info")
+																.setMessage(
+																		"Double scan required before close ticket. Do you want another scan?")
+																		.setNegativeButton(
+																				"No",
+																				new DialogInterface.OnClickListener() {
+
+																					@Override
+																					public void onClick(
+																							DialogInterface dialog,
+																							int which) {
+
+																					}
+																				})
+																				.setPositiveButton(
+																						"Yes",
+																						new DialogInterface.OnClickListener() {
+
+																							@Override
+																							public void onClick(
+																									DialogInterface dialog,
+																									int which) {
+																								Resources
+																								.getResources()
+																								.setForDoubleScan(
+																										true);
+																								Intent i = new Intent(
+																										getActivity(),
+																										SCCameraPeviewScreen.class);
+																								startActivity(i);
+																							}
+																						})
+																						.show();
+
+											}
+										} else {
+											showInfoAlert("Info",
+													"Please scan all tickets first");
+										}
+									} else {
+										showInfoAlert("Info",
+												"Please submit answers of all question first");
+									}
+								}
+							}).show();
+				} else {
+					getActivity().finish();
+				}
+			} else {
+				getActivity().finish();
+			}
+
+		} else if (v == SuspendTickectButton) {
+			showSuspendAlert("Info", "Do want to suspend the ticket");
 		}
 
 	}
 
-	
-	
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 		if (requestCode == SELECT_NOTES && data != null) {
@@ -578,7 +711,7 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 					textviewnotes.setText(countno);
 					Log.v("count value", "count value" + countnotes);
 					textviewnotes.setVisibility(View.VISIBLE);
-					
+
 					//
 				}
 
@@ -596,7 +729,7 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 					Log.v("count value", "count value" + countimage);
 					textviewimage.setVisibility(View.VISIBLE);
 
-					
+
 
 					//
 				}
@@ -614,7 +747,7 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 					Log.v("count value", "count value" + countaudio);
 					textviewaudio.setVisibility(View.VISIBLE);
 
-					
+
 					//
 				}
 			}
@@ -642,6 +775,79 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 		}
 	}
 
+	public void showSuspendAlert(String title, String message) {
+		new AlertDialog.Builder(getActivity())
+				.setIcon(R.drawable.message_info_icon)
+				.setTitle("Info")
+				.setMessage("Do you want to suspend the ticket ?")
+				.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+					}
+				})
+				.setPositiveButton("Yes",
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								LayoutInflater layoutInflater = LayoutInflater
+										.from(getActivity());
+								View promptView = layoutInflater.inflate(
+										R.layout.sc_question_popup, null);
+								AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+										getActivity());
+								alertDialogBuilder.setView(promptView);
+								alertDialogBuilder.setCancelable(false);
+								final AlertDialog alert = alertDialogBuilder
+										.create();
+								final TextView Titletext = (TextView) promptView
+										.findViewById(R.id.questionId);
+								final EditText changedAnswerView = (EditText) promptView
+										.findViewById(R.id.questionAnswerId);
+
+								final Button okbutton = (Button) promptView
+										.findViewById(R.id.okButton);
+								final Button cancelbutton = (Button) promptView
+										.findViewById(R.id.cancelButton);
+								Titletext.setText("Enter reason for suspend");
+								okbutton.setOnClickListener(new OnClickListener() {
+
+									@Override
+									public void onClick(View v) {
+										// TODO Auto-generated method stub
+										alert.dismiss();
+										reasonvalue = changedAnswerView
+												.getText().toString();
+										new SuspendTask()
+												.execute(CONSTANTS.BASE_URL);
+
+									}
+								});
+
+								cancelbutton
+										.setOnClickListener(new OnClickListener() {
+
+											@Override
+											public void onClick(View v) {
+												// TODO Auto-generated method
+												// stub
+												alert.dismiss();
+											}
+										});
+
+								// create an alert dialog
+
+								alert.show();
+
+							}
+
+						}).show();
+
+	}
+
 	private String getContentType(Uri uri) {
 		ContentResolver cR = getActivity().getContentResolver();
 		return cR.getType(uri);
@@ -655,6 +861,227 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 				.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 		cursor.moveToFirst();
 		return cursor.getString(column_index);
+	}
+
+	public void showInfoAlert(String title, String message) {
+		new AlertDialog.Builder(getActivity()).setTitle(title)
+		.setMessage(message).setIcon(R.drawable.info_icon)
+		.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+			}
+		}).show();
+
+	}
+
+	private class RestartTickectTask extends
+			AsyncTask<String, Integer, Boolean> {
+
+		private ProgressDialog pdialog;
+		private String response;
+		AssetsTicketsInfo tInfo = Resources.getResources().getAssetTicketInfo();
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+
+			try {
+
+				Log.i("Close Ticket URL", "<><>" + params[0]);
+				List<NameValuePair> listParams = new ArrayList<NameValuePair>();
+				listParams.add(new BasicNameValuePair("ticket_id",
+						tInfo.ticketTableId));
+				listParams.add(new BasicNameValuePair("user_id", SCPreferences
+						.getPreferences().getUserName(getActivity())));
+				listParams.add(new BasicNameValuePair("master_id",
+						SCPreferences.getPreferences().getUserMasterKey(
+								getActivity())));
+				listParams.add(new BasicNameValuePair("action",
+						"restart_ticket"));
+				listParams.add(new BasicNameValuePair("restart_time", curTime));
+				response = new HttpWorker().getData(params[0], listParams);
+
+				Log.i("RESPONSE", "restart Ticket Resp>> " + response);
+				JSONObject obj = new JSONObject(response);
+				objvalue = obj.getString("msg");
+				Log.i("RESPONSE", "restart Ticket Resp>> " + response);
+				return true;
+			} catch (Exception e) {
+				Log.e("Exception", e.getMessage(), e);
+			}
+			return Boolean.FALSE;
+		}
+
+		@Override
+		protected void onCancelled() {
+			super.onCancelled();
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
+			pdialog.dismiss();
+			if (objvalue.equals("Ticket Started Successfully!")) {
+				Resources.getResources().getAssetTicketInfo()
+						.setTicketStatus("pending");
+			}
+
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			pdialog = new ProgressDialog(getActivity());
+			pdialog.setCancelable(false);
+			pdialog.setIcon(R.drawable.info_icon);
+			pdialog.setTitle("Restart Ticket");
+			pdialog.setMessage("Working...");
+			pdialog.show();
+		}
+	}
+
+	private class SuspendTask extends AsyncTask<String, Integer, Boolean> {
+
+		private ProgressDialog pdialog;
+		private String response;
+		AssetsTicketsInfo tInfo = Resources.getResources().getAssetTicketInfo();
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+
+			try {
+
+				Log.i("Close Ticket URL", "<><>" + params[0]);
+				List<NameValuePair> listParams = new ArrayList<NameValuePair>();
+				listParams.add(new BasicNameValuePair("ticket_id",
+						tInfo.ticketTableId));
+				listParams.add(new BasicNameValuePair("user_id", SCPreferences
+						.getPreferences().getUserName(getActivity())));
+				listParams.add(new BasicNameValuePair("master_id",
+						SCPreferences.getPreferences().getUserMasterKey(
+								getActivity())));
+				listParams.add(new BasicNameValuePair("stop_reason",
+						reasonvalue));
+				listParams.add(new BasicNameValuePair("action",
+						"suspend_ticket"));
+				listParams.add(new BasicNameValuePair("stop_time", curTime));
+				Log.v("Suspend values",
+						"suspend values"
+								+ tInfo.ticketTableId
+								+ "\t"
+								+ SCPreferences.getPreferences().getUserName(
+										getActivity())
+								+ "\t"
+								+ SCPreferences.getPreferences()
+										.getUserMasterKey(getActivity()) + "\t"
+								+ reasonvalue + "\t" + curTime);
+				response = new HttpWorker().getData(params[0], listParams);
+				// response = response.substring(3);
+				Log.i("RESPONSE", "Suspend Ticket Resp>> " + response);
+				JSONObject obj = new JSONObject(response);
+				objvalue = obj.getString("msg");
+				Log.i("objvalue RESPONSE", "objvalue Ticket Resp>> " + objvalue);
+				return true;
+			} catch (Exception e) {
+				Log.e("Exception", e.getMessage(), e);
+			}
+			return Boolean.FALSE;
+		}
+
+		@Override
+		protected void onCancelled() {
+			super.onCancelled();
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
+			pdialog.dismiss();
+			if (objvalue.equals("Ticket Stopped Successfully!")) {
+
+				Resources.getResources().getAssetTicketInfo()
+						.setTicketStatus("suspended");
+			}
+			getActivity().finish();
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			pdialog = new ProgressDialog(getActivity());
+			pdialog.setCancelable(false);
+			pdialog.setIcon(R.drawable.info_icon);
+			pdialog.setTitle("Suspend Ticket");
+			pdialog.setMessage("Working...");
+			pdialog.show();
+		}
+	}
+
+	private class CloseTicketTask extends AsyncTask<String, Integer, Boolean> {
+
+		private ProgressDialog pdialog;
+		private String response;
+		AssetsTicketsInfo tInfo = Resources.getResources().getAssetTicketInfo();
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+
+			try {
+
+				Log.i("Close Ticket URL", "<><>" + params[0]);
+				List<NameValuePair> listParams = new ArrayList<NameValuePair>();
+				listParams.add(new BasicNameValuePair("ticket_id",
+						tInfo.ticketTableId));
+				listParams.add(new BasicNameValuePair("history_id", Resources
+						.getResources().getTicketHistoryId()));
+
+				listParams.add(new BasicNameValuePair("employee", SCPreferences
+						.getPreferences().getUserName(getActivity())));
+
+				listParams.add(new BasicNameValuePair("master_id",
+						SCPreferences.getPreferences().getUserMasterKey(
+								getActivity())));
+
+				listParams.add(new BasicNameValuePair("action",
+						"close_scan_ticket"));
+				response = new HttpWorker().getData(params[0], listParams);
+				// response = response.substring(3);
+				Log.i("RESPONSE", "Close Ticket Resp>> " + response);
+				JSONObject obj = new JSONObject(response);
+				return true;
+			} catch (Exception e) {
+				Log.e("Exception", e.getMessage(), e);
+			}
+			return Boolean.FALSE;
+		}
+
+		@Override
+		protected void onCancelled() {
+			super.onCancelled();
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
+			pdialog.dismiss();
+			if (result) {
+				Intent in = new Intent(getActivity(), ScPaynowScreen.class);
+				in.putExtra("ticketId", tInfo.ticketId);
+				startActivity(in);
+			}
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			pdialog = new ProgressDialog(getActivity());
+			pdialog.setCancelable(false);
+			pdialog.setIcon(R.drawable.info_icon);
+			pdialog.setTitle("Closing Ticket");
+			pdialog.setMessage("Working...");
+			pdialog.show();
+		}
 	}
 
 	private class UploadVideoTask extends AsyncTask<String, Void, Boolean> {
@@ -686,7 +1113,7 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 			nameValuePairs.add(new BasicNameValuePair("action", "upload"));
 			nameValuePairs.add(new BasicNameValuePair("type", "video"));
 			nameValuePairs
-					.add(new BasicNameValuePair("file", selectedVideoPath));
+			.add(new BasicNameValuePair("file", selectedVideoPath));
 			nameValuePairs.add(new BasicNameValuePair("file_name", "ScanCheX"
 					+ new Date().getTime()));
 			Log.i("<<CTYPE>>>" + contentType, "<<<<FILE PATH >>>>>"
@@ -771,13 +1198,13 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 
 	private void showAlertDialog(String title, String message) {
 		new AlertDialog.Builder(getActivity()).setIcon(R.drawable.info_icon)
-				.setTitle(title).setMessage(message)
-				.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+		.setTitle(title).setMessage(message)
+		.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 
-					public void onClick(DialogInterface dialog, int which) {
+			public void onClick(DialogInterface dialog, int which) {
 
-					}
-				}).show();
+			}
+		}).show();
 	}
 
 	// //////////////////ASYNC TASK//////////////////
@@ -803,7 +1230,7 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 				listParams.add(new BasicNameValuePair("ticket_id",
 						tInfo.ticketTableId));
 				listParams
-						.add(new BasicNameValuePair("action", "update_answer"));
+				.add(new BasicNameValuePair("action", "update_answer"));
 				response = new HttpWorker().getData(params[0], listParams);
 				// response = response.substring(3);
 				Log.i("RESPONSE", "Question Resp>> " + response);
@@ -835,6 +1262,7 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 				showAlertDialog("Info", "Answers not updated");
 			}
 			Resources.getResources().setQuestionsSubmitted(true);
+			EnableCloseButton();
 		}
 
 		@Override
@@ -856,14 +1284,52 @@ public class SCQuestionsFragment extends Fragment implements OnClickListener,
 		if (Resources.getResources().isFirstScanDone()) {
 			for (int k = 0; k < group.getChildCount(); k++) {
 				group.getChildAt(k).setClickable(true);
-				}
+			}
 
 		} else {
 			Toast.makeText(getActivity(), "Please Scan Ticket First!",
 					Toast.LENGTH_SHORT).show();
 			for (int k = 0; k < group.getChildCount(); k++) {
 				group.getChildAt(k).setClickable(false);
-				}
+			}
+
+		}
+
+	}
+
+	@SuppressLint("NewApi") public void EnableCloseButton() {
+		CloseButton.setClickable(false);
+		CloseButton.setAlpha((float) 0.5);
+		
+		
+		scanArraySize = Resources
+				.getResources()
+				.getCheckPointModelArray()
+				.size();
+		int count = Resources
+				.getResources()
+				.getTotalCheckPointScans();
+		AssetsTicketsInfo tInfo = Resources
+				.getResources()
+				.getAssetTicketInfo();
+		if (Resources.getResources()
+				.isQuestionsSubmitted()
+				|| Resources.getResources()
+				.getQuestionsData() == null) {
+			if (count == scanArraySize
+					&& Resources
+					.getResources()
+					.isCorrectTicket()) {
+				if (tInfo.ticketNumberOfScans == Resources
+						.getResources()
+						.getTotalScans()) {
+					CloseButton.setClickable(true);
+					CloseButton.setAlpha((float) 1.0);
+					
+					
+
+				} 
+			}
 
 		}
 

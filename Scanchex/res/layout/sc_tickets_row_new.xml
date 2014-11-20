@@ -23,7 +23,8 @@
             android:layout_weight="12" >
 
             <!-- android:background="@drawable/rectangle_shape" -->
-
+            
+            
             <ImageView
                 android:id="@+id/image_view"
                 android:layout_width="fill_parent"
@@ -31,9 +32,10 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:layout_margin="5dp"
-                android:scaleType="fitXY"
                 android:background="@drawable/rounded_corner"
+                android:scaleType="fitXY"
                 android:src="@drawable/app_icon" />
+            
 
             <ImageView
                 android:id="@+id/ticket_status_icon"
@@ -42,6 +44,20 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:background="@drawable/excalamation_icon" />
+
+             <TextView
+            android:id="@+id/onHold"
+            style="@style/ticketIdText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ticket_status_icon"
+            android:background="@color/black"
+            android:gravity="center"
+            android:layout_margin="20dp"
+            android:text="ON HOLD"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
         </RelativeLayout>
 
         <TextView
