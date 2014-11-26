@@ -27,7 +27,7 @@
     <color name="overDue">#ffced3</color>
     <color name="assign">#cffed0</color>
     <color name="pending">#cfd9fe</color>
-         <color name="suspended">#800080</color>
+         <color name="suspended">#FFFFB6</color>
  
     <color name="messageScreen">#feff99</color>
     
