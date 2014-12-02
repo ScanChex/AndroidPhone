@@ -41,7 +41,7 @@ import com.scanchex.utils.Resources;
 import com.scanchex.utils.SCPreferences;
 import com.squareup.picasso.Picasso;
 
-public class ScPaymentScreen extends Activity {
+public class ScPaymentScreen extends BaseActivity {
 
 	String ticketIdString, imageFIle, comment, AdditionalComment, contentType,
 			payment_type;

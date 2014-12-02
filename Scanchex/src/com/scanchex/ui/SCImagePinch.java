@@ -7,7 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class SCImagePinch extends Activity {
+public class SCImagePinch extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

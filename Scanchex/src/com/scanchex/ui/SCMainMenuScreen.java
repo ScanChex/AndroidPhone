@@ -20,7 +20,7 @@ import com.scanchex.utils.Resources;
 import com.scanchex.utils.SCPreferences;
 import com.squareup.picasso.Picasso;
 
-public class SCMainMenuScreen extends Activity {
+public class SCMainMenuScreen extends BaseActivity {
 
 	private PendingIntent pi;
 	private AlarmManager am;

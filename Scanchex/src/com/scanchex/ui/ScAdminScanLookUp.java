@@ -40,7 +40,7 @@ import com.scanchex.utils.Network;
 import com.scanchex.utils.SCPreferences;
 import com.squareup.picasso.Picasso;
 
-public class ScAdminScanLookUp extends Activity {
+public class ScAdminScanLookUp extends BaseActivity {
 
 	ImageView imageView;
 	EditText editTextSerialNumber, editTextDepartment, editTextAddress,

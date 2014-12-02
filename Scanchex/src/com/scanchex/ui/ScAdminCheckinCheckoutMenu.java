@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class ScAdminCheckinCheckoutMenu extends Activity {
+public class ScAdminCheckinCheckoutMenu extends BaseActivity {
 
 	Activity mActivity;
 	@Override

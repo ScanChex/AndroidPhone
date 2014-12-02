@@ -29,7 +29,7 @@ import android.widget.LinearLayout;
 
 import com.scanchex.utils.SCPreferences;
 
-public class SCAdminImageTakenScreen extends Activity{
+public class SCAdminImageTakenScreen extends BaseActivity{
 	
 	public static String selectedImagePath = "";
 	private final int SELECT_PICTURE = 200;

@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 
 import com.scanchex.utils.SCPreferences;
 
-public class SCAdminTapToScanScreen extends Activity{
+public class SCAdminTapToScanScreen extends BaseActivity{
 	
 	public static boolean isFromAssetDetail;
 	@Override

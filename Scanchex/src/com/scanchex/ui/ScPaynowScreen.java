@@ -57,7 +57,7 @@ import com.scanchex.utils.Resources;
 import com.scanchex.utils.SCPreferences;
 import com.squareup.picasso.Picasso;
 
-public class ScPaynowScreen extends Activity implements OnClickListener{
+public class ScPaynowScreen extends BaseActivity implements OnClickListener{
 	private DrawingView drawView;
 	private Button newBtn, saveBtn;
 	private float smallBrush;

@@ -13,7 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-public class SCVideoPlayScreen extends Activity {
+public class SCVideoPlayScreen extends BaseActivity {
 
 	private String path;
 	private VideoView videoview;

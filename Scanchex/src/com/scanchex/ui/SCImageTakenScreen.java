@@ -56,7 +56,7 @@ import com.scanchex.utils.CONSTANTS;
 import com.scanchex.utils.Resources;
 import com.scanchex.utils.SCPreferences;
 
-public class SCImageTakenScreen extends Activity{
+public class SCImageTakenScreen extends BaseActivity{
 	
 	public static String selectedImagePath = "";
 	private final int SELECT_PICTURE = 200;

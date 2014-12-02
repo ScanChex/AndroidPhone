@@ -38,7 +38,7 @@ import android.widget.Toast;
 import com.scanchex.utils.Network;
 import com.scanchex.utils.WakeLocker;
 
-public class VideoCaptureActivity extends Activity {
+public class VideoCaptureActivity extends BaseActivity {
 
 	Camera camera;
 	ImageButton recordButton;

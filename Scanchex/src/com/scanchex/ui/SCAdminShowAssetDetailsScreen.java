@@ -49,7 +49,7 @@ import com.scanchex.utils.Resources;
 import com.scanchex.utils.SCPreferences;
 import com.squareup.picasso.Picasso;
 
-public class SCAdminShowAssetDetailsScreen extends Activity implements
+public class SCAdminShowAssetDetailsScreen extends BaseActivity implements
 		OnClickListener {
 
 	private ImageView assetImage;

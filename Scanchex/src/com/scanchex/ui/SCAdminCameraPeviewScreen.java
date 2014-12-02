@@ -52,7 +52,7 @@ import com.scanchex.utils.CONSTANTS;
 import com.scanchex.utils.Resources;
 import com.scanchex.utils.SCPreferences;
 
-public class SCAdminCameraPeviewScreen extends Activity {
+public class SCAdminCameraPeviewScreen extends BaseActivity {
 
 	private Camera mCamera;
 	private CameraPreview mPreview;

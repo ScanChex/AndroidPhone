@@ -30,7 +30,7 @@ import com.scanchex.utils.CONSTANTS;
 import com.scanchex.utils.JSONParser;
 import com.squareup.picasso.Picasso;
 
-public class ScAdminCheckOutConfirmationScreen extends Activity {
+public class ScAdminCheckOutConfirmationScreen extends BaseActivity {
 
 	ImageView imageView;
 

@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-public class TestRecordingVoice extends Activity{
+public class TestRecordingVoice extends BaseActivity{
 	
 	    private static final String LOG_TAG = "AudioRecordTest";
 	    private static String mFileName = null;

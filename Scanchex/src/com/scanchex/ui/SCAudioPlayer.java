@@ -18,7 +18,7 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-public class SCAudioPlayer extends Activity implements OnCompletionListener,
+public class SCAudioPlayer extends BaseActivity implements OnCompletionListener,
 		SeekBar.OnSeekBarChangeListener, OnBufferingUpdateListener {
 
 	String link;

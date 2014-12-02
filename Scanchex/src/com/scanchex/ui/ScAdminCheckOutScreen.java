@@ -76,7 +76,7 @@ import com.scanchex.utils.JSONParser;
 import com.scanchex.utils.SCPreferences;
 import com.squareup.picasso.Picasso;
 
-public class ScAdminCheckOutScreen extends Activity {
+public class ScAdminCheckOutScreen extends BaseActivity {
 
 	ImageView imageView;
 	Spinner spinnerEmployee, spinnerTolerance, editTextForClient,

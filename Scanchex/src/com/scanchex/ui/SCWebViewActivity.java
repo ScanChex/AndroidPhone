@@ -9,7 +9,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
-public class SCWebViewActivity extends Activity {
+public class SCWebViewActivity extends BaseActivity {
 
 	String url = "";
 	WebView webView;

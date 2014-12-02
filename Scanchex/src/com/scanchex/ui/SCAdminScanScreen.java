@@ -42,7 +42,7 @@ import com.scanchex.utils.CONSTANTS;
 import com.scanchex.utils.JSONParser;
 import com.scanchex.utils.SCPreferences;
 
-public class SCAdminScanScreen extends Activity {
+public class SCAdminScanScreen extends BaseActivity {
 
 	private Camera mCamera;
 	private CameraPreview mPreview;

@@ -35,7 +35,7 @@ import com.scanchex.utils.Network;
 import com.scanchex.utils.SCPreferences;
 import com.squareup.picasso.Picasso;
 
-public class ScAdminManualLookUp extends Activity {
+public class ScAdminManualLookUp extends BaseActivity {
 
 	ImageView imageView;
 	Spinner spinnerAssetId;

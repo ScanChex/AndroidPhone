@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.scanchex.utils.SCPreferences;
 
-public class SCHistoryNotesViewScreen extends Activity{
+public class SCHistoryNotesViewScreen extends BaseActivity{
 	
 	
 	private EditText notText;

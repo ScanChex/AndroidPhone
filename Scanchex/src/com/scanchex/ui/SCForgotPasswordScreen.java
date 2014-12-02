@@ -21,7 +21,7 @@ import com.scanchex.network.HttpWorker;
 import com.scanchex.utils.CONSTANTS;
 import com.scanchex.utils.SCPreferences;
 
-public class SCForgotPasswordScreen extends Activity{
+public class SCForgotPasswordScreen extends BaseActivity{
 	
 	private EditText cId;
 	private EditText username;

@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-public class ScAdminCheckoutTicketMenu extends Activity {
+public class ScAdminCheckoutTicketMenu extends BaseActivity {
 
 	Activity mActivity;
 	

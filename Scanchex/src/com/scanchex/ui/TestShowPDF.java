@@ -8,7 +8,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
-public class TestShowPDF extends Activity {
+public class TestShowPDF extends BaseActivity {
 
 	String url = "";
 	WebView webView;

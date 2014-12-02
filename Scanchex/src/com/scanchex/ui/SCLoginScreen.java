@@ -28,7 +28,7 @@ import com.scanchex.utils.CONSTANTS;
 import com.scanchex.utils.Resources;
 import com.scanchex.utils.SCPreferences;
 
-public class SCLoginScreen extends Activity{
+public class SCLoginScreen extends BaseActivity{
 
 
 	private EditText cId;

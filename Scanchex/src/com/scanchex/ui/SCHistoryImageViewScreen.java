@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.scanchex.utils.SCPreferences;
 import com.squareup.picasso.Picasso;
 
-public class SCHistoryImageViewScreen extends Activity{
+public class SCHistoryImageViewScreen extends BaseActivity{
 	
 	 
 	private CharSequence imageUrl[];

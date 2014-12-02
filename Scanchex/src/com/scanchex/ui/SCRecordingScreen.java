@@ -49,7 +49,7 @@ import com.scanchex.utils.CONSTANTS;
 import com.scanchex.utils.Resources;
 import com.scanchex.utils.SCPreferences;
 
-public class SCRecordingScreen extends Activity {
+public class SCRecordingScreen extends BaseActivity {
 
 	private TextView audioStatus;
 	private String contentType;

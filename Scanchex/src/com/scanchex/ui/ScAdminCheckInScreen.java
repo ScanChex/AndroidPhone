@@ -62,7 +62,7 @@ import com.scanchex.utils.Resources;
 import com.scanchex.utils.SCPreferences;
 import com.squareup.picasso.Picasso;
 
-public class ScAdminCheckInScreen extends Activity {
+public class ScAdminCheckInScreen extends BaseActivity {
 
 	ImageView imageView;
 	EditText editTextRefrence, editTextNOTES;

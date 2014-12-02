@@ -40,7 +40,7 @@ import com.scanchex.utils.Resources;
 import com.scanchex.utils.SCPreferences;
 import com.squareup.picasso.Picasso;
 
-public class SCAdminMainMenuScreen extends Activity implements OnClickListener {
+public class SCAdminMainMenuScreen extends BaseActivity implements OnClickListener {
 
 	private TextView employeeName;
 	String getUsername = "";

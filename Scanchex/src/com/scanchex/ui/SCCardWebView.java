@@ -25,7 +25,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
-public class SCCardWebView extends Activity {
+public class SCCardWebView extends BaseActivity {
 
 	WebView webView;
 	ProgressBar progressBar1;
