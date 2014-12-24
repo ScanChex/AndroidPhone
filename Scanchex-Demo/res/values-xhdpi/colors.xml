@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="main_app_color">#ffcf4c29</color>
+    
+    <color name="red">#ffced3</color>
+    <color name="green">#cffed0</color>
+    <color name="blue">#cfd9fe</color>
+    <color name="black">#ff000000</color>
+    <color name="grey">#f0f0f0</color>
+    <color name="white">#ffffff</color> 
+    <color name="text_disabled">#ffa6b3bf</color>
+    <color name="text_header">#ff7e8e9e</color>
+    
+    <color name="text_menus">#E49B0F</color>
+    <color name="blue_dark">#FF0000CF</color>
+    <color name="mainscreenText">#999999</color>
+    <color name="borderLine">#565656</color>
+    <color name="editTextColor">#999999</color>
+    <color name="viewMainMenuScreen">#cccccc</color>
+    <color name="messageDividerColor">#343434</color>
+    <color name="messageRowColor">#e9e9e9</color>
+    <color name="topBorder">#999999</color>
+    
+    <color name="completed">#f0f0f0</color>
+    <color name="overDue">#ffced3</color>
+    <color name="assign">#cffed0</color>
+    <color name="pending">#cfd9fe</color>
+    <color name="messageScreen">#feff99</color>
+    
+    
+    <!-- Message Screen Color -->
+    <color name="selectButton">#0080ff</color>
+    <color name="unselect">#888888</color>
+    
+    <color name="defaultTab">#000000</color>
+    <color name="selectedtTab">#aaaaaa</color>
+</resources>

@@ -1,0 +1,27 @@
+<resources>
+
+    <style name="AppTheme" parent="android:Theme.Light" />
+
+    <style name="ticketIdText">
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="timeSize">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="defaultText">
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <!-- Asset Fragment -->
+    <style name="assetFragmentText">
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <!-- List Header Text Size -->
+    <style name="listHeasderText">
+        <item name="android:textSize">7sp</item> 
+    </style>
+<dimen name="checkinTicketWidth">100dp</dimen>
+</resources>

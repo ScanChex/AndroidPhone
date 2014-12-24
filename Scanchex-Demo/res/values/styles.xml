@@ -1,0 +1,64 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+    </style>
+
+    <style name="detailTabLayout">
+        <item name="android:layout_marginLeft">1dp</item>
+        <item name="android:layout_marginRight">1dp</item>
+        <item name="android:layout_marginTop">1dp</item>
+        <item name="android:layout_marginBottom">1dp</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:layout_weight">1</item>
+    <!--     <item name="android:background">@drawable/button_bg</item>  -->
+    <item name="android:background">#000000</item>
+    </style>
+    
+    <style name="textViewCounter"> 
+    <item name="android:layout_width">14dp</item>
+    <item name="android:layout_height">14dp</item>
+    <item name="android:layout_alignParentRight">true</item>
+    <item name="android:layout_alignParentTop">true</item>
+    <item name="android:background">@drawable/round_corner_counter</item>
+    <item name="android:gravity">center</item>
+    <item name="android:textColor">@color/white</item>
+    <item name="android:textSize">8sp</item>
+</style>
+
+     <style name="textViewCounterQuestions"> 
+    <item name="android:layout_width">14dp</item>
+    <item name="android:layout_height">14dp</item>
+    <item name="android:layout_alignParentRight">true</item>
+    <item name="android:layout_alignParentTop">true</item>
+    <item name="android:background">@drawable/rounded_corner_questions</item>
+    <item name="android:gravity">center</item>
+    <item name="android:textColor">@color/white</item>
+    <item name="android:textSize">8sp</item>
+</style>
+
+<!-- listview cell size -->
+<style name="ticketIdText">
+    <item name="android:textSize">12sp</item>
+</style>
+<style name="timeSize">
+    <item name="android:textSize">18sp</item>
+</style>
+<style name="defaultText">
+    <item name="android:textSize">12sp</item>
+</style>
+
+<!-- Asset Fragment -->
+<style name="assetFragmentText">
+    <item name="android:textSize">14sp</item>
+</style>
+
+<!-- List Header Text Size -->
+<style name="listHeasderText">
+    <item name="android:textSize">9sp</item> 
+</style> 
+</resources>

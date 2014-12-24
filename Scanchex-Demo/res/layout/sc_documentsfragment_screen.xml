@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true" >
+
+    <RelativeLayout
+        android:id="@+id/documentScreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#000000" />
+
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/scansuspendlayout"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="5dp"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="1dp" >
+        </ListView>
+
+        <RelativeLayout
+            android:id="@+id/bottom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/scansuspendlayout"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="0dp"
+            android:paddingTop="10dp"
+            android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/asset_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="ASSET ID: "
+            android:textColor="@color/text_menus"
+            android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/asset_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@+id/asset_title"
+                android:text="US-6425790-0001-0000-0001"
+                android:textColor="@color/text_menus" />
+
+        <TextView
+            android:id="@+id/des_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/asset_id"
+            android:layout_marginTop="10dp"
+            android:text="DESCRIPTION: "
+            android:textColor="@color/text_menus"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/des_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/asset_title"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/des_title"
+            android:textColor="@color/text_menus"
+            android:text="Standby Generator" />
+
+        <TextView
+            android:id="@+id/add_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/des_title"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/text_menus"
+            android:text="ADDRESS: " />
+
+        <TextView
+            android:id="@+id/add_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/des_title"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/add_title"
+            android:textColor="@color/text_menus"
+            android:text="2500 NW Ave\nMiami, Florida 33122" />
+    </RelativeLayout>
+
+    <LinearLayout
+            android:id="@+id/scansuspendlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" >
+
+            <Button
+                android:id="@+id/scan_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_weight="0.5"
+                android:text="Scan"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/suspend_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_weight="0.5"
+                android:text="Suspend"
+                android:textStyle="bold" />
+            
+            <Button
+                android:id="@+id/close_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_weight="0.5"
+                android:text="Close"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+</RelativeLayout>
+
+</RelativeLayout>

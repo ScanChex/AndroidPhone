@@ -1,0 +1,176 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:id="@+id/mainMenuScreen">
+    
+    <ImageView
+        android:id="@+id/logoTop"
+        android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:paddingLeft="70dp"
+            android:scaleType="fitXY"
+        android:src="@drawable/scan_chexs_logo" />
+
+    <ImageView
+        android:id="@+id/logo"
+          android:layout_width="120dp"
+        android:layout_height="120dp" 
+        android:layout_gravity="center_horizontal" 
+        android:src="@drawable/photo_not_available" 
+        android:scaleType='fitXY'
+             android:background="@drawable/rounded_corner"
+       
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/mainmenu_employeename_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="Employee name"
+        android:textColor="@color/text_menus"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="30dp"
+            android:background="@color/viewMainMenuScreen" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/transparent"
+            android:onClick="onTicketsClick"
+            android:text="TICKETS" 
+            android:textColor="@color/text_menus"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/viewMainMenuScreen" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/transparent"
+            android:onClick="onViewMapClick"
+            android:text="VIEW MAP"
+            android:capitalize="sentences"
+            android:textColor="@color/text_menus"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/viewMainMenuScreen" />
+        
+              <Button
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/transparent"
+            android:onClick="onCustomize"
+            android:text="CUSTOMIZE"
+            android:textColor="@color/text_menus"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/viewMainMenuScreen" />
+        
+        
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/transparent"
+            android:onClick="onClickCard"
+            android:text="ID"
+            android:textColor="@color/text_menus"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/viewMainMenuScreen" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/transparent"
+            android:onClick="onLogoutClick"
+            android:text="LOGOUT"
+            android:textColor="@color/text_menus"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/viewMainMenuScreen" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:layout_weight="0.4"
+        android:background="#FFFDD0"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Message Center"
+            android:textColor="@color/black"
+            android:textStyle="italic"
+            android:textSize="14sp" />
+
+        
+         <ImageView
+            android:id="@+id/push_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:onClick="onNewMessageClick"
+            android:visibility="gone"
+            android:src="@drawable/push_notification_icon" />
+        
+        <TextView
+            android:id="@+id/nonew_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="NO NEW MESSAGES"
+            android:textColor="#d8d8d8"
+            android:textSize="14sp"
+            android:clickable="true"
+            android:onClick="onNoNewMessage" />
+        
+       
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/adminAssetScreen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/logoTop"
+         android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:paddingLeft="70dp"
+            android:scaleType="fitXY"
+        android:src="@drawable/scan_chexs_logo" />
+
+    <RelativeLayout
+        android:id="@+id/asset_info_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/asset_image_id"
+        android:layout_marginTop="15dp"
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/asset_title"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:text="ASSET ID: "
+            android:gravity="right" />
+
+        <TextView
+            android:id="@+id/asset_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/asset_title"
+            android:textColor="@color/text_menus"
+            android:text="US-6425790-0001-0000-0001" />
+
+        <TextView
+            android:id="@+id/des_title"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/asset_id"
+            android:layout_marginTop="10dp"
+            android:text="DESCRIPTION: "
+            android:gravity="right"  />
+
+        <TextView
+            android:id="@+id/des_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/asset_title"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/des_title"
+            android:textColor="@color/text_menus"
+            android:text="Standby Generator" />
+
+        <TextView
+            android:id="@+id/serial_title"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/des_id"
+            android:layout_marginTop="10dp"
+            android:text="SERIAL #: "
+            android:gravity="right"  />
+
+        <TextView
+            android:id="@+id/serial_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/des_title"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/serial_title"
+            android:text="N/A"
+            android:textColor="@color/text_menus" />
+
+        <TextView
+            android:id="@+id/add_title"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/serial_title"
+            android:layout_marginTop="10dp"
+            android:gravity="right"
+            android:text="ADDRESS: " />
+
+        <TextView
+            android:id="@+id/add_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/serial_title"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/add_title"
+            android:text="2500 NW Ave\nMiami, Florida 33122"
+            android:textColor="@color/text_menus" />
+
+        <TextView
+            android:id="@+id/lastscan_title"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/add_title"
+            android:layout_marginTop="15dp"
+            android:textSize="13sp"
+            android:gravity="right"
+            android:text="LAST SCANNED: " />
+
+        <TextView
+            android:id="@+id/lastscan_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/add_title"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@+id/lastscan_title"
+            android:text="N/A"
+            android:textColor="@color/text_menus" />
+
+        <TextView
+            android:id="@+id/employee_title"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lastscan_title"
+            android:layout_marginTop="10dp"
+            android:gravity="right"
+            android:text="EMPLOYEE: " />
+
+        <TextView
+            android:id="@+id/employee_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lastscan_title"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/employee_title"
+            android:text="jbrown is assigned" 
+            android:textColor="@color/text_menus"/>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/take_picture_button"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="13sp"
+        android:text="Take Picture" />
+
+    <Button
+        android:id="@+id/menu_button"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:textSize="13sp"
+        android:text="Menu" />
+
+    <ImageView
+        android:id="@+id/asset_image_id"
+        android:layout_width="160dp"
+        android:layout_height="90dp"
+        android:layout_below="@+id/logoTop"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:scaleType="fitXY"
+        android:background="@drawable/rounded_corner"
+        android:src="@drawable/photo_not_available" />
+
+</RelativeLayout>
