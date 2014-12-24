@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white" >
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/bottom_layout"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp" >
+    </ListView>
+
+    <RelativeLayout
+        android:id="@+id/bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/black"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp" >
+
+        <TextView
+            android:id="@+id/asset_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ASSET ID: "
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/asset_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/asset_title"
+            android:text="US-6425790-0001-0000-0001" />
+
+        <TextView
+            android:id="@+id/des_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/asset_id"
+            android:layout_marginTop="10dp"
+            android:text="DESCRIPTION: "
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/des_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/asset_title"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/des_title"
+            android:text="Standby Generator" />
+
+        <TextView
+            android:id="@+id/add_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/des_title"
+            android:layout_marginTop="10dp"
+            android:text="ADDRESS: " />
+
+        <TextView
+            android:id="@+id/add_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/des_title"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/add_title"
+            android:text="2500 NW Ave\nMiami, Florida 33122" />
+    </RelativeLayout>
+
+</RelativeLayout>

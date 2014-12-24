@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/logo_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/scan_checks_innerlogo" />
+
+    <ImageView
+        android:id="@+id/asset_image_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/logo_id"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/scan_checks_innerlogo" />
+
+    <RelativeLayout
+        android:id="@+id/asset_info_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/asset_image_id"
+        android:layout_marginTop="15dp" >
+
+        <TextView
+            android:id="@+id/asset_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ASSET ID: "
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/asset_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/asset_title"
+            android:text="US-6425790-0001-0000-0001" />
+
+        <TextView
+            android:id="@+id/des_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/asset_id"
+            android:layout_marginTop="10dp"
+            android:text="DESCRIPTION: "
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/des_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/asset_title"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/des_title"
+            android:text="Standby Generator" />
+
+        <TextView
+            android:id="@+id/serial_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/des_id"
+            android:layout_marginTop="10dp"
+            android:text="SERIAL #: "
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/serial_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/des_title"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/serial_title"
+            android:text="N/A" />
+
+        <TextView
+            android:id="@+id/add_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/serial_title"
+            android:layout_marginTop="10dp"
+            android:text="ADDRESS: " />
+
+        <TextView
+            android:id="@+id/add_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/serial_title"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/add_title"
+            android:text="2500 NW Ave\nMiami, Florida 33122" />
+
+        <TextView
+            android:id="@+id/lastscan_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/add_title"
+            android:layout_marginTop="15dp"
+            android:text="LAST SCANNED: " />
+
+        <TextView
+            android:id="@+id/lastscan_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/add_title"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@+id/lastscan_title"
+            android:text="N/A" />
+
+        <TextView
+            android:id="@+id/employee_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lastscan_title"
+            android:layout_marginTop="10dp"
+            android:text="EMPLOYEE: " />
+
+        <TextView
+            android:id="@+id/employee_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lastscan_title"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/employee_title"
+            android:text="jbrown is assigned" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/take_picture_button"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="Take Picture" />
+
+    <Button
+        android:id="@+id/menu_button"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:text="Menu" />
+
+</RelativeLayout>
