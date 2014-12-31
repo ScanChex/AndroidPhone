@@ -92,6 +92,7 @@ public class SCDocumentsFragment extends ListFragment implements
 	String reasonvalue, curTime, ticketStatus, objvalue;
 	String documentStatus;
 	String document_id;
+	String documentURL;
 	String version;
 	private static final String PDF_MIME_TYPE = "application/pdf";
 	ArrayList items = new ArrayList();;
@@ -406,6 +407,7 @@ public class SCDocumentsFragment extends ListFragment implements
 		SCDocumentInfo dInfo = (SCDocumentInfo) lv.getItemAtPosition(position);
 		document_id = dInfo.document_id;
 		version = dInfo.version;
+		documentURL = dInfo.documentUrl;
 
 		if (Resources.getResources().isFirstScanDone()) {
 
@@ -434,9 +436,10 @@ public class SCDocumentsFragment extends ListFragment implements
 
 				String filename = pdfUrl.substring(pdfUrl.lastIndexOf("/") + 1);
 				if(filename.contains(".pdf")){
-					Intent pdf = new Intent(getActivity(), TestShowPDF.class);
-					pdf.putExtra("PATH", dInfo.documentUrl);
-					startActivity(pdf);
+//					Intent pdf = new Intent(getActivity(), TestShowPDF.class);
+//					pdf.putExtra("PATH", dInfo.documentUrl);
+//					startActivity(pdf);
+					downloadAndOpenPDF(mActivity, dInfo.documentUrl);
 				} else {
 					downloadAndOpenPDF(mActivity, dInfo.documentUrl);
 				}
@@ -446,10 +449,12 @@ public class SCDocumentsFragment extends ListFragment implements
 //				Toast.makeText(getActivity(),
 //						"Please Scan First to view this Document",
 //						Toast.LENGTH_SHORT).show();
-				if (isPDFSupported(mActivity)) {
-					downloadAndOpenPDF(mActivity, dInfo.documentUrl);
-
-				}
+			//	showAlertDialog2("PDF Document", "Please scan the ticket to save your edits. Edits will not be saved in preview mode! ");
+				showFillableAlert();
+//				if (isPDFSupported(mActivity)) {
+//					downloadAndOpenPDF(mActivity, dInfo.documentUrl);
+//
+//				}
 				
 			}
 
@@ -714,7 +719,7 @@ public class SCDocumentsFragment extends ListFragment implements
 						vector.add(docInfo);
 						items.add(docInfo);
 						Resources.getResources().setDocumentsData(vector);
-						adapter.setExtraInfo(vector);
+						//adapter.setExtraInfo(vector);
 					}
 				}
 
@@ -1102,6 +1107,26 @@ public class SCDocumentsFragment extends ListFragment implements
 		AlertDialog welcomeAlert = builder.create();
 		welcomeAlert.show();
 
+	}
+	
+	private void showFillableAlert() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+
+		builder
+				.setIcon(R.drawable.message_info_icon)
+				.setTitle("Info")
+				.setMessage("Please scan the ticket to save your docuemnt edits. Document edits will not be saved in preview mode!")
+				.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						if (isPDFSupported(mActivity)) {
+							downloadAndOpenPDF(mActivity, documentURL);
+
+						}
+					}
+				}).show();
+				
 	}
 	
 	private void showDocumentAlert() {

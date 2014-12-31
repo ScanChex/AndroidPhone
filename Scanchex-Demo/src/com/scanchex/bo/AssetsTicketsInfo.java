@@ -1,8 +1,13 @@
 package com.scanchex.bo;
 
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-public class AssetsTicketsInfo {
+
+
+public class AssetsTicketsInfo implements Comparable {
 	
 	public String assetId;
 	public String assetAddressTwo;
@@ -58,6 +63,41 @@ public class AssetsTicketsInfo {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	 public int compareTo(Object o)
+	    {
+		 AssetsTicketsInfo e = (AssetsTicketsInfo) o;
+		 
+		 SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		 Date date , date1;
+		 
+			try {
+		 
+				 date = formatter.parse(e.ticketTimeStamp);
+				 date1 = formatter.parse(this.ticketTimeStamp);
+				 int result = date.compareTo(date1);
+				    
+				    if (result < 0)
+				    {
+				        return -1;
+				    }
+				    else if (result == 0)
+				    {
+				        return 0;
+				    }
+				    else 
+				    {
+				        return 1;
+				    }
+				
+			
+		 
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+		return 0; 
+		
+	    }
 
 	public String getAssetId() {
 		return assetId;

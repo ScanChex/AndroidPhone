@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -36,6 +37,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -45,6 +47,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -54,13 +57,16 @@ import com.scanchex.utils.SCPreferences;
 import com.squareup.picasso.Picasso;
 
 public class SCViewMapDirectionsScreen extends FragmentActivity implements
-		OnClickListener {
+		OnClickListener , LocationListener {
 
 	private GoogleMap mapView;
 	Polyline line;
 	private LocationManager locManager;
 	private double longitude;
 	private double latitude;
+	private Marker userLoc;
+	private String provider;
+	private Location location;
 
 	LatLng startLatLng;
 	LatLng endLatLng;// = new LatLng(29.3956, 71.6836);
@@ -168,12 +174,14 @@ public class SCViewMapDirectionsScreen extends FragmentActivity implements
 
 		locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		Criteria criteria = new Criteria();
-		String provider = locManager.getBestProvider(criteria, false);
-		Location location = locManager.getLastKnownLocation(provider);
+		 provider = locManager.getBestProvider(criteria, false);
+		 location = locManager.getLastKnownLocation(provider);
+		 getAccurateLocation();
 		if (location != null) {
 			latitude = location.getLatitude();
 			longitude = location.getLongitude();
 			Log.i("LOCATION LAT>>" + latitude, "Longitute" + longitude);
+			 onLocationChanged(location);
 		}
 		startLatLng = new LatLng(latitude, longitude);
 		endLatLng = new LatLng(Double.parseDouble(tInfo.assetlatitude),
@@ -209,7 +217,137 @@ public class SCViewMapDirectionsScreen extends FragmentActivity implements
 		}
 
 	}
+	
+	   @Override
+	    public void onLocationChanged(Location location) {
+	        double lat =  location.getLatitude();
+	        double lng = location.getLongitude();
+	        LatLng coordinate = new LatLng(lat, lng);
+	        if(userLoc!=null) userLoc.remove();
+	         userLoc =  mapView.addMarker(new MarkerOptions()
+	        .position(coordinate)
+	        .title("You are here")
+	        .snippet("")
+	        .icon(BitmapDescriptorFactory.fromResource(R.drawable.fblue_flag_32)));
+	    }
+	
+	// Pass the desired latitude and longitude to this method
+	  public void showMarker(Double lat, Double lon) {
+		  mapView.clear();
+	      // Create a LatLng object with the given Latitude and Longitude
+	      LatLng markerLoc = new LatLng(lat, lon);
 
+	      //Add marker to map
+	      mapView.addMarker(new MarkerOptions()
+	              .position(markerLoc)                                                                        // at the location you needed
+	              .title("User Location")                                                                     // with a title you needed
+	              .snippet("")                                                           // and also give some summary of available
+	              .icon(BitmapDescriptorFactory.fromResource(R.drawable.fblue_flag_32))); // and give your animation drawable as icon
+	  }
+	  
+	  @Override
+	    public void onProviderDisabled(String provider) {
+	        Toast.makeText(this, "Enabled new provider " + provider,
+	                Toast.LENGTH_SHORT).show();
+
+	    }
+
+
+	    @Override
+	    public void onProviderEnabled(String provider) {
+	        Toast.makeText(this, "Disabled provider " + provider,
+	                Toast.LENGTH_SHORT).show();
+
+	    }
+
+
+	    @Override
+	    public void onStatusChanged(String provider, int status, Bundle extras) {
+	        // TODO Auto-generated method stub
+
+	    }
+
+	    
+	    /* Request updates at startup */
+	    @Override
+	    protected void onResume() {
+	        super.onResume();
+	        locManager.requestLocationUpdates(provider, 10000, 1, this);
+	    }
+
+	    /* Remove the locationlistener updates when Activity is paused */
+	    @Override
+	    protected void onPause() {
+	        super.onPause();
+	        locManager.removeUpdates(this);
+	    }
+	    
+	    
+	    public void getAccurateLocation(){
+			
+			Log.i("GET ACCURATE LOCATION", "GET ACCURATE LOCATION");
+			Location gpsLocation = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+			Location networkLocation = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);		
+			if(networkLocation != null && gpsLocation != null){
+				location = getBetterLocation(networkLocation, gpsLocation);
+			}else if(gpsLocation != null){
+				location = gpsLocation;
+			}else if(networkLocation != null){
+			location = networkLocation;
+					}else{
+				location = networkLocation;
+			}	
+		}
+		
+		protected Location getBetterLocation(Location newLocation, Location currentBestLocation) {
+			if (currentBestLocation == null) {
+				// A new location is always better than no location
+				return newLocation;
+			}
+
+			// Check whether the new location fix is newer or older
+			long timeDelta = newLocation.getTime() - currentBestLocation.getTime();
+			boolean isSignificantlyNewer = timeDelta > (1000 * 60 * 2);
+			boolean isSignificantlyOlder = timeDelta < -(1000 * 60 * 2);
+			boolean isNewer = timeDelta > 0;
+
+			// If it's been more than two minutes since the current location, use the new location
+			// because the user has likely moved.
+			if (isSignificantlyNewer) {
+				return newLocation;
+				// If the new location is more than two minutes older, it must be worse
+			} else if (isSignificantlyOlder) {
+				return currentBestLocation;
+			}
+
+			// Check whether the new location fix is more or less accurate
+			int accuracyDelta = (int) (newLocation.getAccuracy() - currentBestLocation.getAccuracy());
+			boolean isLessAccurate = accuracyDelta > 0;
+			boolean isMoreAccurate = accuracyDelta < 0;
+			boolean isSignificantlyLessAccurate = accuracyDelta > 200;
+
+			// Check if the old and new location are from the same provider
+			boolean isFromSameProvider = isSameProvider(newLocation.getProvider(),currentBestLocation.getProvider());
+
+			// Determine location quality using a combination of timeliness and accuracy
+			if (isMoreAccurate) {
+				return newLocation;
+			} else if (isNewer && !isLessAccurate) {
+				return newLocation;
+			} else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
+				return newLocation;
+			}
+			return currentBestLocation;
+		}
+		
+		private boolean isSameProvider(String provider1, String provider2) {
+			if (provider1 == null){
+				return provider2 == null;
+			}
+			
+			return provider1.equals(provider2);
+		}
+	    
 	private class connectAsyncTask extends AsyncTask<Void, Void, String> {
 		private ProgressDialog progressDialog;
 		String url;
@@ -320,6 +458,7 @@ public class SCViewMapDirectionsScreen extends FragmentActivity implements
 			// Tranform the string into a json object
 			final JSONObject json = new JSONObject(result);
 			JSONArray routeArray = json.getJSONArray("routes");
+			if ( routeArray.length() > 0  ) {
 			JSONObject routes = routeArray.getJSONObject(0);
 			JSONObject overviewPolylines = routes
 					.getJSONObject("overview_polyline");
@@ -365,7 +504,7 @@ public class SCViewMapDirectionsScreen extends FragmentActivity implements
 			// new LatLng(dest.latitude, dest.longitude))
 			// .width(5).color(Color.BLUE).geodesic(true));
 			// }
-
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

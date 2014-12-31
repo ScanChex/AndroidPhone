@@ -338,16 +338,20 @@ public class SCDetailsFragmentScreen extends SherlockFragmentActivity {
 		tInfo = Resources.getResources().getAssetTicketInfo();
 
 		
-		if (tInfo.is_questions.equalsIgnoreCase("YES")) {
+		if (  tInfo.is_questions != null && tInfo.is_questions.trim().length() > 0) {
+		if (tInfo.is_questions.equalsIgnoreCase("YES") ) {
 			questionstatusicon.setVisibility(View.VISIBLE);
 			
 		
-		if (Resources.getResources().isQuestionsSubmitted()) {
+		if ((Resources.getResources().isQuestionsSubmitted()) && Resources.getResources().isFirstScanDone()) {
 			questionstatusicon.setBackgroundResource(R.drawable.accept_ticket);
 		} else {
 			questionstatusicon.setBackgroundResource(R.drawable.excalamation_icon);
 		}
 		} else {
+			questionstatusicon.setVisibility(View.GONE);
+		}
+		}else {
 			questionstatusicon.setVisibility(View.GONE);
 		}
 	}
@@ -756,7 +760,9 @@ public class SCDetailsFragmentScreen extends SherlockFragmentActivity {
 		} else {
 			messageText.setText(tInfo.notes);
 			noteTab.setTextColor(this.getResources().getColor(R.color.white));
+			if (Resources.getResources().isFirstScanDone()) {
 			notesstatusicon.setBackgroundResource(R.drawable.accept_ticket);
+			}
 		
 		}
 		Button cancel = (Button) dialog.findViewById(R.id.buttonCancel);

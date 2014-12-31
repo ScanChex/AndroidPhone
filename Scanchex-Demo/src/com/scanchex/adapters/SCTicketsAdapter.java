@@ -19,6 +19,8 @@ import com.androidquery.AQuery;
 import com.scanchex.bo.AssetsTicketsInfo;
 import com.scanchex.ui.R;
 import com.scanchex.ui.SCDetailsFragmentScreen;
+import com.scanchex.ui.SCTicketViewScreen;
+import com.scanchex.utils.SCPreferences;
 import com.squareup.picasso.Picasso;
 
 public class SCTicketsAdapter extends BaseAdapter {
@@ -91,6 +93,8 @@ public class SCTicketsAdapter extends BaseAdapter {
 			holder.assetId = (TextView) convertView.findViewById(R.id.text6);
 			holder.assetName = (TextView) convertView.findViewById(R.id.text7);
 			holder.onHoldLabel = (TextView) convertView.findViewById(R.id.onHold);
+			holder.empName = (TextView) convertView.findViewById(R.id.empName);
+			
 			holder.ticketStartDate = (TextView) convertView
 					.findViewById(R.id.text8);
 			holder.ticketStartTime = (TextView) convertView
@@ -119,6 +123,8 @@ public class SCTicketsAdapter extends BaseAdapter {
 		}
 		AssetsTicketsInfo tInfo = this.vector.get(position);
 		holder.onHoldLabel.setVisibility(View.GONE);
+		holder.empName.setVisibility(View.GONE);
+		
 		if (tInfo.ticketOverDue.equals("1")) {
 
 			holder.ticketStatusIcon.setVisibility(View.VISIBLE);
@@ -153,6 +159,7 @@ public class SCTicketsAdapter extends BaseAdapter {
 			holder.ticketStatusIcon
 					.setBackgroundResource(R.drawable.lightning_image);
 			holder.onHoldLabel.setVisibility(View.VISIBLE);
+			holder.empName.setVisibility(View.VISIBLE);
 			
 		} else {
 			holder.ticketStatusIcon.setVisibility(View.VISIBLE);
@@ -174,7 +181,10 @@ public class SCTicketsAdapter extends BaseAdapter {
 		holder.ticketStartTime.setText(tInfo.ticketStartTime);
 		holder.mapIcon.setTag(position);
 		holder.detailIcon.setTag(position);
-
+		String[] parts = tInfo.assetTechnician.split("-");
+		holder.empName.setText(parts[1]);
+		
+	
 		if (tInfo.assetType.equals("CHECK-OUT/CHECK-IN")) {
 			holder.linearPreview.setVisibility(View.GONE);
 		}
@@ -212,6 +222,8 @@ public class SCTicketsAdapter extends BaseAdapter {
 		TextView ticketStartDate;
 		TextView ticketStartTime;
 		TextView onHoldLabel;
+		TextView empName;
+		
 		ImageView mapIcon;
 		ImageView detailIcon;
 		ImageView empIdIcon;

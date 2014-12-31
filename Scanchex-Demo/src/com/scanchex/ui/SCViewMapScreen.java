@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,6 +38,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.scanchex.adapters.SCTicketsAdapter;
 import com.scanchex.bo.AssetsTicketsInfo;
@@ -45,11 +48,13 @@ import com.scanchex.utils.CONSTANTS;
 import com.scanchex.utils.Resources;
 import com.scanchex.utils.SCPreferences;
 
-public class SCViewMapScreen extends FragmentActivity{
+public class SCViewMapScreen extends FragmentActivity implements LocationListener{
 	
 	private ListView listView;
 	private SCTicketsAdapter adapter;
 	private GoogleMap map;
+	private String provider;
+	private Marker userLoc;
 
 	private LocationManager locManager;
 	private double longitude;
@@ -74,12 +79,13 @@ public class SCViewMapScreen extends FragmentActivity{
 		
 		locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE); 
         Criteria criteria = new Criteria();
-        String provider = locManager.getBestProvider(criteria, false);
+         provider = locManager.getBestProvider(criteria, false);
         Location location = locManager.getLastKnownLocation(provider);
         if(location != null){
             latitude = location.getLatitude();
             longitude = location.getLongitude();
             Log.i("LOCATION LAT>>"+latitude,"Longitute" +longitude);
+            onLocationChanged(location);
         }
         map.setMyLocationEnabled(true);
 		
@@ -103,7 +109,71 @@ public class SCViewMapScreen extends FragmentActivity{
 	        		}
 	      
 	    }
+	  
+	  /* Request updates at startup */
+	    @Override
+	    protected void onResume() {
+	        super.onResume();
+	        locManager.requestLocationUpdates(provider, 10000, 1, this);
+	    	new AssetTicketTask().execute(CONSTANTS.BASE_URL);
+	    	
+	    }
+
+	    /* Remove the locationlistener updates when Activity is paused */
+	    @Override
+	    protected void onPause() {
+	        super.onPause();
+	        locManager.removeUpdates(this);
+	    }
+	    
+	    @Override
+	    public void onLocationChanged(Location location) {
+	        double lat =  location.getLatitude();
+	        double lng = location.getLongitude();
+	        LatLng coordinate = new LatLng(lat, lng);
+	        if(userLoc!=null) userLoc.remove();
+	         userLoc =  map.addMarker(new MarkerOptions()
+	        .position(coordinate)
+	        .title("You are here")
+	        .snippet("")
+	        .icon(BitmapDescriptorFactory.fromResource(R.drawable.fblue_flag_32)));
+	    }
 	
+	// Pass the desired latitude and longitude to this method
+	  public void showMarker(Double lat, Double lon) {
+	      map.clear();
+	      // Create a LatLng object with the given Latitude and Longitude
+	      LatLng markerLoc = new LatLng(lat, lon);
+
+	      //Add marker to map
+	      map.addMarker(new MarkerOptions()
+	              .position(markerLoc)                                                                        // at the location you needed
+	              .title("User Location")                                                                     // with a title you needed
+	              .snippet("")                                                           // and also give some summary of available
+	              .icon(BitmapDescriptorFactory.fromResource(R.drawable.fblue_flag_32))); // and give your animation drawable as icon
+	  }
+	  
+	  @Override
+	    public void onProviderDisabled(String provider) {
+	        Toast.makeText(this, "Enabled new provider " + provider,
+	                Toast.LENGTH_SHORT).show();
+
+	    }
+
+
+	    @Override
+	    public void onProviderEnabled(String provider) {
+	        Toast.makeText(this, "Disabled provider " + provider,
+	                Toast.LENGTH_SHORT).show();
+
+	    }
+
+
+	    @Override
+	    public void onStatusChanged(String provider, int status, Bundle extras) {
+	        // TODO Auto-generated method stub
+
+	    }
 	
 	public void onTicketMapClick(View view){
 		
@@ -386,12 +456,14 @@ public class SCViewMapScreen extends FragmentActivity{
 	            public void onGlobalLayout() { 
 	            	LatLngBounds.Builder bld = new LatLngBounds.Builder();
 	            	Vector<AssetsTicketsInfo> v = Resources.getResources().getAssetsTicketData();
+	            	if ( !isEmpty(v)) {
 	            	for (int i = 0; i < v.size(); i++) {           
 	            		AssetsTicketsInfo atInfo = v.get(i);
 	        			Log.i("Inner Latitude: "+atInfo.assetlatitude, "Inner Longitude: "+atInfo.assetLongitude);
 	        			latLng = new LatLng(Double.parseDouble(atInfo.assetlatitude), Double.parseDouble(atInfo.assetLongitude));
 	            		bld.include(latLng);            
 	            	}
+	            	
 	 //           	CameraPosition cameraPosition = new CameraPosition.Builder()
 	//				.target(latLng).zoom(10).build();
 	            	  LatLngBounds bounds = bld.build();
@@ -399,6 +471,7 @@ public class SCViewMapScreen extends FragmentActivity{
 	                  CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
 	                  map.moveCamera(cu);
 	                  map.animateCamera(cu);
+	            	}
 //			map.animateCamera(CameraUpdateFactory
 //					.newCameraPosition(cameraPosition));
 //	                mapView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
@@ -407,6 +480,12 @@ public class SCViewMapScreen extends FragmentActivity{
 //	    }
 	}
 	
+	
+	public boolean isEmpty(Vector v){  
+		if (v==null)  
+		   return true;  
+		return v.isEmpty();  
+		}  
 	
 	private void addMarkersToMap() {
 		

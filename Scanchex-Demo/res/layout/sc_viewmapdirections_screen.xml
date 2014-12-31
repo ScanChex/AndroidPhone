@@ -175,6 +175,7 @@
                     android:paddingRight="0dp"
                     android:text="June 09, 2013"
                     android:textColor="@color/black"
+                    android:textStyle="bold"
                     android:textSize="10sp" />
 
                 <TextView

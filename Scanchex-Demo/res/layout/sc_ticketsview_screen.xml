@@ -26,13 +26,20 @@
         android:divider="@android:color/white"
         android:dividerHeight="1dp" >
     </ListView>
-
+  <View
+             android:layout_width="fill_parent"
+             android:layout_height="2dp"
+             android:background="#c0c0c0"/>
     <RelativeLayout
         android:id="@+id/message_centre_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.3"
         android:background="#FFFDD0" >
+          <View
+             android:layout_width="fill_parent"
+             android:layout_height="2dp"
+             android:background="#c0c0c0"/>
 
         <TextView
             android:layout_width="wrap_content"

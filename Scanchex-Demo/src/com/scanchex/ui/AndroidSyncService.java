@@ -12,6 +12,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -162,7 +163,7 @@ public class AndroidSyncService extends Service {
 						listParams);
 				// response = response.substring(3);
 
-				locationManager.removeUpdates(LocationListener);
+			//	locationManager.removeUpdates(LocationListener);
 				Log.i("RESPONSE", "LOCATION UPDATE Resp>> " + response);
 				JSONObject obj = new JSONObject(response);
 				
@@ -181,10 +182,10 @@ public class AndroidSyncService extends Service {
 	
 	private void captureUserLocation(){
 		
-		locationManager.removeUpdates(LocationListener);
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10, LocationListener);
+		//locationManager.removeUpdates(LocationListener);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 1, LocationListener);
 		if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-           locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 10, LocationListener);
+           locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 1, LocationListener);
 		}
 	}
 
@@ -192,7 +193,11 @@ public class AndroidSyncService extends Service {
 
 		public void onLocationChanged(Location location) {
 			speed = String.valueOf(location.getSpeed());
-			//Log.v("speed in loc", "speed in loc " + speed);
+			Log.v("speed in loc", "speed in loc " + speed);
+			Log.v("location in loc","location  lat"+ location.getLatitude() + " location long "+ location.getLongitude() + "accuracy" + location.getAccuracy());
+			locationManager.removeUpdates(LocationListener);
+			
+		 	
 		}
 
 		public void onProviderDisabled(String provider) {

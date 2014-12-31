@@ -7,6 +7,9 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -24,6 +27,8 @@ public class SCMainMenuScreen extends BaseActivity {
 
 	private PendingIntent pi;
 	private AlarmManager am;
+	private LocationManager locationManager;
+
 	private TextView employeeName;
 
 	private TextView noMessageText;
@@ -47,6 +52,11 @@ public class SCMainMenuScreen extends BaseActivity {
 		employeeName.setText(SCPreferences.getPreferences().getUserFullName(
 				this));
 		am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		
+		Intent i= new Intent(this, AndroidSyncService.class);
+		this.startService(i); 
+
+		
 		scheduleInvokerAndroidSyncService();
 
 		String url = SCPreferences.getPreferences().getClientLogo(
@@ -68,14 +78,15 @@ public class SCMainMenuScreen extends BaseActivity {
 	        super.onStart();       
 	     
 	        	if ( SCPreferences.getPreferences().getUserFullName(this).length()>0) {
-	        		if (Resources.getResources().isActivityafter10mins())  {
-	        	//	fireAlarm();
-	        			Log.i("Base Activity", "App in foreground after 10 mins ");
-	        			 Resources.getResources().setActivityafter10mins(false);
-	        			Intent i = new Intent(this, SCLoginScreen.class);
-	        			startActivity(i);
-	        		   
-	        		}
+	        		if (Resources.getResources().isLaunchloginactivity()  && Resources.getResources().isFromBackground())  {
+	    	        	//	fireAlarm();
+	    	        			Log.i("Base Activity", "App in foreground after 10 mins ");
+	    	        			 Resources.getResources().setLaunchloginactivity(false);
+	    	        			 Resources.getResources().setFromBackground(false);
+	    	        			Intent i = new Intent(this, SCLoginScreen.class);
+	    	        			startActivity(i);
+	    	        		   
+	    	        		}
 	        	    	
 	        		}
 	      
@@ -148,6 +159,12 @@ public class SCMainMenuScreen extends BaseActivity {
 
 	private void removeSchedule() {
 		if (Resources.getResources().getpIntent() != null) {
+			
+//			locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//			locationManager.removeUpdates(LocationListener);
+//			
+			Intent i= new Intent(this, AndroidSyncService.class);
+			this.startService(i); 
 
 			Log.i("STOPPED Ping Service", "STOPPED Ping Service");
 			AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -155,6 +172,21 @@ public class SCMainMenuScreen extends BaseActivity {
 		}
 
 	}
+	
+//	private final LocationListener LocationListener = new LocationListener() {
+//
+//		public void onLocationChanged(Location location) {
+//		}
+//
+//		public void onProviderDisabled(String provider) {
+//		}
+//
+//		public void onProviderEnabled(String provider) {
+//		}
+//
+//		public void onStatusChanged(String provider, int status, Bundle extras) {
+//		}
+//	};
 
 	private void removeUserPrefrencesData() {
 
@@ -178,7 +210,7 @@ public class SCMainMenuScreen extends BaseActivity {
 		// am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
 		// SystemClock.elapsedRealtime()+5000, 30*1000, pi);
 		am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-				SystemClock.elapsedRealtime() + 5000, 5 * 60 * 1000, pi);
+				SystemClock.elapsedRealtime() , 5 * 60 * 1000, pi);
 	}
 
 	public void showPushNotificationAlert(String message) {
